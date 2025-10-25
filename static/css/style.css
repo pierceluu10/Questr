@@ -1,14 +1,14 @@
 /* SideQuestly Custom Styles */
 
 :root {
-    --primary-color: #b6cb9e;
-    --secondary-color: #d1f0b1;
+    --primary-color: #ebffd4;
+    --secondary-color: #faf6c5;
     --success-color: #6ede8a;
     --warning-color: #f27059;
-    --info-color: #8c8a93;
+    --info-color: #787580;
     --light-bg: #c2dfe3;
     --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    --heading-color: #959963;
+    --heading-color: #8a6857;
 }
 
 .dark-theme {
@@ -116,7 +116,7 @@ body {
 
 .progress-bar {
     border-radius: 10px;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    background: linear-gradient(135deg, #ffd86e 0%, #ffb561 100%);
     transition: width 0.6s ease;
     position: relative;
 }
