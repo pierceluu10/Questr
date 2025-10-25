@@ -207,25 +207,17 @@ Questr follows a clean, modern design with:
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
 ## Future Enhancements
 
 - [ ] AI-generated personalized quests using OpenAI API
 - [ ] Weekly summary emails
-- [ ] Public leaderboards
 - [ ] Social features (friend connections)
 - [ ] Mobile app development
-- [ ] Advanced analytics dashboard
-- [ ] Quest difficulty levels
-- [ ] Custom quest creation
+- [ ] Leaderboard
+
 
 ## Support
 
 If you encounter any issues or have questions, please open an issue on GitHub or contact the development team.
 
 ---
-
-**Built with ❤️ for your daily growth and wellbeing**
