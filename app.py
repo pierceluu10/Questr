@@ -10,11 +10,11 @@ import json
 import os
 from textblob import TextBlob
 
-from models import db, User, Quest, UserQuest, Reflection, Achievement, UserAchievement
+from models import db, User, Quest, UserQuest, Reflection, Achievement, UserAchievement, DailyQuest
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'your-secret-key-change-in-production')
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///sidequestly.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///questr.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Initialize extensions
@@ -76,20 +76,22 @@ def get_daily_quests(user_id):
     """Get or generate today's quests for a user"""
     today = date.today()
     
-    # Check if user already has quests for today
-    existing_quests = Quest.query.filter(
-        Quest.id.in_(
-            db.session.query(UserQuest.quest_id).filter(
-                UserQuest.user_id == user_id,
-                db.func.date(UserQuest.date_completed) == today
-            )
-        )
+    # Check if user already has quests assigned for today
+    daily_quests = DailyQuest.query.filter_by(
+        user_id=user_id,
+        date_assigned=today
     ).all()
     
-    if existing_quests:
-        return existing_quests
+    if daily_quests:
+        # Return the assigned quests
+        quest_ids = [dq.quest_id for dq in daily_quests]
+        return Quest.query.filter(Quest.id.in_(quest_ids)).all()
     
     # Generate new quests for today
+    return generate_new_quests(user_id, today)
+
+def generate_new_quests(user_id, today):
+    """Generate 3 new random quests for a user"""
     categories = ['Social', 'Health', 'Mindfulness']
     today_quests = []
     
@@ -112,8 +114,16 @@ def get_daily_quests(user_id):
             db.session.add(quest)
             db.session.commit()
         
+        # Assign quest to user for today
+        daily_quest = DailyQuest(
+            user_id=user_id,
+            quest_id=quest.id,
+            date_assigned=today
+        )
+        db.session.add(daily_quest)
         today_quests.append(quest)
     
+    db.session.commit()
     return today_quests
 
 def check_achievements(user):
@@ -123,7 +133,7 @@ def check_achievements(user):
         {'condition': 'streak_10', 'title': 'Streak Champion', 'description': 'Maintain a 10-day streak!', 'icon': '⚡'},
         {'condition': 'xp_50', 'title': 'Level 2 Explorer', 'description': 'Earn 50 XP!', 'icon': '⭐'},
         {'condition': 'xp_100', 'title': 'Quest Veteran', 'description': 'Earn 100 XP!', 'icon': '🏆'},
-        {'condition': 'quests_10', 'title': 'SideQuest Veteran', 'description': 'Complete 10 quests!', 'icon': '🎯'},
+        {'condition': 'quests_10', 'title': 'Quest Veteran', 'description': 'Complete 10 quests!', 'icon': '🎯'},
         {'condition': 'quests_25', 'title': 'Quest Master', 'description': 'Complete 25 quests!', 'icon': '👑'}
     ]
     
@@ -342,6 +352,35 @@ def mood_data():
     }
     
     return jsonify(data)
+
+@app.route('/reroll-quests')
+@login_required
+def reroll_quests():
+    """Reroll today's quests for the user"""
+    today = date.today()
+    
+    # Check if user has already completed any quests today
+    completed_today = UserQuest.query.filter(
+        UserQuest.user_id == current_user.id,
+        db.func.date(UserQuest.date_completed) == today
+    ).count()
+    
+    if completed_today > 0:
+        flash('Cannot reroll quests after completing one! Try again tomorrow.')
+        return redirect(url_for('dashboard'))
+    
+    # Delete old daily quest assignments for today
+    DailyQuest.query.filter_by(
+        user_id=current_user.id,
+        date_assigned=today
+    ).delete()
+    db.session.commit()
+    
+    # Generate new quests
+    generate_new_quests(current_user.id, today)
+    
+    flash('Quests rerolled! Here are your new quests for today.')
+    return redirect(url_for('dashboard'))
 
 if __name__ == '__main__':
     # Only run in debug mode if not in production

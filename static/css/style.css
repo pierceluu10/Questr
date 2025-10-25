@@ -1,4 +1,4 @@
-/* SideQuestly Custom Styles */
+/* Questr Custom Styles */
 
 :root {
     --primary-color: #b6cb9e;
@@ -21,9 +21,19 @@
 }
 
 body {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     background-color: var(--light-bg);
     line-height: 1.6;
+}
+
+body, h1, h2, h3, h4, h5, h6, .navbar-brand, p, span, a, button, .btn, input, textarea, select {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', 'Roboto', 'Helvetica Neue', Arial, sans-serif !important;
+}
+
+/* Smoother font rendering */
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 /* Gradient backgrounds */
@@ -35,27 +45,27 @@ body {
 .card {
     border: none;
     border-radius: 15px;
-    box-shadow: var(--card-shadow);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
 /* Quest Cards */
 .quest-card {
     background: #d1f0b1;
     border-radius: 15px;
-    box-shadow: var(--card-shadow);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
     border: 2px solid transparent;
 }
 
 .quest-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
     border-color: var(--primary-color);
 }
 
@@ -73,12 +83,13 @@ body {
 .stat-card {
     background: #d1f0b1;
     border-radius: 15px;
-    box-shadow: var(--card-shadow);
-    transition: transform 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .stat-card:hover {
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
 }
 
 .stat-icon {
@@ -90,19 +101,19 @@ body {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
     color: #BABD8D;
     border-radius: 15px;
-    box-shadow: var(--card-shadow);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
 }
 
 .welcome-card h2 {
     color: white;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 /* Progress Card */
 .progress-card {
     background: #d1f0b1;
     border-radius: 15px;
-    box-shadow: var(--card-shadow);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .progress {
@@ -139,12 +150,13 @@ body {
 .feature-card {
     background: #b6cb9e;
     border-radius: 15px;
-    box-shadow: var(--card-shadow);
-    transition: transform 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .feature-card:hover {
-    transform: translateY(-3px);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
 .feature-icon {
@@ -171,9 +183,6 @@ body {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
     border-radius: 15px;
     box-shadow: var(--card-shadow);
-}
-
-.dark-theme .motivation-card {
     opacity: 0.9;
 }
 
@@ -182,16 +191,30 @@ body {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
     color: #b6cb9e;
     border-radius: 15px;
-    box-shadow: var(--card-shadow);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
 }
 
 .profile-header h2 {
     color: white !important;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .profile-avatar {
     opacity: 0.9;
+}
+
+/* Chart Section Titles */
+.chart-section-title {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', 'Roboto', 'Helvetica Neue', Arial, sans-serif !important;
+    font-weight: 600 !important;
+    font-size: 1.1rem !important;
+    letter-spacing: 0.02em !important;
+    color: var(--text) !important;
+}
+
+.chart-section-title i {
+    color: var(--primary-color);
+    margin-right: 8px;
 }
 
 /* Achievement Badges */
@@ -226,8 +249,25 @@ body {
 /* Buttons */
 .btn {
     border-radius: 10px;
-    font-weight: 500;
+    font-weight: 600;
+    letter-spacing: 0.01em;
     transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    transform: translateY(-2px);
+}
+
+.btn-outline-primary {
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+    background: var(--primary-color);
+    color: white;
 }
 
 .btn-primary {
@@ -295,8 +335,70 @@ footer {
     }
 }
 
+@keyframes slideInFromLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3) translateY(-30px);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+    70% {
+        transform: scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
 .fade-in-up {
     animation: fadeInUp 0.6s ease-out;
+}
+
+/* Animate title on page load */
+.animate-title {
+    opacity: 0;
+}
+
+.animate-title span {
+    display: inline-block;
+    opacity: 0;
+}
+
+/* Hero section styling */
+.hero-section h1 {
+    font-weight: 700;
+}
+
+/* Smooth transitions */
+*, 
+*::before, 
+*::after {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Better responsive font sizes */
+@media (max-width: 768px) {
+    .hero-section h1 {
+        font-size: 3rem !important;
+    }
+    
+    .hero-section .lead {
+        font-size: 1.2rem !important;
+    }
 }
 
 /* Responsive adjustments */

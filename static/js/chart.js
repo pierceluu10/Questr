@@ -1,4 +1,4 @@
-// SideQuestly Chart Utilities
+// Questr Chart Utilities
 
 // Initialize all charts when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
@@ -94,9 +94,9 @@ function initializeMoodChart() {
         })
         .catch(error => {
             console.error('Error loading mood data:', error);
-            // Show placeholder message
+            // Show placeholder message with more padding
             const chartContainer = document.querySelector('#moodChart').parentElement;
-            chartContainer.innerHTML = '<div class="text-center text-muted py-5"><i class="fas fa-chart-line fa-3x mb-3"></i><p>No mood data available yet</p></div>';
+            chartContainer.innerHTML = '<div class="text-center text-muted" style="padding: 80px 20px;"><i class="fas fa-chart-line fa-3x mb-3 d-block"></i><p class="mb-0">No mood data available yet</p></div>';
         });
 }
 
@@ -108,6 +108,14 @@ function initializeCategoryChart() {
     const socialCount = parseInt(document.querySelector('[data-social-count]')?.dataset.socialCount || '0');
     const healthCount = parseInt(document.querySelector('[data-health-count]')?.dataset.healthCount || '0');
     const mindfulnessCount = parseInt(document.querySelector('[data-mindfulness-count]')?.dataset.mindfulnessCount || '0');
+    
+    // Check if there's any data
+    const totalCount = socialCount + healthCount + mindfulnessCount;
+    if (totalCount === 0) {
+        const chartContainer = document.querySelector('#categoryChart').parentElement;
+        chartContainer.innerHTML = '<div class="text-center text-muted" style="padding: 80px 20px;"><i class="fas fa-chart-pie fa-3x mb-3 d-block"></i><p class="mb-0">Complete a quest first</p></div>';
+        return;
+    }
     
     new Chart(ctx, {
         type: 'doughnut',
