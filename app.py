@@ -132,10 +132,10 @@ def get_daily_quests(user_id):
         print(f"Error parsing JSON output: {e}")
         print("Raw response text:", response.text)
         
-    social_quest = Quest1(
-        title = social_title
-        category = 'Social'
-        description = social_description
+    social_quest = Quest(
+        title = social_title,
+        category = 'Social',
+        description = social_description,
         reward_points = social_points
     )
     db.session.add(quest)
@@ -143,34 +143,25 @@ def get_daily_quests(user_id):
     today_quests.append(quest)
 
     
-    health_quest = Quest2(
-        title = health_title
-        category = 'Health'
-        description = health_description
+    health_quest = Quest(
+        title = health_title,
+        category = 'Health',
+        description = health_description,
         reward_points = health_points
     )
     db.session.add(quest)
     db.session.commit()
     today_quests.append(quest)
 
-    mindfulness_quest = Quest3(
-        title = mindfulness_title
-        category = 'Mindfulness'
-        description = mindfulness_description
+    mindfulness_quest = Quest(
+        title = mindfulness_title,
+        category = 'Mindfulness',
+        description = mindfulness_description,
         reward_points = mindfulness_points
     )
     db.session.add(quest)
     db.session.commit()
     today_quests.append(quest)
-
-        quest = Quest(
-            title=template['title'],
-            category=category,
-            description=template['description'],
-            reward_points=template['points']
-        )
-        db.session.add(quest)
-        db.session.commit()
     return today_quests
 
 def check_achievements(user):
