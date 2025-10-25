@@ -1,4 +1,4 @@
-# SideQuestly 🎯
+# Questr 🎯
 
 A full-stack web application that gives users daily real-life "side quests" — small, positive tasks to improve mental, physical, and social wellbeing.
 
