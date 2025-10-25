@@ -138,9 +138,9 @@ def get_daily_quests(user_id):
         description = social_description,
         reward_points = social_points
     )
-    db.session.add(quest)
+    db.session.add(social_quest)
     db.session.commit()
-    today_quests.append(quest)
+    today_quests.append(social_quest)
 
     
     health_quest = quest(
@@ -149,9 +149,9 @@ def get_daily_quests(user_id):
         description = health_description,
         reward_points = health_points
     )
-    db.session.add(quest)
+    db.session.add(health_quest)
     db.session.commit()
-    today_quests.append(quest)
+    today_quests.append(health_quest)
 
     mindfulness_quest = quest(
         title = mindfulness_title,
@@ -159,9 +159,9 @@ def get_daily_quests(user_id):
         description = mindfulness_description,
         reward_points = mindfulness_points
     )
-    db.session.add(quest)
+    db.session.add(mindfulness_quest)
     db.session.commit()
-    today_quests.append(quest)
+    today_quests.append(mindfulness_quest)
     return today_quests
 
 def check_achievements(user):
