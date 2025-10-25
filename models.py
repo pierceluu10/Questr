@@ -33,6 +33,10 @@ class User(UserMixin, db.Model):
         current_level = self.get_level()
         xp_needed = current_level * 100
         return xp_needed - self.xp
+    
+    def get_xp_progress_percentage(self):
+        """Get XP progress as percentage for current level (0-100)"""
+        return self.xp % 100
 
 class Quest(db.Model):
     id = db.Column(db.Integer, primary_key=True)

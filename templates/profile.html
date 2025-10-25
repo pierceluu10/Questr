@@ -89,12 +89,12 @@
         <div class="progress-card p-3">
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <span class="fw-bold">Level {{ user.get_level() }} Progress</span>
-                <span class="text-muted">{{ user.xp % 100 }}/100 XP</span>
+                <span class="text-muted">{{ user.get_xp_progress_percentage() }}/100 XP</span>
             </div>
-            <div class="progress" style="height: 20px;">
-                <div class="progress-bar bg-gradient" role="progressbar" 
-                     style="width: {{ (user.xp % 100) }}%" 
-                     aria-valuenow="{{ user.xp % 100 }}" 
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" 
+                     style="width: {{ user.get_xp_progress_percentage() }}%" 
+                     aria-valuenow="{{ user.get_xp_progress_percentage() }}" 
                      aria-valuemin="0" 
                      aria-valuemax="100">
                 </div>
