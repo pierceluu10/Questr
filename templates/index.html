@@ -3,18 +3,25 @@
 {% block title %}Questr - Daily Quests for Personal Growth{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center align-items-center" style="min-height: 75vh;">
-    <div class="col-lg-7 text-center">
-        <div class="hero-section py-5">
-            <h1 class="display-1 fw-bold mb-4 animate-title" style="font-size: clamp(3rem, 8vw, 5rem); letter-spacing: 0.05em; white-space: nowrap; text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);">
+<div class="row align-items-center" style="min-height: 80vh;">
+    <div class="col-lg-8">
+        <div class="hero-section">
+            <!-- Blue Leaf Icon -->
+            <div class="hero-icon mb-4" style="display: block;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="width: 80px; height: 80px; filter: drop-shadow(0 8px 20px rgba(88, 166, 255, 0.6)) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));">
+                    <path fill="#58a6ff" d="M272 96c-78.6 0-145.1 51.5-167.7 122.5c33.6-17 71.5-26.5 111.7-26.5h88c8.8 0 16 7.2 16 16s-7.2 16-16 16H288 216s0 0 0 0c-16.6 0-32.7 1.9-48.3 5.4c-25.9 5.9-49.9 16.4-71.4 30.7c0 0 0 0 0 0C38.3 298.8 0 364.9 0 440v16c0 13.3 10.7 24 24 24s24-10.7 24-24V440c0-48.7 20.7-92.5 53.8-123.2C121.6 392.3 190.3 448 272 448l1 0c132.1-.7 239-130.9 239-291.4c0-42.6-7.5-83.1-21.1-119.6c-2.6-6.9-12.7-6.6-16.2-.1C455.9 72.1 418.7 96 376 96L272 96z"/>
+                </svg>
+            </div>
+            
+            <h1 class="display-1 fw-bold mb-4 animate-title" style="font-size: clamp(3rem, 8vw, 5rem); letter-spacing: 0.05em; white-space: nowrap; text-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 4px 8px rgba(0, 0, 0, 0.4);">
                 Welcome to Questr
             </h1>
-            <p class="lead mb-5" style="font-size: 1.3rem; max-width: 600px; margin: 0 auto;">
+            <p class="lead mb-4" style="font-size: 1.3rem; max-width: 600px;">
                 Build better habits through daily quests. Track progress and improve your wellbeing.
             </p>
             
             {% if not current_user.is_authenticated %}
-                <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                <div class="d-grid gap-2 d-md-flex">
                     <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg px-5 py-3" style="font-size: 1.1rem; font-weight: 600; letter-spacing: 0.02em;">
                         Get Started
                     </a>
@@ -28,7 +35,7 @@
     </div>
 </div>
 
-<div class="row mt-5 mb-5">
+<div class="row mt-4 mb-4">
     <div class="col-lg-10 mx-auto">
         <div class="row g-4">
             <div class="col-md-4 text-center">

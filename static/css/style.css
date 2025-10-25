@@ -45,27 +45,27 @@ body, h1, h2, h3, h4, h5, h6, .navbar-brand, p, span, a, button, .btn, input, te
 .card {
     border: none;
     border-radius: 15px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 /* Quest Cards */
 .quest-card {
     background: #d1f0b1;
     border-radius: 15px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
     transition: all 0.3s ease;
     border: 2px solid transparent;
 }
 
 .quest-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6), 0 4px 12px rgba(88, 166, 255, 0.2);
     border-color: var(--primary-color);
 }
 
@@ -83,13 +83,13 @@ body, h1, h2, h3, h4, h5, h6, .navbar-brand, p, span, a, button, .btn, input, te
 .stat-card {
     background: #d1f0b1;
     border-radius: 15px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .stat-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 .stat-icon {
@@ -101,19 +101,19 @@ body, h1, h2, h3, h4, h5, h6, .navbar-brand, p, span, a, button, .btn, input, te
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
     color: #BABD8D;
     border-radius: 15px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.5), 0 4px 12px rgba(88, 166, 255, 0.2);
 }
 
 .welcome-card h2 {
     color: white;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
 }
 
 /* Progress Card */
 .progress-card {
     background: #d1f0b1;
     border-radius: 15px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .progress {
@@ -150,13 +150,13 @@ body, h1, h2, h3, h4, h5, h6, .navbar-brand, p, span, a, button, .btn, input, te
 .feature-card {
     background: #b6cb9e;
     border-radius: 15px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .feature-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 .feature-icon {
@@ -191,12 +191,12 @@ body, h1, h2, h3, h4, h5, h6, .navbar-brand, p, span, a, button, .btn, input, te
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
     color: #b6cb9e;
     border-radius: 15px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.5), 0 4px 12px rgba(88, 166, 255, 0.2);
 }
 
 .profile-header h2 {
     color: white !important;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
 }
 
 .profile-avatar {
@@ -252,11 +252,11 @@ body, h1, h2, h3, h4, h5, h6, .navbar-brand, p, span, a, button, .btn, input, te
     font-weight: 600;
     letter-spacing: 0.01em;
     transition: all 0.2s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .btn:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5), 0 4px 8px rgba(88, 166, 255, 0.3);
     transform: translateY(-2px);
 }
 
@@ -362,6 +362,25 @@ footer {
         opacity: 1;
         transform: scale(1) translateY(0);
     }
+}
+
+@keyframes floatIcon {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.hero-icon svg {
+    animation: floatIcon 3s ease-in-out infinite;
+    transition: transform 0.3s ease;
+}
+
+.hero-icon:hover svg {
+    transform: scale(1.1);
+    animation: none;
 }
 
 .fade-in-up {
