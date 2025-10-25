@@ -41,6 +41,27 @@ with app.app_context():
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+
+@app.context_processor
+def inject_xp_globals():
+    """Make total XP across all users and the current user's XP available in all templates."""
+    try:
+        total = db.session.query(db.func.coalesce(db.func.sum(User.xp), 0)).scalar()
+    except Exception:
+        total = 0
+
+    user_xp = None
+    if current_user and hasattr(current_user, 'is_authenticated') and current_user.is_authenticated:
+        try:
+            user_xp = int(current_user.xp or 0)
+        except Exception:
+            user_xp = 0
+
+    return {
+        'total_xp': int(total or 0),
+        'user_xp': user_xp
+    }
+
 # Forms
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])

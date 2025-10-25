@@ -266,13 +266,21 @@
                 <ul class="navbar-nav me-auto">
                     {% if current_user.is_authenticated %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('dashboard') }}">
-                                <i class="fas fa-home"></i> Dashboard
+                            <a class="nav-link d-flex align-items-center" href="{{ url_for('dashboard') }}">
+                                <i class="fas fa-home"></i>
+                                <span class="ms-2">Dashboard</span>
+                                {% if user_xp is not none %}
+                                    <span class="badge bg-primary ms-2" title="Your XP">{{ user_xp }} XP</span>
+                                {% endif %}
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('profile') }}">
-                                <i class="fas fa-user"></i> Profile
+                            <a class="nav-link d-flex align-items-center" href="{{ url_for('profile') }}">
+                                <i class="fas fa-user"></i>
+                                <span class="ms-2">Profile</span>
+                                {% if user_xp is not none %}
+                                    <span class="badge bg-primary ms-2" title="Your XP">{{ user_xp }} XP</span>
+                                {% endif %}
                             </a>
                         </li>
                     {% endif %}
