@@ -10,6 +10,16 @@
     --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+.dark-theme {
+    --primary-color: #58a6ff;
+    --secondary-color: #7d8cc4;
+    --success-color: #3fb950;
+    --warning-color: #d29922;
+    --info-color: #539bf5;
+    --light-bg: #0d1117;
+    --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
 body {
     font-family: 'Roboto', sans-serif;
     background-color: var(--light-bg);
@@ -49,11 +59,6 @@ body {
     border-color: var(--primary-color);
 }
 
-.quest-card.completed {
-    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
-    border-color: var(--success-color);
-}
-
 .quest-title {
     color: #92b4a7;
     font-size: 1.2rem;
@@ -86,6 +91,11 @@ body {
     color: #BABD8D;
     border-radius: 15px;
     box-shadow: var(--card-shadow);
+}
+
+.welcome-card h2 {
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 /* Progress Card */
@@ -158,9 +168,13 @@ body {
 
 /* Motivation Card */
 .motivation-card {
-    background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
     border-radius: 15px;
     box-shadow: var(--card-shadow);
+}
+
+.dark-theme .motivation-card {
+    opacity: 0.9;
 }
 
 /* Profile Header */
@@ -169,6 +183,11 @@ body {
     color: #b6cb9e;
     border-radius: 15px;
     box-shadow: var(--card-shadow);
+}
+
+.profile-header h2 {
+    color: white !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .profile-avatar {
@@ -196,7 +215,6 @@ body {
 
 /* Reflection Items */
 .reflection-item {
-    background: white;
     border-radius: 10px;
     transition: box-shadow 0.2s ease;
 }
