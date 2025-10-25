@@ -58,9 +58,9 @@ if not app.debug:
         app.logger.warning(f'Could not create log file: {e}')
 # Constants
 ALLOWED_PROFILE_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
-XP_PER_POINT = 1  # How much XP one hunger point costs
-XP_PER_STAGE = 3  # How much XP is needed for a pet to advance a stage
-MAX_PET_XP = 9    # Maximum XP a pet can have (3 stages * 3 xp each)
+HUNGER_POINTS_PER_XP = 1     # 1 XP = 1 hunger point
+POINTS_PER_STAGE = 3         # Need 3 hunger points to advance stage
+MAX_HUNGER_POINTS = 9        # Maximum points a pet can have (3 stages * 3 points each)
 
 # Profile upload settings
 app.config['PROFILE_UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static', 'images', 'profiles')
@@ -145,22 +145,25 @@ def myquestr():
             db.session.commit()
 
         pet_name = 'bear'
-        xp = get_pet_xp(current_user, pet_name)
-        temp = current_user.temp_allocated_xp
+        current_points = get_pet_xp(current_user, pet_name)
+        temp_points = current_user.temp_allocated_xp
+        total_points = current_points + temp_points
         
         pet_data = {
             'name': pet_name,
-            'xp': xp,
-            'temp': temp,
-            'total_visible_xp': xp + temp,
-            'stage': min(3, (xp + temp) // XP_PER_STAGE + 1)
+            'hunger_points': current_points,
+            'temp': temp_points,
+            'total_points': total_points,
+            'stage': min(3, total_points // POINTS_PER_STAGE + 1),
+            'progress': (total_points % POINTS_PER_STAGE) * 100 / POINTS_PER_STAGE
         }
 
-        max_hunger_points = (current_user.xp // XP_PER_POINT) if current_user.xp else 0
+        # 1:1 ratio, so available points equals XP
+        available_points = current_user.xp
         
         return render_template('myquestr.html', 
                              pet=pet_data, 
-                             max_hunger_points=max_hunger_points, 
+                             available_points=available_points, 
                              user=current_user)
 
     except Exception as e:
@@ -181,23 +184,32 @@ def myquestr_allocate():
         if not current_user.active_pet or current_user.active_pet != 'bear':
             return jsonify({'success': False, 'error': 'Bear must be selected'}), 400
 
-        # Cost is now 1:1
-        cost = points
-        if current_user.xp < cost:
+        # Check if user has enough XP (1:1 ratio)
+        if current_user.xp < points:
             return jsonify({'success': False, 'error': 'Not enough XP'}), 400
 
-        current_pet_xp = get_pet_xp(current_user, 'bear')
-        remaining_capacity = MAX_PET_XP - (current_pet_xp + current_user.temp_allocated_xp)
+        current_points = get_pet_xp(current_user, 'bear')
+        temp_points = current_user.temp_allocated_xp
+        remaining_capacity = MAX_HUNGER_POINTS - (current_points + temp_points)
         
         if points > remaining_capacity:
-            return jsonify({'success': False, 'error': f'Can only add up to {remaining_capacity} more XP to your bear'}), 400
+            return jsonify({'success': False, 'error': f'Can only add up to {remaining_capacity} more hunger points'}), 400
 
-        current_user.xp -= cost
-        current_user.temp_allocated_xp += cost
+        current_user.xp -= points
+        current_user.temp_allocated_xp += points
         db.session.commit()
         
         # Return updated values for the UI
-        total_xp = current_pet_xp + current_user.temp_allocated_xp
+        total_points = current_points + current_user.temp_allocated_xp
+        return jsonify({
+            'success': True,
+            'user_xp': current_user.xp,
+            'hunger_points': current_points,
+            'temp_points': current_user.temp_allocated_xp,
+            'total_points': total_points,
+            'stage': min(3, total_points // POINTS_PER_STAGE + 1),
+            'progress': (total_points % POINTS_PER_STAGE) * 100 / POINTS_PER_STAGE
+        }), 200
         return jsonify({
             'success': True,
             'user_xp': current_user.xp,

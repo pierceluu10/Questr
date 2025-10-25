@@ -11,12 +11,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function updateUI(data) {
         if (displayUserXp) displayUserXp.textContent = data.user_xp;
-        if (petXpSpan) petXpSpan.textContent = data.pet_xp;
+        if (document.querySelector('.pet-points')) {
+            document.querySelector('.pet-points').textContent = data.hunger_points;
+        }
         if (progressBar) {
             progressBar.style.width = data.progress + '%';
-            progressBar.textContent = (data.total_xp % 3) + '/3';
+            progressBar.textContent = (data.total_points % 3) + '/3';
         }
         if (hungerAvailableEl) hungerAvailableEl.textContent = data.user_xp;
+        
+        // Update pending points if any
+        const pendingEl = document.querySelector('.text-muted');
+        if (pendingEl && data.temp_points > 0) {
+            pendingEl.textContent = `pending ${data.temp_points}`;
+            pendingEl.style.display = 'inline';
+        } else if (pendingEl) {
+            pendingEl.style.display = 'none';
+        }
     }
 
     // Add points handler
