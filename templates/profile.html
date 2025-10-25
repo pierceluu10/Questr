@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Profile - SideQuestly{% endblock %}
+{% block title %}Profile - Questr{% endblock %}
 
 {% block extra_head %}
 <style>
@@ -9,8 +9,13 @@
         height: 300px;
         margin: 20px 0;
     }
-    .profile-header .text-primary {
+    .profile-header .text-primary,
+    .profile-header .profile-avatar i {
         color: white !important;
+    }
+    .profile-header h2 {
+        color: white !important;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
     .profile-header p {
         color: rgba(255,255,255,0.9) !important;
@@ -24,10 +29,10 @@
     <div class="col-12">
         <div class="profile-header p-4 text-center">
             <div class="profile-avatar mb-3">
-                <i class="fas fa-user-circle fa-5x text-primary"></i>
+                <i class="fas fa-user-circle fa-5x"></i>
             </div>
             <h2 class="fw-bold mb-2">{{ user.username }}</h2>
-            <p style="color: rgba(255,255,255,0.9);">Member since {{ user.join_date.strftime('%B %Y') }}</p>
+            <p>Member since {{ user.join_date.strftime('%B %Y') }}</p>
         </div>
     </div>
 </div>
@@ -104,7 +109,7 @@
     <div class="col-md-6 mb-4">
         <div class="card">
             <div class="card-header">
-                <h5 class="card-title mb-0">
+                <h5 class="card-title mb-0 chart-section-title">
                     <i class="fas fa-chart-line"></i> Mood Over Time
                 </h5>
             </div>
@@ -119,7 +124,7 @@
     <div class="col-md-6 mb-4">
         <div class="card">
             <div class="card-header">
-                <h5 class="card-title mb-0">
+                <h5 class="card-title mb-0 chart-section-title">
                     <i class="fas fa-chart-pie"></i> Quest Categories
                 </h5>
             </div>
@@ -137,7 +142,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h5 class="card-title mb-0">
+                <h5 class="card-title mb-0 chart-section-title">
                     <i class="fas fa-trophy"></i> Achievements
                 </h5>
             </div>
@@ -174,7 +179,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h5 class="card-title mb-0">
+                <h5 class="card-title mb-0 chart-section-title">
                     <i class="fas fa-heart"></i> Recent Reflections
                 </h5>
             </div>
@@ -187,12 +192,12 @@
                             {% if reflection.sentiment_score > 0.1 %}
                                 <span class="badge bg-success">Positive</span>
                             {% elif reflection.sentiment_score < -0.1 %}
-                                <span class="badge bg-danger">Negative</span>
+                                <span class="badge" style="background: #dc3545 !important; color: white !important;">Negative</span>
                             {% else %}
                                 <span class="badge bg-secondary">Neutral</span>
                             {% endif %}
                         </div>
-                        <p class="mb-0">{{ reflection.text }}</p>
+                        <p class="mb-0" {% if reflection.sentiment_score < -0.1 %}style="color: #ff6b6b !important;"{% endif %}>{{ reflection.text }}</p>
                     </div>
                     {% endfor %}
                 {% else %}
@@ -210,17 +215,17 @@
 
 {% block extra_scripts %}
 <script>
-    // Function to get theme-aware colors
+    // Function to get chart colors (always dark mode)
     function getChartColors() {
-        const isDark = document.documentElement.classList.contains('dark-theme');
         return {
-            text: isDark ? '#e6edf3' : '#212529',
-            grid: isDark ? '#30363d' : '#dee2e6',
-            moodLine: isDark ? 'rgb(88, 166, 255)' : 'rgb(102, 126, 234)',
-            moodBg: isDark ? 'rgba(88, 166, 255, 0.2)' : 'rgba(102, 126, 234, 0.2)',
-            social: isDark ? 'rgba(88, 166, 255, 0.8)' : 'rgba(54, 162, 235, 0.8)',
-            health: isDark ? 'rgba(75, 192, 150, 0.8)' : 'rgba(75, 192, 192, 0.8)',
-            mindfulness: isDark ? 'rgba(170, 120, 255, 0.8)' : 'rgba(153, 102, 255, 0.8)'
+            text: '#e6edf3',
+            grid: '#30363d',
+            moodLine: 'rgb(88, 166, 255)',
+            moodBg: 'rgba(88, 166, 255, 0.2)',
+            social: 'rgba(88, 166, 255, 0.85)',
+            health: 'rgba(75, 192, 150, 0.85)',
+            mindfulness: 'rgba(170, 120, 255, 0.85)',
+            legendText: '#e6edf3'
         };
     }
 
@@ -305,7 +310,9 @@
                         colors.social,
                         colors.health,
                         colors.mindfulness
-                    ]
+                    ],
+                    borderColor: '#161b22',
+                    borderWidth: 2
                 }]
             },
             options: {
@@ -313,9 +320,23 @@
                 maintainAspectRatio: false,
                 plugins: {
                     legend: {
+                        position: 'bottom',
                         labels: {
-                            color: colors.text
+                            color: colors.legendText,
+                            padding: 15,
+                            font: {
+                                size: 13,
+                                family: "'Inter', sans-serif"
+                            },
+                            usePointStyle: true
                         }
+                    },
+                    tooltip: {
+                        backgroundColor: colors.text,
+                        titleColor: colors.grid,
+                        bodyColor: colors.grid,
+                        padding: 12,
+                        cornerRadius: 8
                     }
                 }
             }
@@ -332,19 +353,5 @@
     // Create category chart
     createCategoryChart();
 
-    // Listen for theme changes and update charts
-    const themeToggleBtn = document.getElementById('theme-toggle-btn');
-    if (themeToggleBtn) {
-        themeToggleBtn.addEventListener('click', function() {
-            setTimeout(() => {
-                fetch('/api/mood-data')
-                    .then(response => response.json())
-                    .then(data => {
-                        createMoodChart(data);
-                    });
-                createCategoryChart();
-            }, 100);
-        });
-    }
 </script>
 {% endblock %}

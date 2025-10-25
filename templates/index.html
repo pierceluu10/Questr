@@ -1,96 +1,103 @@
 {% extends "base.html" %}
 
-{% block title %}SideQuestly - Daily Side Quests for Growth{% endblock %}
+{% block title %}Questr - Daily Quests for Personal Growth{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-lg-8 text-center">
-        <div class="hero-section py-5">
-            <h1 class="display-4 fw-bold text-primary mb-4">
-                <i class="fas fa-quest"></i> SideQuestly
+<div class="row align-items-center" style="min-height: 80vh;">
+    <div class="col-lg-8">
+        <div class="hero-section">
+            <!-- Blue Leaf Icon -->
+            <div class="hero-icon mb-4" style="display: block;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="width: 80px; height: 80px; filter: drop-shadow(0 8px 20px rgba(88, 166, 255, 0.6)) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));">
+                    <path fill="#58a6ff" d="M272 96c-78.6 0-145.1 51.5-167.7 122.5c33.6-17 71.5-26.5 111.7-26.5h88c8.8 0 16 7.2 16 16s-7.2 16-16 16H288 216s0 0 0 0c-16.6 0-32.7 1.9-48.3 5.4c-25.9 5.9-49.9 16.4-71.4 30.7c0 0 0 0 0 0C38.3 298.8 0 364.9 0 440v16c0 13.3 10.7 24 24 24s24-10.7 24-24V440c0-48.7 20.7-92.5 53.8-123.2C121.6 392.3 190.3 448 272 448l1 0c132.1-.7 239-130.9 239-291.4c0-42.6-7.5-83.1-21.1-119.6c-2.6-6.9-12.7-6.6-16.2-.1C455.9 72.1 418.7 96 376 96L272 96z"/>
+                </svg>
+            </div>
+            
+            <h1 class="display-1 fw-bold mb-4 animate-title" style="font-size: clamp(3rem, 8vw, 5rem); letter-spacing: 0.05em; white-space: nowrap; text-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 4px 8px rgba(0, 0, 0, 0.4);">
+                Welcome to Questr
             </h1>
-            <p class="lead mb-4">
-                Transform your daily routine with small, positive challenges that boost your mental, physical, and social wellbeing.
-            </p>
-            <p class="text-muted mb-5">
-                Complete daily side quests, track your progress, and level up in real life! 🎯
+            <p class="lead mb-4" style="font-size: 1.3rem; max-width: 600px;">
+                Build better habits through daily quests. Track progress and improve your wellbeing.
             </p>
             
             {% if not current_user.is_authenticated %}
-                <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-                    <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg px-4 me-md-2">
-                        <i class="fas fa-rocket"></i> Start Your Journey
-                    </a>
-                    <a href="{{ url_for('login') }}" class="btn btn-outline-primary btn-lg px-4">
-                        <i class="fas fa-sign-in-alt"></i> Login
+                <div class="d-grid gap-2 d-md-flex">
+                    <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg px-5 py-3" style="font-size: 1.1rem; font-weight: 600; letter-spacing: 0.02em;">
+                        Get Started
                     </a>
                 </div>
             {% else %}
-                <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-lg px-4">
-                    <i class="fas fa-home"></i> Go to Dashboard
+                <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-lg px-5 py-3" style="font-size: 1.1rem;">
+                    Go to Dashboard
                 </a>
             {% endif %}
         </div>
     </div>
 </div>
 
-<div class="row mt-5">
-    <div class="col-md-4 text-center mb-4">
-        <div class="feature-card p-4 h-100">
-            <div class="feature-icon mb-3">
-                <i class="fas fa-users fa-3x text-primary"></i>
+<div class="row mt-4 mb-4">
+    <div class="col-lg-10 mx-auto">
+        <div class="row g-4">
+            <div class="col-md-4 text-center">
+                <div class="feature-card p-4 h-100">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-users fa-3x text-primary"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">Social Quests</h5>
+                    <p class="text-muted mb-0">Connect with others through meaningful interactions and build stronger relationships.</p>
+                </div>
             </div>
-            <h4>Social Quests</h4>
-            <p class="text-muted">Connect with others through meaningful interactions and build stronger relationships.</p>
-        </div>
-    </div>
-    
-    <div class="col-md-4 text-center mb-4">
-        <div class="feature-card p-4 h-100">
-            <div class="feature-icon mb-3">
-                <i class="fas fa-heartbeat fa-3x text-success"></i>
+            
+            <div class="col-md-4 text-center">
+                <div class="feature-card p-4 h-100">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-heartbeat fa-3x text-success"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">Health Quests</h5>
+                    <p class="text-muted mb-0">Small steps toward better physical health and wellness habits.</p>
+                </div>
             </div>
-            <h4>Health Quests</h4>
-            <p class="text-muted">Small steps toward better physical health and wellness habits.</p>
-        </div>
-    </div>
-    
-    <div class="col-md-4 text-center mb-4">
-        <div class="feature-card p-4 h-100">
-            <div class="feature-icon mb-3">
-                <i class="fas fa-brain fa-3x text-info"></i>
+            
+            <div class="col-md-4 text-center">
+                <div class="feature-card p-4 h-100">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-brain fa-3x text-info"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">Mindfulness Quests</h5>
+                    <p class="text-muted mb-0">Practice mindfulness, gratitude, and mental wellbeing exercises.</p>
+                </div>
             </div>
-            <h4>Mindfulness Quests</h4>
-            <p class="text-muted">Practice mindfulness, gratitude, and mental wellbeing exercises.</p>
         </div>
     </div>
 </div>
+{% endblock %}
 
-<div class="row mt-5">
-    <div class="col-lg-8 mx-auto text-center">
-        <h3 class="mb-4">How It Works</h3>
-        <div class="row">
-            <div class="col-md-3 text-center mb-3">
-                <div class="step-number">1</div>
-                <h5>Get Daily Quests</h5>
-                <p class="text-muted small">Receive 3 personalized quests each day</p>
-            </div>
-            <div class="col-md-3 text-center mb-3">
-                <div class="step-number">2</div>
-                <h5>Complete & Earn XP</h5>
-                <p class="text-muted small">Finish quests to gain experience points</p>
-            </div>
-            <div class="col-md-3 text-center mb-3">
-                <div class="step-number">3</div>
-                <h5>Track Progress</h5>
-                <p class="text-muted small">Monitor your streaks and achievements</p>
-            </div>
-            <div class="col-md-3 text-center mb-3">
-                <div class="step-number">4</div>
-                <h5>Level Up IRL</h5>
-                <p class="text-muted small">Grow and improve every single day</p>
-            </div>
-        </div>
-    </div>
-</div>
+{% block extra_scripts %}
+<script>
+    // Animate the title letters
+    document.addEventListener('DOMContentLoaded', function() {
+        const title = document.querySelector('.animate-title');
+        if (title) {
+            const text = title.textContent.trim();
+            title.textContent = '';
+            title.style.opacity = '1';
+            
+            // Split text into individual characters
+            const chars = text.split('');
+            chars.forEach((char, index) => {
+                const span = document.createElement('span');
+                span.textContent = char;
+                span.style.display = 'inline-block';
+                span.style.opacity = '0';
+                span.style.animation = `fadeInUp 0.5s ease forwards`;
+                span.style.animationDelay = `${index * 0.05}s`;
+                // Preserve spaces
+                if (char === ' ') {
+                    span.style.width = '0.3em';
+                }
+                title.appendChild(span);
+            });
+        }
+    });
+</script>
 {% endblock %}
