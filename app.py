@@ -16,11 +16,53 @@ from models import db, User, Quest, UserQuest, Reflection, Achievement, UserAchi
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'your-secret-key-change-in-production')
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///sidequestly.db')
+
+# Fix database URL for PostgreSQL (render.com provides postgres://, SQLAlchemy wants postgresql://)
+database_url = os.environ.get('DATABASE_URL')
+if database_url and database_url.startswith('postgres://'):
+    database_url = database_url.replace('postgres://', 'postgresql://', 1)
+else:
+    database_url = 'sqlite:///sidequestly.db'
+
+app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Ensure instance path exists for SQLite
+if database_url.startswith('sqlite:'):
+    os.makedirs(app.instance_path, exist_ok=True)
+
+# Configure logging
+if not app.debug:
+    import logging
+    from logging.handlers import RotatingFileHandler
+    import sys
+    
+    app.logger.setLevel(logging.INFO)
+    
+    # Log to stderr (captured by render.com)
+    stream_handler = logging.StreamHandler(sys.stderr)
+    stream_handler.setLevel(logging.INFO)
+    app.logger.addHandler(stream_handler)
+    
+    # Also log to file if we can
+    try:
+        if not os.path.exists('logs'):
+            os.mkdir('logs')
+        file_handler = RotatingFileHandler('logs/sidequestly.log', maxBytes=10240, backupCount=10)
+        file_handler.setFormatter(logging.Formatter(
+            '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'
+        ))
+        file_handler.setLevel(logging.INFO)
+        app.logger.addHandler(file_handler)
+    except Exception as e:
+        app.logger.warning(f'Could not create log file: {e}')
+# Constants
+ALLOWED_PROFILE_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+XP_PER_POINT = 10  # How much XP one hunger point costs
+MAX_PET_XP = 30    # Maximum XP a pet can have (3 stages * 10 xp each)
+
 # Profile upload settings
 app.config['PROFILE_UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static', 'images', 'profiles')
-ALLOWED_PROFILE_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 # Initialize extensions
 db.init_app(app)
@@ -30,12 +72,21 @@ login_manager.login_view = 'login'
 
 # Create database tables
 with app.app_context():
-    # Ensure profile upload directory exists
     try:
-        os.makedirs(app.config['PROFILE_UPLOAD_FOLDER'], exist_ok=True)
+        # Ensure all static folders exist
+        for folder in ['profiles', 'pets']:
+            path = os.path.join(app.root_path, 'static', 'images', folder)
+            try:
+                os.makedirs(path, exist_ok=True)
+                app.logger.info(f'Ensured {folder} directory exists at {path}')
+            except Exception as e:
+                app.logger.error(f'Could not create {folder} folder at {path}: {e}')
+        
+        # Initialize database
+        db.create_all()
+        app.logger.info('Database tables created successfully')
     except Exception as e:
-        app.logger.error(f'Could not create profile upload folder: {e}')
-    db.create_all()
+        app.logger.error(f'Error during app initialization: {e}')
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -79,29 +130,49 @@ def set_pet_xp(user, pet_name, value):
 @app.route('/myQuestr')
 @login_required
 def myquestr():
-    # Set bear as default pet if none selected
-    if not current_user.active_pet:
-        current_user.active_pet = 'bear'
-        db.session.commit()
+    try:
+        # Set bear as default pet if none selected
+        if not current_user.active_pet:
+            current_user.active_pet = 'bear'
+            db.session.commit()
+            app.logger.info(f'Set default pet (bear) for user {current_user.id}')
 
-    # Provide pet data and how many hunger points user can spend
-    pets = ['bear', 'cat', 'dog', 'rabbit']
-    pet_data = []
-    for p in pets:
-        xp = get_pet_xp(current_user, p)
-        # include temp allocated only for active pet
-        temp = current_user.temp_allocated_xp if current_user.active_pet == p else 0
-        pet_data.append({
-            'name': p,
-            'xp': xp,
-            'temp': temp,
-            'total_visible_xp': xp + temp,
-            'stage': min(3, (xp + temp) // XP_PER_POINT + 1)
-        })
+        # Provide pet data and how many hunger points user can spend
+        pets = ['bear', 'cat', 'dog', 'rabbit']
+        pet_data = []
 
-    max_hunger_points = (current_user.xp // XP_PER_POINT) if current_user.xp else 0
+        for p in pets:
+            try:
+                xp = get_pet_xp(current_user, p)
+                # include temp allocated only for active pet
+                temp = current_user.temp_allocated_xp if current_user.active_pet == p else 0
+                pet_data.append({
+                    'name': p,
+                    'xp': xp,
+                    'temp': temp,
+                    'total_visible_xp': xp + temp,
+                    'stage': min(3, (xp + temp) // XP_PER_POINT + 1)
+                })
+            except Exception as e:
+                app.logger.error(f'Error processing pet {p}: {str(e)}')
+                # Continue with other pets if one fails
+                continue
 
-    return render_template('myQuestr.html', pets=pet_data, active_pet=current_user.active_pet or '', max_hunger_points=max_hunger_points, user=current_user)
+        if not pet_data:
+            raise Exception('Failed to process any pet data')
+
+        max_hunger_points = (current_user.xp // XP_PER_POINT) if current_user.xp else 0
+        return render_template('myQuestr.html', 
+                             pets=pet_data, 
+                             active_pet=current_user.active_pet or '', 
+                             max_hunger_points=max_hunger_points, 
+                             user=current_user)
+
+    except Exception as e:
+        app.logger.error(f'Error in myquestr route: {str(e)}')
+        # Return a user-friendly error page instead of JSON since this is a page render
+        return render_template('error.html', 
+                             error_message='An error occurred while loading your Questr page. Please try again later.'), 500
 
 
 @app.route('/myQuestr/select', methods=['POST'])
@@ -579,8 +650,18 @@ def mood_data():
     
     return jsonify(data)
 
+# Error handlers
+@app.errorhandler(500)
+def internal_error(error):
+    db.session.rollback()  # Reset any failed database session
+    app.logger.error(f'Server Error: {error}')
+    return render_template('500.html'), 500
+
+@app.errorhandler(404)
+def not_found_error(error):
+    return render_template('404.html'), 404
+
 if __name__ == '__main__':
     # Only run in debug mode if not in production
-    import os
     debug_mode = os.environ.get('FLASK_ENV') != 'production'
     app.run(debug=debug_mode, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
