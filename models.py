@@ -81,3 +81,12 @@ class UserAchievement(db.Model):
     date_earned = db.Column(db.DateTime, default=datetime.utcnow)
     
     __table_args__ = (db.UniqueConstraint('user_id', 'achievement_id'),)
+
+class DailyQuest(db.Model):
+    """Track which quests are assigned to users each day"""
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    quest_id = db.Column(db.Integer, db.ForeignKey('quest.id'), nullable=False)
+    date_assigned = db.Column(db.Date, default=datetime.utcnow().date)
+    
+    __table_args__ = (db.UniqueConstraint('user_id', 'quest_id', 'date_assigned'),)
