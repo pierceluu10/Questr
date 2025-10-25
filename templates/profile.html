@@ -24,13 +24,39 @@
     <div class="col-12">
         <div class="profile-header p-4 text-center">
             <div class="profile-avatar mb-3">
-                <i class="fas fa-user-circle fa-5x text-primary"></i>
+                {% set avatar_url = url_for('static', filename='images/profiles/' ~ user.profile_photo) if user.profile_photo else url_for('static', filename='images/default-avatar.svg') %}
+                <img id="profile-photo-preview" src="{{ avatar_url }}" alt="Profile Photo" class="rounded-circle" width="120" height="120" style="object-fit:cover;" />
             </div>
             <h2 class="fw-bold mb-2">{{ user.username }}</h2>
             <p style="color: rgba(255,255,255,0.9);">Member since {{ user.join_date.strftime('%B %Y') }}</p>
         </div>
     </div>
 </div>
+
+        <!-- Profile Photo Upload -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card p-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <div>
+                            <img id="profile-photo-preview-small" src="{{ avatar_url }}" alt="Profile Photo" class="rounded-circle" width="72" height="72" style="object-fit:cover;" />
+                        </div>
+                        <div class="flex-grow-1">
+                            <form id="photo-form" enctype="multipart/form-data">
+                                <div class="mb-2">
+                                    <input class="form-control" type="file" id="photo-input" name="photo" accept="image/*">
+                                </div>
+                                <div>
+                                    <button id="photo-upload-btn" type="submit" class="btn btn-primary btn-sm">Upload Photo</button>
+                                    <button id="photo-reset-btn" type="button" class="btn btn-outline-secondary btn-sm">Reset to Default</button>
+                                    <small class="form-text text-muted ms-2">Accepted: PNG, JPG, GIF. Max recommended size 2MB.</small>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 <!-- Stats Overview -->
 <div class="row mb-4">
@@ -347,4 +373,6 @@
         });
     }
 </script>
+<!-- Profile photo AJAX handler -->
+<script src="{{ url_for('static', filename='js/profile_photo.js') }}"></script>
 {% endblock %}

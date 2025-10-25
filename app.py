@@ -4,6 +4,8 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, TextAreaField, SubmitField
 from wtforms.validators import DataRequired, Email, Length
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
+import time
 from datetime import datetime, date
 import random
 import json
@@ -16,6 +18,9 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'your-secret-key-change-in-production')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///sidequestly.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# Profile upload settings
+app.config['PROFILE_UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static', 'images', 'profiles')
+ALLOWED_PROFILE_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 # Initialize extensions
 db.init_app(app)
@@ -25,6 +30,11 @@ login_manager.login_view = 'login'
 
 # Create database tables
 with app.app_context():
+    # Ensure profile upload directory exists
+    try:
+        os.makedirs(app.config['PROFILE_UPLOAD_FOLDER'], exist_ok=True)
+    except Exception as e:
+        app.logger.error(f'Could not create profile upload folder: {e}')
     db.create_all()
 
 @login_manager.user_loader
@@ -330,6 +340,78 @@ def profile():
                          user=current_user, 
                          reflections=reflections,
                          achievements=user_achievements)
+
+
+def allowed_profile_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_PROFILE_EXTENSIONS
+
+
+@app.route('/profile/photo/upload', methods=['POST'])
+@login_required
+def upload_profile_photo():
+    if 'photo' not in request.files:
+        return jsonify({'success': False, 'error': 'No file part'}), 400
+
+    file = request.files['photo']
+    if file.filename == '':
+        return jsonify({'success': False, 'error': 'No selected file'}), 400
+
+    if file and allowed_profile_file(file.filename):
+        filename = secure_filename(file.filename)
+        ext = filename.rsplit('.', 1)[1].lower()
+        # Build unique filename
+        unique_name = f'user_{current_user.id}_{int(time.time())}.{ext}'
+        save_path = os.path.join(app.config['PROFILE_UPLOAD_FOLDER'], unique_name)
+
+        try:
+            # Save new file
+            file.save(save_path)
+
+            # If user had previous uploaded file, try to remove it
+            if current_user.profile_photo:
+                try:
+                    old_path = os.path.join(app.config['PROFILE_UPLOAD_FOLDER'], current_user.profile_photo)
+                    if os.path.exists(old_path):
+                        os.remove(old_path)
+                except Exception:
+                    app.logger.exception('Failed to remove old profile photo')
+
+            # Update user record
+            current_user.profile_photo = unique_name
+            db.session.commit()
+
+            photo_url = url_for('static', filename=f'images/profiles/{unique_name}')
+            return jsonify({'success': True, 'url': photo_url}), 200
+        except Exception as e:
+            app.logger.error(f'Error saving profile photo: {e}')
+            db.session.rollback()
+            return jsonify({'success': False, 'error': 'Server error saving file'}), 500
+
+    return jsonify({'success': False, 'error': 'Invalid file type'}), 400
+
+
+@app.route('/profile/photo/reset', methods=['POST'])
+@login_required
+def reset_profile_photo():
+    # Remove the file if exists and clear DB entry
+    try:
+        if current_user.profile_photo:
+            file_path = os.path.join(app.config['PROFILE_UPLOAD_FOLDER'], current_user.profile_photo)
+            if os.path.exists(file_path):
+                try:
+                    os.remove(file_path)
+                except Exception:
+                    app.logger.exception('Failed to remove profile photo during reset')
+
+        current_user.profile_photo = None
+        db.session.commit()
+
+        default_url = url_for('static', filename='images/default-avatar.svg')
+        return jsonify({'success': True, 'url': default_url}), 200
+    except Exception as e:
+        app.logger.error(f'Error resetting profile photo: {e}')
+        db.session.rollback()
+        return jsonify({'success': False, 'error': 'Server error'}), 500
 
 @app.route('/api/mood-data')
 @login_required

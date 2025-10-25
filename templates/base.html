@@ -281,8 +281,10 @@
                 <ul class="navbar-nav">
                     {% if current_user.is_authenticated %}
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
-                                <i class="fas fa-user-circle"></i> {{ current_user.username }}
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                                {% set avatar_url = url_for('static', filename='images/profiles/' ~ current_user.profile_photo) if current_user.profile_photo else url_for('static', filename='images/default-avatar.svg') %}
+                                <img id="profile-avatar" src="{{ avatar_url }}" alt="avatar" class="rounded-circle me-2" width="32" height="32" style="object-fit:cover;"/>
+                                {{ current_user.username }}
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="{{ url_for('profile') }}">Profile</a></li>

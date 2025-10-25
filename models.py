@@ -14,6 +14,8 @@ class User(UserMixin, db.Model):
     streak = db.Column(db.Integer, default=0)
     join_date = db.Column(db.DateTime, default=datetime.utcnow)
     last_quest_date = db.Column(db.DateTime)
+    # Filename of profile photo stored in static/images/profiles/ (nullable)
+    profile_photo = db.Column(db.String(200), nullable=True)
     
     # Relationships
     completed_quests = db.relationship('UserQuest', backref='user', lazy=True)
