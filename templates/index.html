@@ -1,19 +1,19 @@
 {% extends "base.html" %}
 
-{% block title %}SideQuestly - Daily Side Quests for Growth{% endblock %}
+{% block title %}Questr - Daily Quests for Personal Growth{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
+<div class="row justify-content-center align-items-center" style="min-height: 70vh;">
     <div class="col-lg-8 text-center">
         <div class="hero-section py-5">
-            <h1 class="display-4 fw-bold text-primary mb-4">
-                <i class="fas fa-quest"></i> SideQuestly
+            <h1 class="display-1 fw-bold text-primary mb-4" style="font-size: clamp(3rem, 8vw, 5rem); letter-spacing: 0.05em;">
+                <i class="fas fa-dragon"></i> Questr
             </h1>
-            <p class="lead mb-4">
-                Transform your daily routine with small, positive challenges that boost your mental, physical, and social wellbeing.
+            <p class="lead mb-4" style="font-size: 1.5rem;">
+                Level up your life with daily quests
             </p>
-            <p class="text-muted mb-5">
-                Complete daily side quests, track your progress, and level up in real life! 🎯
+            <p class="text-muted mb-5" style="font-size: 1.1rem;">
+                Complete daily quests, track your progress, and become the hero of your own story! 🎯
             </p>
             
             {% if not current_user.is_authenticated %}

@@ -1,12 +1,12 @@
 # Questr 🎯
 
-A full-stack web application that gives users daily real-life "side quests" — small, positive tasks to improve mental, physical, and social wellbeing.
+A full-stack web application that gives users daily quests — small, positive tasks to improve mental, physical, and social wellbeing.
 
 ## Features
 
 ### 🏠 Dashboard
 - Personalized welcome message
-- 3 daily side quests (Social, Health, Mindfulness)
+- 3 daily quests (Social, Health, Mindfulness)
 - Quest completion tracking with XP rewards
 - Current streak counter
 - Progress visualization
@@ -37,7 +37,7 @@ A full-stack web application that gives users daily real-life "side quests" — 
   - 10-day streak → "Streak Champion" ⚡
   - 50 XP → "Level 2 Explorer" ⭐
   - 100 XP → "Quest Veteran" 🏆
-  - 10 quests completed → "SideQuest Veteran" 🎯
+  - 10 quests completed → "Quest Veteran" 🎯
   - 25 quests completed → "Quest Master" 👑
 
 ## Tech Stack
@@ -64,7 +64,7 @@ A full-stack web application that gives users daily real-life "side quests" — 
 ## Project Structure
 
 ```
-SideQuestly/
+Questr/
 ├── app.py                 # Main Flask application
 ├── models.py             # Database models
 ├── requirements.txt       # Python dependencies
@@ -94,7 +94,7 @@ SideQuestly/
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd SideQuestly
+   cd Questr
    ```
 
 2. **Create virtual environment**
@@ -191,7 +191,7 @@ SideQuestly/
 
 ## Design Philosophy
 
-SideQuestly follows a clean, uplifting design with:
+Questr follows a clean, modern design with:
 - **Pastel color scheme** for a calming experience
 - **Rounded corners** for friendly, approachable UI
 - **Gradient backgrounds** for visual appeal

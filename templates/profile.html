@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Profile - SideQuestly{% endblock %}
+{% block title %}Profile - Questr{% endblock %}
 
 {% block extra_head %}
 <style>
@@ -9,8 +9,13 @@
         height: 300px;
         margin: 20px 0;
     }
-    .profile-header .text-primary {
+    .profile-header .text-primary,
+    .profile-header .profile-avatar i {
         color: white !important;
+    }
+    .profile-header h2 {
+        color: white !important;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
     .profile-header p {
         color: rgba(255,255,255,0.9) !important;
@@ -24,10 +29,10 @@
     <div class="col-12">
         <div class="profile-header p-4 text-center">
             <div class="profile-avatar mb-3">
-                <i class="fas fa-user-circle fa-5x text-primary"></i>
+                <i class="fas fa-user-circle fa-5x"></i>
             </div>
             <h2 class="fw-bold mb-2">{{ user.username }}</h2>
-            <p style="color: rgba(255,255,255,0.9);">Member since {{ user.join_date.strftime('%B %Y') }}</p>
+            <p>Member since {{ user.join_date.strftime('%B %Y') }}</p>
         </div>
     </div>
 </div>

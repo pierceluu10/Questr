@@ -1,4 +1,4 @@
-// SideQuestly Chart Utilities
+// Questr Chart Utilities
 
 // Initialize all charts when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
