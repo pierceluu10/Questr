@@ -1,0 +1,271 @@
+{% extends "base.html" %}
+
+{% block title %}Profile - SideQuestly{% endblock %}
+
+{% block extra_head %}
+<style>
+    .chart-container {
+        position: relative;
+        height: 300px;
+        margin: 20px 0;
+    }
+    .achievement-badge {
+        display: inline-block;
+        margin: 5px;
+        padding: 10px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 10px;
+        text-align: center;
+        min-width: 120px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Profile Header -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="profile-header p-4 text-center">
+            <div class="profile-avatar mb-3">
+                <i class="fas fa-user-circle fa-5x text-primary"></i>
+            </div>
+            <h2 class="fw-bold text-primary mb-2">{{ user.username }}</h2>
+            <p class="text-muted">Member since {{ user.join_date.strftime('%B %Y') }}</p>
+        </div>
+    </div>
+</div>
+
+<!-- Stats Overview -->
+<div class="row mb-4">
+    <div class="col-md-3 mb-3">
+        <div class="stat-card p-3 text-center">
+            <div class="stat-icon mb-2">
+                <i class="fas fa-star fa-2x text-warning"></i>
+            </div>
+            <h3 class="fw-bold text-primary mb-1">{{ user.xp }}</h3>
+            <p class="text-muted mb-0">Total XP</p>
+            <small class="text-success">Level {{ user.get_level() }}</small>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="stat-card p-3 text-center">
+            <div class="stat-icon mb-2">
+                <i class="fas fa-fire fa-2x text-danger"></i>
+            </div>
+            <h3 class="fw-bold text-primary mb-1">{{ user.streak }}</h3>
+            <p class="text-muted mb-0">Current Streak</p>
+            <small class="text-success">Keep it up! 🔥</small>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="stat-card p-3 text-center">
+            <div class="stat-icon mb-2">
+                <i class="fas fa-trophy fa-2x text-success"></i>
+            </div>
+            <h3 class="fw-bold text-primary mb-1">{{ user.completed_quests|length }}</h3>
+            <p class="text-muted mb-0">Quests Completed</p>
+            <small class="text-success">Amazing!</small>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="stat-card p-3 text-center">
+            <div class="stat-icon mb-2">
+                <i class="fas fa-medal fa-2x text-info"></i>
+            </div>
+            <h3 class="fw-bold text-primary mb-1">{{ achievements|length }}</h3>
+            <p class="text-muted mb-0">Achievements</p>
+            <small class="text-success">Well done!</small>
+        </div>
+    </div>
+</div>
+
+<!-- XP Progress -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="progress-card p-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="fw-bold">Level {{ user.get_level() }} Progress</span>
+                <span class="text-muted">{{ user.xp % 100 }}/100 XP</span>
+            </div>
+            <div class="progress" style="height: 20px;">
+                <div class="progress-bar bg-gradient" role="progressbar" 
+                     style="width: {{ (user.xp % 100) }}%" 
+                     aria-valuenow="{{ user.xp % 100 }}" 
+                     aria-valuemin="0" 
+                     aria-valuemax="100">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts Row -->
+<div class="row mb-4">
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-chart-line"></i> Mood Over Time
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="chart-container">
+                    <canvas id="moodChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-chart-pie"></i> Quest Categories
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="chart-container">
+                    <canvas id="categoryChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Achievements -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-trophy"></i> Achievements
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if achievements %}
+                    <div class="row">
+                        {% for achievement in achievements %}
+                        <div class="col-md-4 mb-3">
+                            <div class="achievement-badge">
+                                <div class="achievement-icon mb-2">
+                                    <i class="fas fa-{{ achievement.achievement.icon }} fa-2x"></i>
+                                </div>
+                                <h6 class="fw-bold mb-1">{{ achievement.achievement.title }}</h6>
+                                <p class="small mb-0">{{ achievement.achievement.description }}</p>
+                                <small class="opacity-75">Earned {{ achievement.date_earned.strftime('%m/%d/%Y') }}</small>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-trophy fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">No achievements yet</h5>
+                        <p class="text-muted">Complete more quests to unlock achievements!</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Reflections -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-heart"></i> Recent Reflections
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if reflections %}
+                    {% for reflection in reflections[:5] %}
+                    <div class="reflection-item p-3 mb-3 border rounded">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <small class="text-muted">{{ reflection.date.strftime('%B %d, %Y') }}</small>
+                            {% if reflection.sentiment_score > 0.1 %}
+                                <span class="badge bg-success">Positive</span>
+                            {% elif reflection.sentiment_score < -0.1 %}
+                                <span class="badge bg-danger">Negative</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Neutral</span>
+                            {% endif %}
+                        </div>
+                        <p class="mb-0">{{ reflection.text }}</p>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-heart fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">No reflections yet</h5>
+                        <p class="text-muted">Complete quests and add reflections to track your mood!</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    // Mood Chart
+    fetch('/api/mood-data')
+        .then(response => response.json())
+        .then(data => {
+            const ctx = document.getElementById('moodChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.dates,
+                    datasets: [{
+                        label: 'Mood Score',
+                        data: data.scores,
+                        borderColor: 'rgb(75, 192, 192)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            min: -1,
+                            max: 1
+                        }
+                    }
+                }
+            });
+        });
+
+    // Category Chart (mock data for now)
+    const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+    new Chart(categoryCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Social', 'Health', 'Mindfulness'],
+            datasets: [{
+                data: [{{ user.completed_quests|selectattr('quest.category', 'equalto', 'Social')|list|length }}, 
+                       {{ user.completed_quests|selectattr('quest.category', 'equalto', 'Health')|list|length }}, 
+                       {{ user.completed_quests|selectattr('quest.category', 'equalto', 'Mindfulness')|list|length }}],
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.8)',
+                    'rgba(75, 192, 192, 0.8)',
+                    'rgba(153, 102, 255, 0.8)'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+</script>
+{% endblock %}

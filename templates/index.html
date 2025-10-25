@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}SideQuestly - Daily Side Quests for Growth{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8 text-center">
+        <div class="hero-section py-5">
+            <h1 class="display-4 fw-bold text-primary mb-4">
+                <i class="fas fa-quest"></i> SideQuestly
+            </h1>
+            <p class="lead mb-4">
+                Transform your daily routine with small, positive challenges that boost your mental, physical, and social wellbeing.
+            </p>
+            <p class="text-muted mb-5">
+                Complete daily side quests, track your progress, and level up in real life! 🎯
+            </p>
+            
+            {% if not current_user.is_authenticated %}
+                <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                    <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg px-4 me-md-2">
+                        <i class="fas fa-rocket"></i> Start Your Journey
+                    </a>
+                    <a href="{{ url_for('login') }}" class="btn btn-outline-primary btn-lg px-4">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </a>
+                </div>
+            {% else %}
+                <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-lg px-4">
+                    <i class="fas fa-home"></i> Go to Dashboard
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-4 text-center mb-4">
+        <div class="feature-card p-4 h-100">
+            <div class="feature-icon mb-3">
+                <i class="fas fa-users fa-3x text-primary"></i>
+            </div>
+            <h4>Social Quests</h4>
+            <p class="text-muted">Connect with others through meaningful interactions and build stronger relationships.</p>
+        </div>
+    </div>
+    
+    <div class="col-md-4 text-center mb-4">
+        <div class="feature-card p-4 h-100">
+            <div class="feature-icon mb-3">
+                <i class="fas fa-heartbeat fa-3x text-success"></i>
+            </div>
+            <h4>Health Quests</h4>
+            <p class="text-muted">Small steps toward better physical health and wellness habits.</p>
+        </div>
+    </div>
+    
+    <div class="col-md-4 text-center mb-4">
+        <div class="feature-card p-4 h-100">
+            <div class="feature-icon mb-3">
+                <i class="fas fa-brain fa-3x text-info"></i>
+            </div>
+            <h4>Mindfulness Quests</h4>
+            <p class="text-muted">Practice mindfulness, gratitude, and mental wellbeing exercises.</p>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-lg-8 mx-auto text-center">
+        <h3 class="mb-4">How It Works</h3>
+        <div class="row">
+            <div class="col-md-3 text-center mb-3">
+                <div class="step-number">1</div>
+                <h5>Get Daily Quests</h5>
+                <p class="text-muted small">Receive 3 personalized quests each day</p>
+            </div>
+            <div class="col-md-3 text-center mb-3">
+                <div class="step-number">2</div>
+                <h5>Complete & Earn XP</h5>
+                <p class="text-muted small">Finish quests to gain experience points</p>
+            </div>
+            <div class="col-md-3 text-center mb-3">
+                <div class="step-number">3</div>
+                <h5>Track Progress</h5>
+                <p class="text-muted small">Monitor your streaks and achievements</p>
+            </div>
+            <div class="col-md-3 text-center mb-3">
+                <div class="step-number">4</div>
+                <h5>Level Up IRL</h5>
+                <p class="text-muted small">Grow and improve every single day</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

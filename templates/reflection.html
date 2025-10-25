@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Reflection - SideQuestly{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow">
+            <div class="card-body p-5">
+                <div class="text-center mb-4">
+                    <h2 class="fw-bold text-primary mb-3">
+                        <i class="fas fa-heart"></i> How did this make you feel?
+                    </h2>
+                    <div class="quest-summary p-3 bg-light rounded mb-4">
+                        <h5 class="text-primary mb-2">{{ quest.title }}</h5>
+                        <p class="text-muted mb-0">{{ quest.description }}</p>
+                    </div>
+                </div>
+                
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="mb-4">
+                        {{ form.text.label(class="form-label fw-bold") }}
+                        {{ form.text(class="form-control", rows="4", placeholder="Share how completing this quest made you feel...") }}
+                        {% if form.text.errors %}
+                            <div class="text-danger small">
+                                {% for error in form.text.errors %}
+                                    <div>{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <div class="form-text">
+                            <i class="fas fa-lightbulb text-warning"></i> 
+                            Your reflection helps us understand your mood and personalize future quests!
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        {{ form.submit(class="btn btn-primary btn-lg") }}
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary">
+                            Skip for now
+                        </a>
+                    </div>
+                </form>
+                
+                <div class="text-center mt-4">
+                    <p class="text-muted small">
+                        <i class="fas fa-shield-alt"></i> 
+                        Your reflections are private and help improve your experience
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
