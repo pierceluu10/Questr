@@ -12,6 +12,43 @@ from textblob import TextBlob
 
 from models import db, User, Quest, UserQuest, Reflection, Achievement, UserAchievement
 
+#Code for Gemini API:
+#First, we need to setup for Gemini API
+#MAKE SURE TO ADD THE USER DESCRIPTION PART
+User_description = "Hello, I am a first year Computer Engineering Student"
+GEMINI_API_KEY = "AIzaSyDVaYgw1kOSJ6p8AyTP6rRlH1jEfdkmdvM"
+
+import json
+from google import genai
+from google.genai import types
+client = genai.Client(api_key=GEMINI_API_KEY)
+
+#Define Structure for ouput of prompt
+quest_schema=types.Schema(
+    type=types.Type.OBJECT,
+    properties={
+            "social_title":types.Schema(type=types.Type.STRING, description="Title of the social sidequest"),
+            "social_description":types.Schema(type=types.Type.STRING, description="Description of the social sidequest"),
+            "social_points":types.Schema(type=types.Type.INTEGER, description="Point value of the social sidequest"),
+            "health_title":types.Schema(type=types.Type.STRING, description="Title of the health sidequest"),
+            "health_description":types.Schema(type=types.Type.STRING, description="Description of the health sidequest"),
+            "health_points":types.Schema(type=types.Type.INTEGER, description="Point value of the health sidequest"),
+            "mindfulness_title":types.Schema(type=types.Type.STRING, description="Title of the mindfulness sidequest"),
+            "mindfulness_description":types.Schema(type=types.Type.STRING, description="Description of the mindfulness sidequest"),
+            "mindfulness_points":types.Schema(type=types.Type.INTEGER, description="Point value of the mindfulness sidequest"),
+    },
+    required=[
+        "social_title", "social_description", "social_points",
+        "health_title", "health_description", "health_points",
+        "mindfulness_title", "mindfulness_description", "mindfulness_points"
+    ]
+)
+prompt = f'"Using the description of the user: {User_description}, taking into account their interests and personal wellbeing needs, generate 3 side quests for the user throughout the day. There should be one sidequest for Social, one for Health, and one for Mindfulness. Each sidequest should have a title, a brief description, and a reward point value between 10 and 30 points. Make sure the sidequests are not corny or generic. Each quest should 80 characters or less. Make sure the points are appropriate for the difficulty and impact of the sidequest. Make sure the sidequests are diverse and engaging, that the person doing them has a guranteed chance of being able to complete them (i.e. do not assume they have a coding class, ask them to work on code in general)."'
+
+
+
+
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'your-secret-key-change-in-production')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///sidequestly.db')
@@ -47,31 +84,9 @@ class ReflectionForm(FlaskForm):
     text = TextAreaField('How did this make you feel?', validators=[DataRequired()])
     submit = SubmitField('Submit Reflection')
 
-# Quest data
-QUEST_TEMPLATES = {
-    'Social': [
-        {'title': 'Compliment someone today', 'description': 'Give a genuine compliment to a friend, family member, or colleague.', 'points': 15},
-        {'title': 'Call someone you haven\'t talked to in a while', 'description': 'Reach out to an old friend or family member.', 'points': 20},
-        {'title': 'Start a conversation with a stranger', 'description': 'Say hello to someone new in a coffee shop, elevator, or waiting area.', 'points': 25},
-        {'title': 'Share something positive on social media', 'description': 'Post something uplifting or inspiring.', 'points': 10},
-        {'title': 'Help someone with a small task', 'description': 'Offer assistance to someone who might need it.', 'points': 15}
-    ],
-    'Health': [
-        {'title': 'Drink 8 glasses of water', 'description': 'Stay hydrated throughout the day.', 'points': 10},
-        {'title': 'Take a 10-minute walk', 'description': 'Get some fresh air and light exercise.', 'points': 15},
-        {'title': 'Do 20 push-ups or sit-ups', 'description': 'Get your heart pumping with some bodyweight exercises.', 'points': 20},
-        {'title': 'Eat a healthy breakfast', 'description': 'Start your day with nutritious food.', 'points': 10},
-        {'title': 'Stretch for 5 minutes', 'description': 'Take time to stretch your muscles and improve flexibility.', 'points': 10}
-    ],
-    'Mindfulness': [
-        {'title': 'Meditate for 5 minutes', 'description': 'Take time to clear your mind and focus on your breathing.', 'points': 20},
-        {'title': 'Write down 3 things you\'re grateful for', 'description': 'Practice gratitude by listing positive aspects of your life.', 'points': 15},
-        {'title': 'Take 5 deep breaths', 'description': 'Practice mindful breathing to reduce stress.', 'points': 10},
-        {'title': 'Spend 10 minutes in nature', 'description': 'Connect with the outdoors, even if just looking out a window.', 'points': 15},
-        {'title': 'Practice positive self-talk', 'description': 'Say something kind to yourself in the mirror.', 'points': 15}
-    ]
-}
 
+
+# Quest data
 def get_daily_quests(user_id):
     """Get or generate today's quests for a user"""
     today = date.today()
@@ -90,30 +105,72 @@ def get_daily_quests(user_id):
         return existing_quests
     
     # Generate new quests for today
-    categories = ['Social', 'Health', 'Mindfulness']
     today_quests = []
+    response = client.models.generate_content(
+        model="gemini-2.5-flash", 
+        contents=prompt,
+        config=types.GenerateContentConfig(
+            response_mime_type="application/json",
+            response_schema=quest_schema
+        )
+    )
+    categories = ['Social', 'Health', 'Mindfulness']
     
-    for category in categories:
-        template = random.choice(QUEST_TEMPLATES[category])
+    try:
+        quests_data=json.loads(response.text)
+    
+        social_title = quests_data["social_title"]
+        social_description = quests_data["social_description"]
+        social_points = quests_data["social_points"]
+        health_title = quests_data["health_title"]
+        health_description = quests_data["health_description"]
+        health_points = quests_data["health_points"]
+        mindfulness_title = quests_data["mindfulness_title"]
+        mindfulness_description = quests_data["mindfulness_description"]
+        mindfulness_points = quests_data["mindfulness_points"]    
+    except json.JSONDecodeError as e:
+        print(f"Error parsing JSON output: {e}")
+        print("Raw response text:", response.text)
         
-        # Check if quest already exists
-        quest = Quest.query.filter_by(
+    social_quest = Quest1(
+        title = social_title
+        category = 'Social'
+        description = social_description
+        reward_points = social_points
+    )
+    db.session.add(quest)
+    db.session.commit()
+    today_quests.append(quest)
+
+    
+    health_quest = Quest2(
+        title = health_title
+        category = 'Health'
+        description = health_description
+        reward_points = health_points
+    )
+    db.session.add(quest)
+    db.session.commit()
+    today_quests.append(quest)
+
+    mindfulness_quest = Quest3(
+        title = mindfulness_title
+        category = 'Mindfulness'
+        description = mindfulness_description
+        reward_points = mindfulness_points
+    )
+    db.session.add(quest)
+    db.session.commit()
+    today_quests.append(quest)
+
+        quest = Quest(
             title=template['title'],
-            category=category
-        ).first()
-        
-        if not quest:
-            quest = Quest(
-                title=template['title'],
-                category=category,
-                description=template['description'],
-                reward_points=template['points']
-            )
-            db.session.add(quest)
-            db.session.commit()
-        
-        today_quests.append(quest)
-    
+            category=category,
+            description=template['description'],
+            reward_points=template['points']
+        )
+        db.session.add(quest)
+        db.session.commit()
     return today_quests
 
 def check_achievements(user):
