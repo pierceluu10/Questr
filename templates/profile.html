@@ -9,15 +9,8 @@
         height: 300px;
         margin: 20px 0;
     }
-    .achievement-badge {
-        display: inline-block;
-        margin: 5px;
-        padding: 10px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border-radius: 10px;
-        text-align: center;
-        min-width: 120px;
+    .profile-header .text-primary {
+        color: var(--welcome-text) !important;
     }
 </style>
 {% endblock %}
@@ -30,8 +23,8 @@
             <div class="profile-avatar mb-3">
                 <i class="fas fa-user-circle fa-5x text-primary"></i>
             </div>
-            <h2 class="fw-bold text-primary mb-2">{{ user.username }}</h2>
-            <p class="text-muted">Member since {{ user.join_date.strftime('%B %Y') }}</p>
+            <h2 class="fw-bold mb-2" style="color: var(--welcome-text) !important;">{{ user.username }}</h2>
+            <p style="color: var(--muted) !important;">Member since {{ user.join_date.strftime('%B %Y') }}</p>
         </div>
     </div>
 </div>
@@ -214,58 +207,141 @@
 
 {% block extra_scripts %}
 <script>
-    // Mood Chart
-    fetch('/api/mood-data')
-        .then(response => response.json())
-        .then(data => {
-            const ctx = document.getElementById('moodChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: data.dates,
-                    datasets: [{
-                        label: 'Mood Score',
-                        data: data.scores,
-                        borderColor: 'rgb(75, 192, 192)',
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        tension: 0.1
-                    }]
+    // Function to get theme-aware colors
+    function getChartColors() {
+        const isDark = document.documentElement.classList.contains('dark-theme');
+        return {
+            text: isDark ? '#e6edf3' : '#212529',
+            grid: isDark ? '#30363d' : '#dee2e6',
+            moodLine: isDark ? 'rgb(88, 166, 255)' : 'rgb(102, 126, 234)',
+            moodBg: isDark ? 'rgba(88, 166, 255, 0.2)' : 'rgba(102, 126, 234, 0.2)',
+            social: isDark ? 'rgba(88, 166, 255, 0.8)' : 'rgba(54, 162, 235, 0.8)',
+            health: isDark ? 'rgba(75, 192, 150, 0.8)' : 'rgba(75, 192, 192, 0.8)',
+            mindfulness: isDark ? 'rgba(170, 120, 255, 0.8)' : 'rgba(153, 102, 255, 0.8)'
+        };
+    }
+
+    // Store chart instances
+    let moodChart = null;
+    let categoryChart = null;
+
+    // Function to create/update mood chart
+    function createMoodChart(data) {
+        const colors = getChartColors();
+        const ctx = document.getElementById('moodChart').getContext('2d');
+        
+        if (moodChart) {
+            moodChart.destroy();
+        }
+        
+        moodChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: data.dates,
+                datasets: [{
+                    label: 'Mood Score',
+                    data: data.scores,
+                    borderColor: colors.moodLine,
+                    backgroundColor: colors.moodBg,
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: colors.text
+                        }
+                    }
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            min: -1,
-                            max: 1
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        min: -1,
+                        max: 1,
+                        ticks: {
+                            color: colors.text
+                        },
+                        grid: {
+                            color: colors.grid
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: colors.text
+                        },
+                        grid: {
+                            color: colors.grid
                         }
                     }
                 }
-            });
+            }
+        });
+    }
+
+    // Function to create/update category chart
+    function createCategoryChart() {
+        const colors = getChartColors();
+        const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+        
+        if (categoryChart) {
+            categoryChart.destroy();
+        }
+        
+        categoryChart = new Chart(categoryCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Social', 'Health', 'Mindfulness'],
+                datasets: [{
+                    data: [{{ user.completed_quests|selectattr('quest.category', 'equalto', 'Social')|list|length }}, 
+                           {{ user.completed_quests|selectattr('quest.category', 'equalto', 'Health')|list|length }}, 
+                           {{ user.completed_quests|selectattr('quest.category', 'equalto', 'Mindfulness')|list|length }}],
+                    backgroundColor: [
+                        colors.social,
+                        colors.health,
+                        colors.mindfulness
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: colors.text
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Load mood data and create chart
+    fetch('/api/mood-data')
+        .then(response => response.json())
+        .then(data => {
+            createMoodChart(data);
         });
 
-    // Category Chart (mock data for now)
-    const categoryCtx = document.getElementById('categoryChart').getContext('2d');
-    new Chart(categoryCtx, {
-        type: 'doughnut',
-        data: {
-            labels: ['Social', 'Health', 'Mindfulness'],
-            datasets: [{
-                data: [{{ user.completed_quests|selectattr('quest.category', 'equalto', 'Social')|list|length }}, 
-                       {{ user.completed_quests|selectattr('quest.category', 'equalto', 'Health')|list|length }}, 
-                       {{ user.completed_quests|selectattr('quest.category', 'equalto', 'Mindfulness')|list|length }}],
-                backgroundColor: [
-                    'rgba(54, 162, 235, 0.8)',
-                    'rgba(75, 192, 192, 0.8)',
-                    'rgba(153, 102, 255, 0.8)'
-                ]
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false
-        }
-    });
+    // Create category chart
+    createCategoryChart();
+
+    // Listen for theme changes and update charts
+    const themeToggleBtn = document.getElementById('theme-toggle-btn');
+    if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', function() {
+            setTimeout(() => {
+                fetch('/api/mood-data')
+                    .then(response => response.json())
+                    .then(data => {
+                        createMoodChart(data);
+                    });
+                createCategoryChart();
+            }, 100);
+        });
+    }
 </script>
 {% endblock %}
