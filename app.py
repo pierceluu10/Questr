@@ -23,6 +23,10 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
+# Create database tables
+with app.app_context():
+    db.create_all()
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -196,24 +200,30 @@ def register():
     
     form = RegisterForm()
     if form.validate_on_submit():
-        if User.query.filter_by(username=form.username.data).first():
-            flash('Username already exists')
+        try:
+            if User.query.filter_by(username=form.username.data).first():
+                flash('Username already exists')
+                return render_template('register.html', form=form)
+            
+            if User.query.filter_by(email=form.email.data).first():
+                flash('Email already registered')
+                return render_template('register.html', form=form)
+            
+            user = User(
+                username=form.username.data,
+                email=form.email.data
+            )
+            user.set_password(form.password.data)
+            db.session.add(user)
+            db.session.commit()
+            
+            login_user(user)
+            return redirect(url_for('dashboard'))
+        except Exception as e:
+            db.session.rollback()
+            flash('An error occurred during registration. Please try again.')
+            app.logger.error(f'Registration error: {str(e)}')
             return render_template('register.html', form=form)
-        
-        if User.query.filter_by(email=form.email.data).first():
-            flash('Email already registered')
-            return render_template('register.html', form=form)
-        
-        user = User(
-            username=form.username.data,
-            email=form.email.data
-        )
-        user.set_password(form.password.data)
-        db.session.add(user)
-        db.session.commit()
-        
-        login_user(user)
-        return redirect(url_for('dashboard'))
     
     return render_template('register.html', form=form)
 
@@ -334,9 +344,6 @@ def mood_data():
     return jsonify(data)
 
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
-    
     # Only run in debug mode if not in production
     import os
     debug_mode = os.environ.get('FLASK_ENV') != 'production'
