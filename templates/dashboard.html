@@ -9,12 +9,6 @@
         color: white !important;
         text-shadow: 0 2px 6px rgba(0,0,0,0.15);
     }
-    .welcome-card .username-highlight {
-        background: rgba(255, 255, 255, 0.2);
-        color: white !important;
-        padding: 0 .35rem;
-        border-radius: .25rem;
-    }
     .welcome-card p {
         color: rgba(255, 255, 255, 0.9) !important;
     }
@@ -25,7 +19,7 @@
     <div class="col-12">
         <div class="welcome-card p-4 mb-4">
             <h2 class="fw-bold mb-2" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                <i class="fas fa-heart"></i> Welcome back, <span class="username-highlight">{{ user.username }}</span>!
+                <i class="fas fa-spa"></i> Welcome back, {{ user.username }}!
             </h2>
             <p class="mb-0">Complete your daily quests to build better habits.</p>
         </div>

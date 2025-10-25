@@ -74,7 +74,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         const title = document.querySelector('.animate-title');
         if (title) {
-            const text = title.textContent;
+            const text = title.textContent.trim();
             title.textContent = '';
             title.style.opacity = '1';
             
@@ -87,6 +87,10 @@
                 span.style.opacity = '0';
                 span.style.animation = `fadeInUp 0.5s ease forwards`;
                 span.style.animationDelay = `${index * 0.05}s`;
+                // Preserve spaces
+                if (char === ' ') {
+                    span.style.width = '0.3em';
+                }
                 title.appendChild(span);
             });
         }
