@@ -132,7 +132,7 @@ def get_daily_quests(user_id):
         print(f"Error parsing JSON output: {e}")
         print("Raw response text:", response.text)
         
-    social_quest = Quest(
+    social_quest = quest(
         title = social_title,
         category = 'Social',
         description = social_description,
@@ -143,7 +143,7 @@ def get_daily_quests(user_id):
     today_quests.append(quest)
 
     
-    health_quest = Quest(
+    health_quest = quest(
         title = health_title,
         category = 'Health',
         description = health_description,
@@ -153,7 +153,7 @@ def get_daily_quests(user_id):
     db.session.commit()
     today_quests.append(quest)
 
-    mindfulness_quest = Quest(
+    mindfulness_quest = quest(
         title = mindfulness_title,
         category = 'Mindfulness',
         description = mindfulness_description,
