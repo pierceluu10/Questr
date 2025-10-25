@@ -131,8 +131,15 @@ def set_pet_xp(user, pet_name, value):
 @login_required
 def myquestr():
     try:
+        if not current_user:
+            app.logger.error('No current_user found in myquestr route')
+            return redirect(url_for('login'))
+            
+        app.logger.info(f'Starting myquestr route for user {current_user.id}')
+        
         # Set bear as default pet if none selected
         if not current_user.active_pet:
+            app.logger.info(f'No active pet found for user {current_user.id}, setting default to bear')
             current_user.active_pet = 'bear'
             db.session.commit()
             app.logger.info(f'Set default pet (bear) for user {current_user.id}')
@@ -140,12 +147,15 @@ def myquestr():
         # Provide pet data and how many hunger points user can spend
         pets = ['bear', 'cat', 'dog', 'rabbit']
         pet_data = []
+        app.logger.info(f'Processing pets for user {current_user.id}')
 
         for p in pets:
             try:
                 xp = get_pet_xp(current_user, p)
+                app.logger.debug(f'Got XP for {p}: {xp}')
                 # include temp allocated only for active pet
                 temp = current_user.temp_allocated_xp if current_user.active_pet == p else 0
+                app.logger.debug(f'Temp XP for {p}: {temp}')
                 pet_data.append({
                     'name': p,
                     'xp': xp,

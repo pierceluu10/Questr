@@ -23,7 +23,7 @@
     {% for pet in pets %}
     <div class="col-md-3 mb-3">
         <div class="card pet-card text-center p-3 {% if active_pet==pet.name %}pet-selected{% endif %}" data-pet="{{ pet.name }}">
-            <img src="{{ url_for('static', filename='images/pets/' ~ pet.name ~ '_stage' ~ pet.stage|string ~ '.png') }}" class="pet-img mx-auto d-block" alt="{{ pet.name }}">
+            <img src="{{ url_for('static', filename='images/pets/' + pet.name + '_stage' + pet.stage|string + '.png') }}" class="pet-img mx-auto d-block" alt="{{ pet.name }}">
             <h5 class="mt-2 text-capitalize">{{ pet.name }}</h5>
             <p>Stage: {{ pet.stage }} / 3</p>
             <p>XP: <span class="pet-xp">{{ pet.xp }}</span>{% if pet.temp and pet.temp>0 %} + <small class="text-muted">pending {{ pet.temp }}</small>{% endif %}</p>
@@ -55,6 +55,10 @@
 
 {% endblock %}
 
-{% block extra_scripts %}
+{% block scripts %}
+<script>
+const PETS = JSON.parse('{{ pets|tojson|safe }}');
+const MAX_HUNGER_POINTS = {{ max_hunger_points }};
+</script>
 <script src="{{ url_for('static', filename='js/myquestr.js') }}"></script>
 {% endblock %}
