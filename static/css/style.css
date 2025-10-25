@@ -8,6 +8,7 @@
     --info-color: #8c8a93;
     --light-bg: #c2dfe3;
     --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --heading-color: #959963;
 }
 
 .dark-theme {
@@ -18,6 +19,7 @@
     --info-color: #539bf5;
     --light-bg: #0d1117;
     --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    --heading-color: white;
 }
 
 body {
@@ -88,13 +90,13 @@ body {
 /* Welcome Card */
 .welcome-card {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    color: #BABD8D;
+    color: var(--heading-color);
     border-radius: 15px;
     box-shadow: var(--card-shadow);
 }
 
 .welcome-card h2 {
-    color: white;
+    color: var(--heading-color);
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
@@ -180,13 +182,13 @@ body {
 /* Profile Header */
 .profile-header {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    color: #b6cb9e;
+    color: var(--heading-color);
     border-radius: 15px;
     box-shadow: var(--card-shadow);
 }
 
 .profile-header h2 {
-    color: white !important;
+    color: var(--heading-color);
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
