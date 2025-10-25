@@ -1,12 +1,12 @@
 /* SideQuestly Custom Styles */
 
 :root {
-    --primary-color: #667eea;
-    --secondary-color: #764ba2;
-    --success-color: #28a745;
-    --warning-color: #ffc107;
-    --info-color: #17a2b8;
-    --light-bg: #f8f9fa;
+    --primary-color: #b6cb9e;
+    --secondary-color: #d1f0b1;
+    --success-color: #6ede8a;
+    --warning-color: #f27059;
+    --info-color: #8c8a93;
+    --light-bg: #c2dfe3;
     --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -46,6 +46,7 @@ body {
 
 /* Quest Cards */
 .quest-card {
+    background: #d1f0b1;
     border-radius: 15px;
     box-shadow: var(--card-shadow);
     transition: all 0.3s ease;
@@ -59,6 +60,7 @@ body {
 }
 
 .quest-title {
+    color: #92b4a7;
     font-size: 1.2rem;
 }
 
@@ -69,6 +71,7 @@ body {
 
 /* Stat Cards */
 .stat-card {
+    background: #d1f0b1;
     border-radius: 15px;
     box-shadow: var(--card-shadow);
     transition: transform 0.2s ease;
@@ -85,6 +88,7 @@ body {
 /* Welcome Card */
 .welcome-card {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: #BABD8D;
     border-radius: 15px;
     box-shadow: var(--card-shadow);
 }
@@ -96,6 +100,7 @@ body {
 
 /* Progress Card */
 .progress-card {
+    background: #d1f0b1;
     border-radius: 15px;
     box-shadow: var(--card-shadow);
 }
@@ -132,6 +137,7 @@ body {
 
 /* Feature Cards */
 .feature-card {
+    background: #b6cb9e;
     border-radius: 15px;
     box-shadow: var(--card-shadow);
     transition: transform 0.2s ease;
@@ -150,7 +156,7 @@ body {
     width: 50px;
     height: 50px;
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    color: white;
+    color: #b6cb9e;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -174,6 +180,7 @@ body {
 /* Profile Header */
 .profile-header {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: #b6cb9e;
     border-radius: 15px;
     box-shadow: var(--card-shadow);
 }
@@ -190,7 +197,7 @@ body {
 /* Achievement Badges */
 .achievement-badge {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    color: white;
+    color: #b6cb9e;
     border-radius: 15px;
     padding: 20px;
     text-align: center;
@@ -325,7 +332,7 @@ footer {
 .success-flash {
     background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
     border: 1px solid var(--success-color);
-    color: #155724;
+    color: #80727b;
 }
 
 /* Custom scrollbar */
@@ -344,5 +351,5 @@ footer {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+    background: linear-gradient(135deg, #f5d97d 0%, #ffcc5e 100%);
 }
