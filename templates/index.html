@@ -6,7 +6,7 @@
 <div class="row justify-content-center align-items-center" style="min-height: 75vh;">
     <div class="col-lg-7 text-center">
         <div class="hero-section py-5">
-            <h1 class="display-1 fw-bold mb-4" style="font-size: clamp(3rem, 8vw, 5rem); letter-spacing: 0.05em;">
+            <h1 class="display-1 fw-bold mb-4 animate-title" style="font-size: clamp(3rem, 8vw, 5rem); letter-spacing: 0.05em; white-space: nowrap;">
                 Welcome to Questr
             </h1>
             <p class="lead mb-5" style="font-size: 1.3rem; max-width: 600px; margin: 0 auto;">
@@ -15,12 +15,12 @@
             
             {% if not current_user.is_authenticated %}
                 <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-                    <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg px-5 py-3" style="font-size: 1.1rem;">
+                    <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg px-5 py-3" style="font-size: 1.1rem; font-weight: 600; letter-spacing: 0.02em;">
                         Get Started
                     </a>
                 </div>
-                <p class="text-muted mt-3 small">
-                    Already have an account? <a href="{{ url_for('login') }}" class="text-primary">Log in</a>
+                <p class="text-muted mt-3 small" style="font-weight: 400;">
+                    Already have an account? <a href="{{ url_for('login') }}" class="text-primary" style="font-weight: 500;">Log in</a>
                 </p>
             {% else %}
                 <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-lg px-5 py-3" style="font-size: 1.1rem;">
@@ -66,4 +66,30 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    // Animate the title letters
+    document.addEventListener('DOMContentLoaded', function() {
+        const title = document.querySelector('.animate-title');
+        if (title) {
+            const text = title.textContent;
+            title.textContent = '';
+            title.style.opacity = '1';
+            
+            // Split text into individual characters
+            const chars = text.split('');
+            chars.forEach((char, index) => {
+                const span = document.createElement('span');
+                span.textContent = char;
+                span.style.display = 'inline-block';
+                span.style.opacity = '0';
+                span.style.animation = `fadeInUp 0.5s ease forwards`;
+                span.style.animationDelay = `${index * 0.05}s`;
+                title.appendChild(span);
+            });
+        }
+    });
+</script>
 {% endblock %}

@@ -16,8 +16,14 @@ body {
     line-height: 1.6;
 }
 
-h1, h2, h3, h4, h5, h6, .navbar-brand, p, span, a, button, .btn {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+body, h1, h2, h3, h4, h5, h6, .navbar-brand, p, span, a, button, .btn, input, textarea, select {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', 'Roboto', 'Helvetica Neue', Arial, sans-serif !important;
+}
+
+/* Smoother font rendering */
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 /* Gradient backgrounds */
@@ -210,7 +216,8 @@ h1, h2, h3, h4, h5, h6, .navbar-brand, p, span, a, button, .btn {
 /* Buttons */
 .btn {
     border-radius: 10px;
-    font-weight: 500;
+    font-weight: 600;
+    letter-spacing: 0.01em;
     transition: all 0.2s ease;
 }
 
@@ -279,8 +286,47 @@ footer {
     }
 }
 
+@keyframes slideInFromLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3) translateY(-30px);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+    70% {
+        transform: scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
 .fade-in-up {
     animation: fadeInUp 0.6s ease-out;
+}
+
+/* Animate title on page load */
+.animate-title {
+    opacity: 0;
+}
+
+.animate-title span {
+    display: inline-block;
+    opacity: 0;
 }
 
 /* Hero section styling */
