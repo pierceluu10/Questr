@@ -1,12 +1,12 @@
 /* SideQuestly Custom Styles */
 
 :root {
-    --primary-color: #f0efb1;
+    --primary-color: #b6cb9e;
     --secondary-color: #d1f0b1;
     --success-color: #6ede8a;
     --warning-color: #f27059;
     --info-color: #8c8a93;
-    --light-bg: #afdae0;
+    --light-bg: #c2dfe3;
     --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -46,7 +46,7 @@ body {
 
 /* Quest Cards */
 .quest-card {
-    background: #f0e5b1;
+    background: #d1f0b1;
     border-radius: 15px;
     box-shadow: var(--card-shadow);
     transition: all 0.3s ease;
@@ -186,7 +186,7 @@ body {
 }
 
 .profile-header h2 {
-    color: white;
+    color: white !important;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
