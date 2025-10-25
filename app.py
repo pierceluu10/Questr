@@ -406,6 +406,11 @@ def check_achievements(user):
                 db.session.add(user_achievement)
                 db.session.commit()
 
+def get_pet_xp(user, pet_name):
+    """Get the XP for a specific pet"""
+    pet_field = f"{pet_name}_xp"
+    return getattr(user, pet_field, 0)
+
 # Routes
 @app.route('/')
 def index():
