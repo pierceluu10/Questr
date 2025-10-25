@@ -223,9 +223,10 @@
             grid: isDark ? '#30363d' : '#dee2e6',
             moodLine: isDark ? 'rgb(88, 166, 255)' : 'rgb(102, 126, 234)',
             moodBg: isDark ? 'rgba(88, 166, 255, 0.2)' : 'rgba(102, 126, 234, 0.2)',
-            social: isDark ? 'rgba(88, 166, 255, 0.8)' : 'rgba(54, 162, 235, 0.8)',
-            health: isDark ? 'rgba(75, 192, 150, 0.8)' : 'rgba(75, 192, 192, 0.8)',
-            mindfulness: isDark ? 'rgba(170, 120, 255, 0.8)' : 'rgba(153, 102, 255, 0.8)'
+            social: isDark ? 'rgba(88, 166, 255, 0.85)' : 'rgba(54, 162, 235, 0.8)',
+            health: isDark ? 'rgba(75, 192, 150, 0.85)' : 'rgba(75, 192, 192, 0.8)',
+            mindfulness: isDark ? 'rgba(170, 120, 255, 0.85)' : 'rgba(153, 102, 255, 0.8)',
+            legendText: isDark ? '#e6edf3' : '#212529'
         };
     }
 
@@ -310,7 +311,9 @@
                         colors.social,
                         colors.health,
                         colors.mindfulness
-                    ]
+                    ],
+                    borderColor: isDark => document.documentElement.classList.contains('dark-theme') ? '#161b22' : '#ffffff',
+                    borderWidth: 2
                 }]
             },
             options: {
@@ -318,9 +321,23 @@
                 maintainAspectRatio: false,
                 plugins: {
                     legend: {
+                        position: 'bottom',
                         labels: {
-                            color: colors.text
+                            color: colors.legendText,
+                            padding: 15,
+                            font: {
+                                size: 13,
+                                family: "'Inter', sans-serif"
+                            },
+                            usePointStyle: true
                         }
+                    },
+                    tooltip: {
+                        backgroundColor: colors.text,
+                        titleColor: colors.grid,
+                        bodyColor: colors.grid,
+                        padding: 12,
+                        cornerRadius: 8
                     }
                 }
             }
