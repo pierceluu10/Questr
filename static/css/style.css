@@ -186,6 +186,20 @@ body, h1, h2, h3, h4, h5, h6, .navbar-brand, p, span, a, button, .btn, input, te
     opacity: 0.9;
 }
 
+/* Chart Section Titles */
+.chart-section-title {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', 'Roboto', 'Helvetica Neue', Arial, sans-serif !important;
+    font-weight: 600 !important;
+    font-size: 1.1rem !important;
+    letter-spacing: 0.02em !important;
+    color: var(--text) !important;
+}
+
+.chart-section-title i {
+    color: var(--primary-color);
+    margin-right: 8px;
+}
+
 /* Achievement Badges */
 .achievement-badge {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
