@@ -132,6 +132,10 @@
             color: var(--text) !important;
         }
 
+        .form-text {
+            color: var(--muted) !important;
+        }
+
         .btn-outline-primary {
             color: var(--primary) !important;
             border-color: var(--primary) !important;
@@ -150,6 +154,16 @@
         .btn-outline-secondary:hover {
             background: var(--highlight-rgba) !important;
             color: var(--text) !important;
+            border-color: var(--primary) !important;
+        }
+
+        a {
+            color: var(--primary);
+        }
+
+        a:hover {
+            color: var(--primary);
+            opacity: 0.8;
         }
 
         .reflection-item {
@@ -166,8 +180,16 @@
 
         .quest-card.completed {
             background: var(--card-bg) !important;
-            border-color: var(--primary) !important;
-            opacity: 0.8;
+            border: 2px solid var(--success-color) !important;
+            opacity: 0.85;
+        }
+
+        .btn-success:disabled {
+            opacity: 0.7;
+        }
+
+        .btn-primary, .btn-success {
+            border: none;
         }
 
         .alert {
