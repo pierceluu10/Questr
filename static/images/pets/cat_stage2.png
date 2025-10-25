@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180">
-  <rect width="180" height="180" fill="#f8f9fa"/>
-  <circle cx="90" cy="90" r="55" fill="#868e96"/>
-  <circle cx="70" cy="70" r="8" fill="#212529"/>
-  <circle cx="110" cy="70" r="8" fill="#212529"/>
-  <path d="M90,100 Q90,120 70,110" stroke="#212529" fill="none" stroke-width="3"/>
-  <path d="M150,30 L120,60 L90,30 L60,60 L30,30" fill="none" stroke="#343a40" stroke-width="4"/>
-  <text x="90" y="160" text-anchor="middle" fill="#495057" font-family="sans-serif">Cat Stage 2</text>
-</svg>

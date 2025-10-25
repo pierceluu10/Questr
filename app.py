@@ -137,74 +137,35 @@ def myquestr():
             
         app.logger.info(f'Starting myquestr route for user {current_user.id}')
         
-        # Set bear as default pet if none selected
-        if not current_user.active_pet:
-            app.logger.info(f'No active pet found for user {current_user.id}, setting default to bear')
+        # Ensure bear is the active pet
+        if current_user.active_pet != 'bear':
+            app.logger.info(f'Setting active pet to bear for user {current_user.id}')
             current_user.active_pet = 'bear'
             db.session.commit()
-            app.logger.info(f'Set default pet (bear) for user {current_user.id}')
 
-        # Provide pet data and how many hunger points user can spend
-        pets = ['bear', 'cat', 'dog', 'rabbit']
-        pet_data = []
-        app.logger.info(f'Processing pets for user {current_user.id}')
-
-        for p in pets:
-            try:
-                xp = get_pet_xp(current_user, p)
-                app.logger.debug(f'Got XP for {p}: {xp}')
-                # include temp allocated only for active pet
-                temp = current_user.temp_allocated_xp if current_user.active_pet == p else 0
-                app.logger.debug(f'Temp XP for {p}: {temp}')
-                pet_data.append({
-                    'name': p,
-                    'xp': xp,
-                    'temp': temp,
-                    'total_visible_xp': xp + temp,
-                    'stage': min(3, (xp + temp) // XP_PER_POINT + 1)
-                })
-            except Exception as e:
-                app.logger.error(f'Error processing pet {p}: {str(e)}')
-                # Continue with other pets if one fails
-                continue
-
-        if not pet_data:
-            raise Exception('Failed to process any pet data')
+        pet_name = 'bear'
+        xp = get_pet_xp(current_user, pet_name)
+        temp = current_user.temp_allocated_xp
+        
+        pet_data = {
+            'name': pet_name,
+            'xp': xp,
+            'temp': temp,
+            'total_visible_xp': xp + temp,
+            'stage': min(3, (xp + temp) // XP_PER_POINT + 1)
+        }
 
         max_hunger_points = (current_user.xp // XP_PER_POINT) if current_user.xp else 0
-        return render_template('myQuestr.html', 
-                             pets=pet_data, 
-                             active_pet=current_user.active_pet or '', 
+        
+        return render_template('myquestr.html', 
+                             pet=pet_data, 
                              max_hunger_points=max_hunger_points, 
                              user=current_user)
 
     except Exception as e:
-        app.logger.error(f'Error in myquestr route: {str(e)}')
-        # Return a user-friendly error page instead of JSON since this is a page render
+        app.logger.error(f'Error in myquestr route for user {current_user.id}: {e}', exc_info=True)
         return render_template('error.html', 
                              error_message='An error occurred while loading your Questr page. Please try again later.'), 500
-
-
-@app.route('/myQuestr/select', methods=['POST'])
-@login_required
-def myquestr_select():
-    data = request.get_json() or {}
-    pet = data.get('pet')
-    if pet not in ('bear', 'cat', 'dog', 'rabbit'):
-        return jsonify({'success': False, 'error': 'Invalid pet'}), 400
-
-    # Refund any temp_allocated_xp back to user's xp
-    try:
-        if current_user.temp_allocated_xp and current_user.temp_allocated_xp > 0:
-            current_user.xp += current_user.temp_allocated_xp
-            current_user.temp_allocated_xp = 0
-        current_user.active_pet = pet
-        db.session.commit()
-        return jsonify({'success': True, 'active_pet': pet, 'user_xp': current_user.xp}), 200
-    except Exception as e:
-        db.session.rollback()
-        app.logger.exception('Error selecting pet')
-        return jsonify({'success': False, 'error': 'Server error'}), 500
 
 
 @app.route('/myQuestr/allocate', methods=['POST'])
