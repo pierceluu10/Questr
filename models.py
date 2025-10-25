@@ -16,6 +16,13 @@ class User(UserMixin, db.Model):
     last_quest_date = db.Column(db.DateTime)
     # Filename of profile photo stored in static/images/profiles/ (nullable)
     profile_photo = db.Column(db.String(200), nullable=True)
+    # Pets system
+    active_pet = db.Column(db.String(20), nullable=True)
+    temp_allocated_xp = db.Column(db.Integer, default=0)
+    bear_xp = db.Column(db.Integer, default=0)
+    cat_xp = db.Column(db.Integer, default=0)
+    dog_xp = db.Column(db.Integer, default=0)
+    rabbit_xp = db.Column(db.Integer, default=0)
     
     # Relationships
     completed_quests = db.relationship('UserQuest', backref='user', lazy=True)

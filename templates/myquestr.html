@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}myQuestr - SideQuestly{% endblock %}
+
+{% block extra_head %}
+<style>
+.pet-card { cursor: pointer; }
+.pet-selected { border: 2px solid var(--primary); }
+.pet-img { width: 180px; height: 180px; object-fit: cover; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h2>Your Companions</h2>
+        <p>Choose a pet to be active. Each level costs 10 XP. You can allocate "hunger points" (1 point = 10 XP). Only one pet may be upgraded at a time. Switching refunds unconfirmed XP.</p>
+        <div class="mb-2">Your total XP: <strong id="display-user-xp">{{ user.xp }}</strong></div>
+    </div>
+</div>
+
+<div class="row" id="pets-row">
+    {% for pet in pets %}
+    <div class="col-md-3 mb-3">
+        <div class="card pet-card text-center p-3 {% if active_pet==pet.name %}pet-selected{% endif %}" data-pet="{{ pet.name }}">
+            <img src="{{ url_for('static', filename='images/pets/' ~ pet.name ~ '_stage' ~ pet.stage|string ~ '.png') }}" class="pet-img mx-auto d-block" alt="{{ pet.name }}">
+            <h5 class="mt-2 text-capitalize">{{ pet.name }}</h5>
+            <p>Stage: {{ pet.stage }} / 3</p>
+            <p>XP: <span class="pet-xp">{{ pet.xp }}</span>{% if pet.temp and pet.temp>0 %} + <small class="text-muted">pending {{ pet.temp }}</small>{% endif %}</p>
+            <button class="btn btn-sm btn-outline-primary select-pet-btn">Select</button>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card p-3">
+            <h5>Upgrade Active Pet</h5>
+            <p>Active pet: <strong id="active-pet-name">{{ active_pet or 'None' }}</strong></p>
+            <p>Hunger points available (1 = 10 XP): <strong id="hunger-available">{{ max_hunger_points }}</strong></p>
+
+            <div class="input-group mb-2" style="max-width:240px;">
+                <input type="number" id="hunger-points" class="form-control" min="1" value="1">
+                <button id="add-points-btn" class="btn btn-primary">Add</button>
+            </div>
+            <div class="mb-2">
+                <button id="confirm-btn" class="btn btn-success btn-sm">Confirm Feed</button>
+                <button id="cancel-btn" class="btn btn-outline-secondary btn-sm">Cancel (Refund)</button>
+            </div>
+            <div id="allocate-msg" class="text-muted small"></div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/myquestr.js') }}"></script>
+{% endblock %}

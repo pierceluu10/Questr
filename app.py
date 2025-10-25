@@ -62,6 +62,139 @@ def inject_xp_globals():
         'user_xp': user_xp
     }
 
+
+# --- myQuestr routes for pet selection and allocation ---
+MAX_PET_XP = 30  # 3 stages * 10 xp each
+XP_PER_POINT = 10
+
+
+def get_pet_xp(user, pet_name):
+    return getattr(user, f"{pet_name}_xp", 0)
+
+
+def set_pet_xp(user, pet_name, value):
+    setattr(user, f"{pet_name}_xp", int(value))
+
+
+@app.route('/myQuestr')
+@login_required
+def myquestr():
+    # Set bear as default pet if none selected
+    if not current_user.active_pet:
+        current_user.active_pet = 'bear'
+        db.session.commit()
+
+    # Provide pet data and how many hunger points user can spend
+    pets = ['bear', 'cat', 'dog', 'rabbit']
+    pet_data = []
+    for p in pets:
+        xp = get_pet_xp(current_user, p)
+        # include temp allocated only for active pet
+        temp = current_user.temp_allocated_xp if current_user.active_pet == p else 0
+        pet_data.append({
+            'name': p,
+            'xp': xp,
+            'temp': temp,
+            'total_visible_xp': xp + temp,
+            'stage': min(3, (xp + temp) // XP_PER_POINT + 1)
+        })
+
+    max_hunger_points = (current_user.xp // XP_PER_POINT) if current_user.xp else 0
+
+    return render_template('myQuestr.html', pets=pet_data, active_pet=current_user.active_pet or '', max_hunger_points=max_hunger_points, user=current_user)
+
+
+@app.route('/myQuestr/select', methods=['POST'])
+@login_required
+def myquestr_select():
+    data = request.get_json() or {}
+    pet = data.get('pet')
+    if pet not in ('bear', 'cat', 'dog', 'rabbit'):
+        return jsonify({'success': False, 'error': 'Invalid pet'}), 400
+
+    # Refund any temp_allocated_xp back to user's xp
+    try:
+        if current_user.temp_allocated_xp and current_user.temp_allocated_xp > 0:
+            current_user.xp += current_user.temp_allocated_xp
+            current_user.temp_allocated_xp = 0
+        current_user.active_pet = pet
+        db.session.commit()
+        return jsonify({'success': True, 'active_pet': pet, 'user_xp': current_user.xp}), 200
+    except Exception as e:
+        db.session.rollback()
+        app.logger.exception('Error selecting pet')
+        return jsonify({'success': False, 'error': 'Server error'}), 500
+
+
+@app.route('/myQuestr/allocate', methods=['POST'])
+@login_required
+def myquestr_allocate():
+    data = request.get_json() or {}
+    points = int(data.get('points', 0))
+    if points <= 0:
+        return jsonify({'success': False, 'error': 'Invalid points'}), 400
+
+    if not current_user.active_pet:
+        return jsonify({'success': False, 'error': 'No active pet selected'}), 400
+
+    cost = points * XP_PER_POINT
+    if current_user.xp < cost:
+        return jsonify({'success': False, 'error': 'Not enough XP'}), 400
+
+    pet = current_user.active_pet
+    current_pet_xp = get_pet_xp(current_user, pet)
+    # How much more XP can this pet accept
+    remaining_capacity = MAX_PET_XP - (current_pet_xp + current_user.temp_allocated_xp)
+    max_addable = remaining_capacity // XP_PER_POINT
+    if points > max_addable:
+        return jsonify({'success': False, 'error': f'Can only add up to {max_addable} hunger points to this pet'}), 400
+
+    try:
+        current_user.xp -= cost
+        current_user.temp_allocated_xp += cost
+        db.session.commit()
+        return jsonify({'success': True, 'user_xp': current_user.xp, 'temp_allocated_xp': current_user.temp_allocated_xp}), 200
+    except Exception:
+        db.session.rollback()
+        app.logger.exception('Error allocating pet xp')
+        return jsonify({'success': False, 'error': 'Server error'}), 500
+
+
+@app.route('/myQuestr/confirm', methods=['POST'])
+@login_required
+def myquestr_confirm():
+    if not current_user.active_pet:
+        return jsonify({'success': False, 'error': 'No active pet selected'}), 400
+    try:
+        add = current_user.temp_allocated_xp
+        if add and add > 0:
+            pet = current_user.active_pet
+            current_val = get_pet_xp(current_user, pet)
+            new_val = min(MAX_PET_XP, current_val + add)
+            set_pet_xp(current_user, pet, new_val)
+            current_user.temp_allocated_xp = 0
+            db.session.commit()
+        return jsonify({'success': True}), 200
+    except Exception:
+        db.session.rollback()
+        app.logger.exception('Error confirming pet xp')
+        return jsonify({'success': False, 'error': 'Server error'}), 500
+
+
+@app.route('/myQuestr/cancel', methods=['POST'])
+@login_required
+def myquestr_cancel():
+    try:
+        if current_user.temp_allocated_xp and current_user.temp_allocated_xp > 0:
+            current_user.xp += current_user.temp_allocated_xp
+            current_user.temp_allocated_xp = 0
+            db.session.commit()
+        return jsonify({'success': True, 'user_xp': current_user.xp}), 200
+    except Exception:
+        db.session.rollback()
+        app.logger.exception('Error cancelling pet xp')
+        return jsonify({'success': False, 'error': 'Server error'}), 500
+
 # Forms
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
