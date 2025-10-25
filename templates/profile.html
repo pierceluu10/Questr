@@ -10,7 +10,10 @@
         margin: 20px 0;
     }
     .profile-header .text-primary {
-        color: var(--welcome-text) !important;
+        color: white !important;
+    }
+    .profile-header p {
+        color: rgba(255,255,255,0.9) !important;
     }
 </style>
 {% endblock %}
@@ -23,8 +26,8 @@
             <div class="profile-avatar mb-3">
                 <i class="fas fa-user-circle fa-5x text-primary"></i>
             </div>
-            <h2 class="fw-bold mb-2" style="color: var(--welcome-text) !important;">{{ user.username }}</h2>
-            <p style="color: var(--muted) !important;">Member since {{ user.join_date.strftime('%B %Y') }}</p>
+            <h2 class="fw-bold mb-2">{{ user.username }}</h2>
+            <p style="color: rgba(255,255,255,0.9);">Member since {{ user.join_date.strftime('%B %Y') }}</p>
         </div>
     </div>
 </div>
