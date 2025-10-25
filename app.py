@@ -58,8 +58,9 @@ if not app.debug:
         app.logger.warning(f'Could not create log file: {e}')
 # Constants
 ALLOWED_PROFILE_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
-XP_PER_POINT = 10  # How much XP one hunger point costs
-MAX_PET_XP = 30    # Maximum XP a pet can have (3 stages * 10 xp each)
+XP_PER_POINT = 1  # How much XP one hunger point costs
+XP_PER_STAGE = 3  # How much XP is needed for a pet to advance a stage
+MAX_PET_XP = 9    # Maximum XP a pet can have (3 stages * 3 xp each)
 
 # Profile upload settings
 app.config['PROFILE_UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static', 'images', 'profiles')
@@ -152,7 +153,7 @@ def myquestr():
             'xp': xp,
             'temp': temp,
             'total_visible_xp': xp + temp,
-            'stage': min(3, (xp + temp) // XP_PER_POINT + 1)
+            'stage': min(3, (xp + temp) // XP_PER_STAGE + 1)
         }
 
         max_hunger_points = (current_user.xp // XP_PER_POINT) if current_user.xp else 0
@@ -171,35 +172,45 @@ def myquestr():
 @app.route('/myQuestr/allocate', methods=['POST'])
 @login_required
 def myquestr_allocate():
-    data = request.get_json() or {}
-    points = int(data.get('points', 0))
-    if points <= 0:
-        return jsonify({'success': False, 'error': 'Invalid points'}), 400
-
-    if not current_user.active_pet:
-        return jsonify({'success': False, 'error': 'No active pet selected'}), 400
-
-    cost = points * XP_PER_POINT
-    if current_user.xp < cost:
-        return jsonify({'success': False, 'error': 'Not enough XP'}), 400
-
-    pet = current_user.active_pet
-    current_pet_xp = get_pet_xp(current_user, pet)
-    # How much more XP can this pet accept
-    remaining_capacity = MAX_PET_XP - (current_pet_xp + current_user.temp_allocated_xp)
-    max_addable = remaining_capacity // XP_PER_POINT
-    if points > max_addable:
-        return jsonify({'success': False, 'error': f'Can only add up to {max_addable} hunger points to this pet'}), 400
-
     try:
+        data = request.get_json() or {}
+        points = int(data.get('points', 0))
+        if points <= 0:
+            return jsonify({'success': False, 'error': 'Invalid points'}), 400
+
+        if not current_user.active_pet or current_user.active_pet != 'bear':
+            return jsonify({'success': False, 'error': 'Bear must be selected'}), 400
+
+        # Cost is now 1:1
+        cost = points
+        if current_user.xp < cost:
+            return jsonify({'success': False, 'error': 'Not enough XP'}), 400
+
+        current_pet_xp = get_pet_xp(current_user, 'bear')
+        remaining_capacity = MAX_PET_XP - (current_pet_xp + current_user.temp_allocated_xp)
+        
+        if points > remaining_capacity:
+            return jsonify({'success': False, 'error': f'Can only add up to {remaining_capacity} more XP to your bear'}), 400
+
         current_user.xp -= cost
         current_user.temp_allocated_xp += cost
         db.session.commit()
-        return jsonify({'success': True, 'user_xp': current_user.xp, 'temp_allocated_xp': current_user.temp_allocated_xp}), 200
-    except Exception:
+        
+        # Return updated values for the UI
+        total_xp = current_pet_xp + current_user.temp_allocated_xp
+        return jsonify({
+            'success': True,
+            'user_xp': current_user.xp,
+            'pet_xp': current_pet_xp,
+            'temp_allocated_xp': current_user.temp_allocated_xp,
+            'total_xp': total_xp,
+            'stage': min(3, total_xp // XP_PER_STAGE + 1),
+            'progress': (total_xp % XP_PER_STAGE) / XP_PER_STAGE * 100
+        }), 200
+    except Exception as e:
         db.session.rollback()
-        app.logger.exception('Error allocating pet xp')
-        return jsonify({'success': False, 'error': 'Server error'}), 500
+        app.logger.exception('Error allocating XP to bear')
+        return jsonify({'success': False, 'error': str(e)}), 500
 
 
 @app.route('/myQuestr/confirm', methods=['POST'])
@@ -381,6 +392,11 @@ def get_pet_xp(user, pet_name):
     """Get the XP for a specific pet"""
     pet_field = f"{pet_name}_xp"
     return getattr(user, pet_field, 0)
+
+def set_pet_xp(user, pet_name, value):
+    """Set the XP for a specific pet"""
+    pet_field = f"{pet_name}_xp"
+    setattr(user, pet_field, value)
 
 # Routes
 @app.route('/')

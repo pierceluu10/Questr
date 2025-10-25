@@ -20,7 +20,7 @@
                 <p>Stage: {{ pet.stage }} / 3</p>
                 <p>XP: <span class="pet-xp">{{ pet.xp }}</span>{% if pet.temp and pet.temp > 0 %} + <small class="text-muted">pending {{ pet.temp }}</small>{% endif %}</p>
                 <div class="progress" style="height: 20px;">
-                    <div class="progress-bar" role="progressbar" style="width: {{ (pet.total_visible_xp % 10) * 10 }}%;" aria-valuenow="{{ pet.total_visible_xp % 10 }}" aria-valuemin="0" aria-valuemax="10">{{ pet.total_visible_xp % 10 }}/10</div>
+                    <div class="progress-bar" role="progressbar" style="width: {{ (pet.total_visible_xp % 3) * 33.33 }}%;" aria-valuenow="{{ pet.total_visible_xp % 3 }}" aria-valuemin="0" aria-valuemax="3">{{ pet.total_visible_xp % 3 }}/3</div>
                 </div>
             </div>
         </div>

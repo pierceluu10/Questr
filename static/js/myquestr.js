@@ -1,45 +1,85 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const petsRow = document.getElementById('pets-row');
-    const activeNameEl = document.getElementById('active-pet-name');
+    const displayUserXp = document.getElementById('display-user-xp');
     const hungerAvailableEl = document.getElementById('hunger-available');
-    const userXpEl = document.getElementById('display-user-xp');
-    const pointsInput = document.getElementById('hunger-points');
-    const addBtn = document.getElementById('add-points-btn');
+    const hungerPointsInput = document.getElementById('hunger-points');
+    const addPointsBtn = document.getElementById('add-points-btn');
     const confirmBtn = document.getElementById('confirm-btn');
     const cancelBtn = document.getElementById('cancel-btn');
     const allocateMsg = document.getElementById('allocate-msg');
+    const progressBar = document.querySelector('.progress-bar');
+    const petXpSpan = document.querySelector('.pet-xp');
 
-    function refreshPetCards(data) {
-        // update user xp and hunger available
-        if (data.user_xp !== undefined) userXpEl.textContent = data.user_xp;
-        if (data.hunger_available !== undefined) hungerAvailableEl.textContent = data.hunger_available;
-        if (data.active_pet !== undefined) activeNameEl.textContent = data.active_pet || 'None';
-        // update cards if pet_data provided
-        if (data.pets) {
-            data.pets.forEach(p => {
-                const card = document.querySelector(`.pet-card[data-pet="${p.name}"]`);
-                if (card) {
-                    card.querySelector('.pet-xp').textContent = p.xp;
-                    // update image
-                    const img = card.querySelector('img.pet-img');
-                    if (img) img.src = `/static/images/pets/${p.name}_stage${p.stage}.png`;
-                    // toggle selected
-                    if (data.active_pet === p.name) {
-                        card.classList.add('pet-selected');
-                    } else {
-                        card.classList.remove('pet-selected');
-                    }
-                }
-            });
+    function updateUI(data) {
+        if (displayUserXp) displayUserXp.textContent = data.user_xp;
+        if (petXpSpan) petXpSpan.textContent = data.pet_xp;
+        if (progressBar) {
+            progressBar.style.width = data.progress + '%';
+            progressBar.textContent = (data.total_xp % 3) + '/3';
         }
+        if (hungerAvailableEl) hungerAvailableEl.textContent = data.user_xp;
     }
 
-    // Select pet handler
-    petsRow.addEventListener('click', function(e) {
-        const btn = e.target.closest('.select-pet-btn');
-        if (!btn) return;
-        const card = btn.closest('.pet-card');
-        const pet = card.dataset.pet;
+    // Add points handler
+    if (addPointsBtn) {
+        addPointsBtn.addEventListener('click', () => {
+            const points = parseInt(hungerPointsInput.value, 10);
+            if (points > 0) {
+                fetch('/myQuestr/allocate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ points: points })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        updateUI(data);
+                        allocateMsg.textContent = `Added ${points} points. Click Confirm to save or Cancel to refund.`;
+                        allocateMsg.className = 'text-success small';
+                    } else {
+                        allocateMsg.textContent = data.error;
+                        allocateMsg.className = 'text-danger small';
+                    }
+                })
+                .catch(error => {
+                    allocateMsg.textContent = 'Error occurred while feeding. Please try again.';
+                    allocateMsg.className = 'text-danger small';
+                });
+            }
+        });
+    }
+
+    // Confirm button handler
+    if (confirmBtn) {
+        confirmBtn.addEventListener('click', () => {
+            fetch('/myQuestr/confirm', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.reload(); // Refresh to show new stage if applicable
+                    } else {
+                        allocateMsg.textContent = data.error;
+                        allocateMsg.className = 'text-danger small';
+                    }
+                });
+        });
+    }
+
+    // Cancel button handler
+    if (cancelBtn) {
+        cancelBtn.addEventListener('click', () => {
+            fetch('/myQuestr/cancel', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.reload();
+                    } else {
+                        allocateMsg.textContent = data.error;
+                        allocateMsg.className = 'text-danger small';
+                    }
+                });
+        });
+    }
+});
         fetch('/myQuestr/select', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
