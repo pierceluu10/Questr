@@ -10,11 +10,48 @@ import json
 import os
 from textblob import TextBlob
 
-from models import db, User, Quest, UserQuest, Reflection, Achievement, UserAchievement, DailyQuest
+from models import db, User, Quest, UserQuest, Reflection, Achievement, UserAchievement
+
+#Code for Gemini API:
+#First, we need to setup for Gemini API
+#MAKE SURE TO ADD THE USER DESCRIPTION PART
+User_description = "Hello, I am a first year Computer Engineering Student"
+GEMINI_API_KEY = "AIzaSyDVaYgw1kOSJ6p8AyTP6rRlH1jEfdkmdvM"
+
+import json
+from google import genai
+from google.genai import types
+client = genai.Client(api_key=GEMINI_API_KEY)
+
+#Define Structure for ouput of prompt
+quest_schema=types.Schema(
+    type=types.Type.OBJECT,
+    properties={
+            "social_title":types.Schema(type=types.Type.STRING, description="Title of the social sidequest"),
+            "social_description":types.Schema(type=types.Type.STRING, description="Description of the social sidequest"),
+            "social_points":types.Schema(type=types.Type.INTEGER, description="Point value of the social sidequest"),
+            "health_title":types.Schema(type=types.Type.STRING, description="Title of the health sidequest"),
+            "health_description":types.Schema(type=types.Type.STRING, description="Description of the health sidequest"),
+            "health_points":types.Schema(type=types.Type.INTEGER, description="Point value of the health sidequest"),
+            "mindfulness_title":types.Schema(type=types.Type.STRING, description="Title of the mindfulness sidequest"),
+            "mindfulness_description":types.Schema(type=types.Type.STRING, description="Description of the mindfulness sidequest"),
+            "mindfulness_points":types.Schema(type=types.Type.INTEGER, description="Point value of the mindfulness sidequest"),
+    },
+    required=[
+        "social_title", "social_description", "social_points",
+        "health_title", "health_description", "health_points",
+        "mindfulness_title", "mindfulness_description", "mindfulness_points"
+    ]
+)
+prompt = f'"Using the description of the user: {User_description}, taking into account their interests and personal wellbeing needs, generate 3 side quests for the user throughout the day. There should be one sidequest for Social, one for Health, and one for Mindfulness. Each sidequest should have a title, a brief description, and a reward point value between 10 and 30 points. Make sure the sidequests are not corny or generic. Each quest should 80 characters or less. Make sure the points are appropriate for the difficulty and impact of the sidequest. Make sure the sidequests are diverse and engaging, that the person doing them has a guranteed chance of being able to complete them (i.e. do not assume they have a coding class, ask them to work on code in general)."'
+
+
+
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'your-secret-key-change-in-production')
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///questr.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///sidequestly.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Initialize extensions
@@ -47,83 +84,84 @@ class ReflectionForm(FlaskForm):
     text = TextAreaField('How did this make you feel?', validators=[DataRequired()])
     submit = SubmitField('Submit Reflection')
 
-# Quest data
-QUEST_TEMPLATES = {
-    'Social': [
-        {'title': 'Compliment someone today', 'description': 'Give a genuine compliment to a friend, family member, or colleague.', 'points': 15},
-        {'title': 'Call someone you haven\'t talked to in a while', 'description': 'Reach out to an old friend or family member.', 'points': 20},
-        {'title': 'Start a conversation with a stranger', 'description': 'Say hello to someone new in a coffee shop, elevator, or waiting area.', 'points': 25},
-        {'title': 'Share something positive on social media', 'description': 'Post something uplifting or inspiring.', 'points': 10},
-        {'title': 'Help someone with a small task', 'description': 'Offer assistance to someone who might need it.', 'points': 15}
-    ],
-    'Health': [
-        {'title': 'Drink 8 glasses of water', 'description': 'Stay hydrated throughout the day.', 'points': 10},
-        {'title': 'Take a 10-minute walk', 'description': 'Get some fresh air and light exercise.', 'points': 15},
-        {'title': 'Do 20 push-ups or sit-ups', 'description': 'Get your heart pumping with some bodyweight exercises.', 'points': 20},
-        {'title': 'Eat a healthy breakfast', 'description': 'Start your day with nutritious food.', 'points': 10},
-        {'title': 'Stretch for 5 minutes', 'description': 'Take time to stretch your muscles and improve flexibility.', 'points': 10}
-    ],
-    'Mindfulness': [
-        {'title': 'Meditate for 5 minutes', 'description': 'Take time to clear your mind and focus on your breathing.', 'points': 20},
-        {'title': 'Write down 3 things you\'re grateful for', 'description': 'Practice gratitude by listing positive aspects of your life.', 'points': 15},
-        {'title': 'Take 5 deep breaths', 'description': 'Practice mindful breathing to reduce stress.', 'points': 10},
-        {'title': 'Spend 10 minutes in nature', 'description': 'Connect with the outdoors, even if just looking out a window.', 'points': 15},
-        {'title': 'Practice positive self-talk', 'description': 'Say something kind to yourself in the mirror.', 'points': 15}
-    ]
-}
 
+
+# Quest data
 def get_daily_quests(user_id):
     """Get or generate today's quests for a user"""
     today = date.today()
     
-    # Check if user already has quests assigned for today
-    daily_quests = DailyQuest.query.filter_by(
-        user_id=user_id,
-        date_assigned=today
+    # Check if user already has quests for today
+    existing_quests = Quest.query.filter(
+        Quest.id.in_(
+            db.session.query(UserQuest.quest_id).filter(
+                UserQuest.user_id == user_id,
+                db.func.date(UserQuest.date_completed) == today
+            )
+        )
     ).all()
     
-    if daily_quests:
-        # Return the assigned quests
-        quest_ids = [dq.quest_id for dq in daily_quests]
-        return Quest.query.filter(Quest.id.in_(quest_ids)).all()
+    if existing_quests:
+        return existing_quests
     
     # Generate new quests for today
-    return generate_new_quests(user_id, today)
-
-def generate_new_quests(user_id, today):
-    """Generate 3 new random quests for a user"""
-    categories = ['Social', 'Health', 'Mindfulness']
     today_quests = []
-    
-    for category in categories:
-        template = random.choice(QUEST_TEMPLATES[category])
-        
-        # Check if quest already exists
-        quest = Quest.query.filter_by(
-            title=template['title'],
-            category=category
-        ).first()
-        
-        if not quest:
-            quest = Quest(
-                title=template['title'],
-                category=category,
-                description=template['description'],
-                reward_points=template['points']
-            )
-            db.session.add(quest)
-            db.session.commit()
-        
-        # Assign quest to user for today
-        daily_quest = DailyQuest(
-            user_id=user_id,
-            quest_id=quest.id,
-            date_assigned=today
+    response = client.models.generate_content(
+        model="gemini-2.5-flash", 
+        contents=prompt,
+        config=types.GenerateContentConfig(
+            response_mime_type="application/json",
+            response_schema=quest_schema
         )
-        db.session.add(daily_quest)
-        today_quests.append(quest)
+    )
+    categories = ['Social', 'Health', 'Mindfulness']
     
+    try:
+        quests_data=json.loads(response.text)
+    
+        social_title = quests_data["social_title"]
+        social_description = quests_data["social_description"]
+        social_points = quests_data["social_points"]
+        health_title = quests_data["health_title"]
+        health_description = quests_data["health_description"]
+        health_points = quests_data["health_points"]
+        mindfulness_title = quests_data["mindfulness_title"]
+        mindfulness_description = quests_data["mindfulness_description"]
+        mindfulness_points = quests_data["mindfulness_points"]    
+    except json.JSONDecodeError as e:
+        print(f"Error parsing JSON output: {e}")
+        print("Raw response text:", response.text)
+        
+    social_quest = Quest(
+        title = social_title,
+        category = 'Social',
+        description = social_description,
+        reward_points = social_points
+    )
+    db.session.add(social_quest)
     db.session.commit()
+    today_quests.append(social_quest)
+
+    
+    health_quest = Quest(
+        title = health_title,
+        category = 'Health',
+        description = health_description,
+        reward_points = health_points
+    )
+    db.session.add(health_quest)
+    db.session.commit()
+    today_quests.append(health_quest)
+
+    mindfulness_quest = Quest(
+        title = mindfulness_title,
+        category = 'Mindfulness',
+        description = mindfulness_description,
+        reward_points = mindfulness_points
+    )
+    db.session.add(mindfulness_quest)
+    db.session.commit()
+    today_quests.append(mindfulness_quest)
     return today_quests
 
 def check_achievements(user):
@@ -133,7 +171,7 @@ def check_achievements(user):
         {'condition': 'streak_10', 'title': 'Streak Champion', 'description': 'Maintain a 10-day streak!', 'icon': '⚡'},
         {'condition': 'xp_50', 'title': 'Level 2 Explorer', 'description': 'Earn 50 XP!', 'icon': '⭐'},
         {'condition': 'xp_100', 'title': 'Quest Veteran', 'description': 'Earn 100 XP!', 'icon': '🏆'},
-        {'condition': 'quests_10', 'title': 'Quest Veteran', 'description': 'Complete 10 quests!', 'icon': '🎯'},
+        {'condition': 'quests_10', 'title': 'SideQuest Veteran', 'description': 'Complete 10 quests!', 'icon': '🎯'},
         {'condition': 'quests_25', 'title': 'Quest Master', 'description': 'Complete 25 quests!', 'icon': '👑'}
     ]
     
@@ -352,35 +390,6 @@ def mood_data():
     }
     
     return jsonify(data)
-
-@app.route('/reroll-quests')
-@login_required
-def reroll_quests():
-    """Reroll today's quests for the user"""
-    today = date.today()
-    
-    # Check if user has already completed any quests today
-    completed_today = UserQuest.query.filter(
-        UserQuest.user_id == current_user.id,
-        db.func.date(UserQuest.date_completed) == today
-    ).count()
-    
-    if completed_today > 0:
-        flash('Cannot reroll quests after completing one! Try again tomorrow.')
-        return redirect(url_for('dashboard'))
-    
-    # Delete old daily quest assignments for today
-    DailyQuest.query.filter_by(
-        user_id=current_user.id,
-        date_assigned=today
-    ).delete()
-    db.session.commit()
-    
-    # Generate new quests
-    generate_new_quests(current_user.id, today)
-    
-    flash('Quests rerolled! Here are your new quests for today.')
-    return redirect(url_for('dashboard'))
 
 if __name__ == '__main__':
     # Only run in debug mode if not in production
