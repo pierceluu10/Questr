@@ -1,6 +1,6 @@
-# Questr 🎯
+# Questr
 
-A full-stack web application that gives users daily quests — small, positive tasks to improve mental, physical, and social wellbeing.
+A full-stack web application that gives users positive daily tasks to improve mental, physical, and social wellbeing.
 
 ## Features
 
