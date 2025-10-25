@@ -3,12 +3,26 @@
 {% block title %}Dashboard - SideQuestly{% endblock %}
 
 {% block content %}
+<style>
+    /* Use theme-aware variables for contrast and dark-mode compatibility */
+    .welcome-card h2 {
+        color: var(--welcome-text); /* This will be white in dark mode */
+        text-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+    .welcome-card .username-highlight {
+        background: var(--highlight-rgba);
+        color: var(--welcome-text);
+        padding: 0 .35rem;
+        border-radius: .25rem;
+    }
+</style>
+
 <!-- Welcome Header -->
 <div class="row mb-4">
     <div class="col-12">
         <div class="welcome-card p-4 mb-4">
-            <h2 class="fw-bold text-primary mb-2">
-                <i class="fas fa-sun"></i> Welcome back, {{ user.username }}!
+            <h2 class="fw-bold mb-2">
+                <i class="fas fa-sun"></i> Welcome back, <span class="username-highlight">{{ user.username }}</span>!
             </h2>
             <p class="text-muted mb-0">Ready to level up today? Let's complete some quests! </p>
         </div>
@@ -147,3 +161,5 @@
     </div>
 </div>
 {% endblock %}
+
+<!-- we attempted to change the text coloring -->

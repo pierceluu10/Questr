@@ -7,12 +7,58 @@
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Google Fonts - Roboto -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <style>
+        :root {
+            --bg: #ffffff; /* Light background */
+            --card-bg: #f8f9fa; /* Light card background */
+            --text: #0b1220; /* Light text color */
+            --muted: #6c757d; /* Muted text color */
+            --primary: #0d6efd; /* Primary color */
+            --welcome-text: #111827; /* Welcome text color */
+            --highlight-rgba: rgba(255, 255, 255, 0.12); /* Highlight color */
+        }
+
+        .dark-theme {
+            --bg: #0b0f14; /* Dark background */
+            --card-bg: #1f2937; /* Dark card background */
+            --text: #e6eef8; /* Light text color */
+            --muted: #9aa6b2; /* Muted text color */
+            --primary: #60a5fa; /* Primary color */
+            --welcome-text: #ffffff; /* Welcome text color */
+            --highlight-rgba: rgba(255, 255, 255, 0.08); /* Highlight color */
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .card, .welcome-card, .stat-card, .quest-card, .progress-card, .motivation-card {
+            background: var(--card-bg);
+            color: var(--text);
+        }
+
+        .text-muted {
+            color: var(--muted) !important;
+        }
+
+        .text-primary, .fw-bold {
+            color: var(--primary) !important;
+        }
+
+        .username-highlight {
+            background: var(--highlight-rgba);
+            color: var(--welcome-text);
+            padding: 0 .35rem;
+            border-radius: .25rem;
+        }
+    </style>
     
     {% block extra_head %}{% endblock %}
 </head>
@@ -65,6 +111,11 @@
                         </li>
                     {% endif %}
                 </ul>
+                
+                <!-- Theme Toggle Button -->
+                <button id="theme-toggle-btn" type="button" class="btn btn-sm btn-outline-secondary" aria-pressed="false" title="Toggle theme">
+                    <span id="theme-toggle-icon">🌞</span> <!-- Default icon -->
+                </button>
             </div>
         </div>
     </nav>
@@ -103,6 +154,37 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Custom JS -->
     <script src="{{ url_for('static', filename='js/chart.js') }}"></script>
+    
+    <script>
+        (function() {
+            const key = 'theme';
+            function applySavedTheme() {
+                const savedTheme = localStorage.getItem(key);
+                if (savedTheme === 'dark') {
+                    document.documentElement.classList.add('dark-theme');
+                }
+            }
+
+            function toggleTheme() {
+                const isDark = document.documentElement.classList.toggle('dark-theme');
+                localStorage.setItem(key, isDark ? 'dark' : 'light');
+                const btn = document.getElementById('theme-toggle-btn');
+                if (btn) btn.setAttribute('aria-pressed', isDark);
+                const icon = document.getElementById('theme-toggle-icon');
+                if (icon) icon.textContent = isDark ? '🌙' : '🌞'; // Change icon based on theme
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                applySavedTheme();
+                const btn = document.getElementById('theme-toggle-btn');
+                if (btn) btn.addEventListener('click', toggleTheme);
+                const isDark = document.documentElement.classList.contains('dark-theme');
+                if (btn) btn.setAttribute('aria-pressed', isDark);
+                const icon = document.getElementById('theme-toggle-icon');
+                if (icon) icon.textContent = isDark ? '🌙' : '🌞'; // Set initial icon
+            });
+        })();
+    </script>
     
     {% block extra_scripts %}{% endblock %}
 </body>
