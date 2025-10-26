@@ -74,10 +74,14 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Login')
 
+# In app.py (around line 105)
 class RegisterForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=4, max=20)])
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired(), Length(min=6)])
+    # ADD THIS NEW FIELD
+    description = TextAreaField('Tell us about yourself', 
+                                validators=[DataRequired(), Length(min=10, max=500)])
     submit = SubmitField('Register')
 
 class ReflectionForm(FlaskForm):
@@ -241,12 +245,20 @@ def login():
     
     return render_template('login.html', form=form)
 
+
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    
     if current_user.is_authenticated:
         return redirect(url_for('dashboard'))
     
     form = RegisterForm()
+    if form.validate_on_submit():
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    # ... (existing form and validation code) ...
     if form.validate_on_submit():
         try:
             if User.query.filter_by(username=form.username.data).first():
@@ -256,15 +268,15 @@ def register():
             if User.query.filter_by(email=form.email.data).first():
                 flash('Email already registered')
                 return render_template('register.html', form=form)
-            
             user = User(
                 username=form.username.data,
-                email=form.email.data
+                email=form.email.data,
+                user_description=form.description.data 
             )
             user.set_password(form.password.data)
             db.session.add(user)
             db.session.commit()
-            
+
             login_user(user)
             return redirect(url_for('dashboard'))
         except Exception as e:
