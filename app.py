@@ -19,29 +19,28 @@ GEMINI_API_KEY = "AIzaSyDVaYgw1kOSJ6p8AyTP6rRlH1jEfdkmdvM"
 
 import json
 from google import genai
-from google.genai import types as genai_types
 client = genai.Client(api_key=GEMINI_API_KEY)
 
-#Define Structure for ouput of prompt
-quest_schema=genai_types.Schema(
-    type=genai_types.Type.OBJECT,
-    properties={
-            "social_title":genai_types.Schema(type=genai_types.Type.STRING, description="Title of the social sidequest"),
-            "social_description":genai_types.Schema(type=genai_types.Type.STRING, description="Description of the social sidequest"),
-            "social_points":genai_types.Schema(type=genai_types.Type.INTEGER, description="Point value of the social sidequest"),
-            "health_title":genai_types.Schema(type=genai_types.Type.STRING, description="Title of the health sidequest"),
-            "health_description":genai_types.Schema(type=genai_types.Type.STRING, description="Description of the health sidequest"),
-            "health_points":genai_types.Schema(type=genai_types.Type.INTEGER, description="Point value of the health sidequest"),
-            "mindfulness_title":genai_types.Schema(type=genai_types.Type.STRING, description="Title of the mindfulness sidequest"),
-            "mindfulness_description":genai_types.Schema(type=genai_types.Type.STRING, description="Description of the mindfulness sidequest"),
-            "mindfulness_points":genai_types.Schema(type=genai_types.Type.INTEGER, description="Point value of the mindfulness sidequest"),
+#Define Structure for output of prompt - using string literals for type values
+quest_schema = {
+    "type": "object",
+    "properties": {
+        "social_title": {"type": "string", "description": "Title of the social sidequest"},
+        "social_description": {"type": "string", "description": "Description of the social sidequest"},
+        "social_points": {"type": "integer", "description": "Point value of the social sidequest"},
+        "health_title": {"type": "string", "description": "Title of the health sidequest"},
+        "health_description": {"type": "string", "description": "Description of the health sidequest"},
+        "health_points": {"type": "integer", "description": "Point value of the health sidequest"},
+        "mindfulness_title": {"type": "string", "description": "Title of the mindfulness sidequest"},
+        "mindfulness_description": {"type": "string", "description": "Description of the mindfulness sidequest"},
+        "mindfulness_points": {"type": "integer", "description": "Point value of the mindfulness sidequest"},
     },
-    required=[
+    "required": [
         "social_title", "social_description", "social_points",
         "health_title", "health_description", "health_points",
         "mindfulness_title", "mindfulness_description", "mindfulness_points"
     ]
-)
+}
 # This function will be defined inside get_daily_quests to use the actual user's description
 def generate_quest_prompt(user_description):
     """Generate a personalized prompt based on user's description"""
@@ -123,10 +122,10 @@ def get_daily_quests(user_id):
     response = client.models.generate_content(
         model="gemini-2.0-flash-exp", 
         contents=personalized_prompt,
-        config=genai_types.GenerateContentConfig(
-            response_mime_type="application/json",
-            response_schema=quest_schema
-        )
+        config={
+            "response_mime_type": "application/json",
+            "response_schema": quest_schema
+        }
     )
     categories = ['Social', 'Health', 'Mindfulness']
     
