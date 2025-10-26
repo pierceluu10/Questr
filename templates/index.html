@@ -3,18 +3,25 @@
 {% block title %}Questr - Daily Quests for Personal Growth{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center align-items-center" style="min-height: 75vh;">
-    <div class="col-lg-7 text-center">
-        <div class="hero-section py-5">
-            <h1 class="display-1 fw-bold mb-4 animate-title" style="font-size: clamp(3rem, 8vw, 5rem); letter-spacing: 0.05em; white-space: nowrap; text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);">
+<div class="row align-items-center" style="min-height: 85vh; padding: 40px 0 20px 0;">
+    <div class="col-lg-7">
+        <div class="hero-section">
+            <!-- Blue Leaf Icon -->
+            <div class="hero-icon mb-4" style="display: block;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="width: 80px; height: 80px; filter: drop-shadow(0 8px 20px rgba(88, 166, 255, 0.6)) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));">
+                    <path fill="#58a6ff" d="M272 96c-78.6 0-145.1 51.5-167.7 122.5c33.6-17 71.5-26.5 111.7-26.5h88c8.8 0 16 7.2 16 16s-7.2 16-16 16H288 216s0 0 0 0c-16.6 0-32.7 1.9-48.3 5.4c-25.9 5.9-49.9 16.4-71.4 30.7c0 0 0 0 0 0C38.3 298.8 0 364.9 0 440v16c0 13.3 10.7 24 24 24s24-10.7 24-24V440c0-48.7 20.7-92.5 53.8-123.2C121.6 392.3 190.3 448 272 448l1 0c132.1-.7 239-130.9 239-291.4c0-42.6-7.5-83.1-21.1-119.6c-2.6-6.9-12.7-6.6-16.2-.1C455.9 72.1 418.7 96 376 96L272 96z"/>
+                </svg>
+            </div>
+            
+            <h1 class="display-1 fw-bold mb-4 animate-title" style="font-size: clamp(3rem, 8vw, 4.5rem); letter-spacing: -0.02em; white-space: nowrap; text-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 4px 8px rgba(0, 0, 0, 0.4);">
                 Welcome to Questr
             </h1>
-            <p class="lead mb-5" style="font-size: 1.3rem; max-width: 600px; margin: 0 auto;">
+            <p class="lead mb-4" style="font-size: 1.2rem; max-width: 550px;">
                 Build better habits through daily quests. Track progress and improve your wellbeing.
             </p>
             
             {% if not current_user.is_authenticated %}
-                <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                <div class="d-grid gap-2 d-md-flex">
                     <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg px-5 py-3" style="font-size: 1.1rem; font-weight: 600; letter-spacing: 0.02em;">
                         Get Started
                     </a>
@@ -26,38 +33,43 @@
             {% endif %}
         </div>
     </div>
-</div>
-
-<div class="row mt-5 mb-5">
-    <div class="col-lg-10 mx-auto">
-        <div class="row g-4">
-            <div class="col-md-4 text-center">
-                <div class="feature-card p-4 h-100">
-                    <div class="feature-icon mb-3">
-                        <i class="fas fa-users fa-3x text-primary"></i>
+    
+    <!-- Category Cards on the Right -->
+    <div class="col-lg-4 offset-lg-1">
+        <div class="d-flex flex-column gap-3">
+            <div class="feature-card p-3">
+                <div class="d-flex align-items-center">
+                    <div class="feature-icon me-3">
+                        <i class="fas fa-users fa-2x text-primary"></i>
                     </div>
-                    <h5 class="fw-bold mb-3">Social Quests</h5>
-                    <p class="text-muted mb-0">Connect with others through meaningful interactions and build stronger relationships.</p>
+                    <div>
+                        <h6 class="fw-bold mb-1">Social Quests</h6>
+                        <p class="text-muted mb-0 small">Connect with others meaningfully</p>
+                    </div>
                 </div>
             </div>
             
-            <div class="col-md-4 text-center">
-                <div class="feature-card p-4 h-100">
-                    <div class="feature-icon mb-3">
-                        <i class="fas fa-heartbeat fa-3x text-success"></i>
+            <div class="feature-card p-3">
+                <div class="d-flex align-items-center">
+                    <div class="feature-icon me-3">
+                        <i class="fas fa-heartbeat fa-2x text-success"></i>
                     </div>
-                    <h5 class="fw-bold mb-3">Health Quests</h5>
-                    <p class="text-muted mb-0">Small steps toward better physical health and wellness habits.</p>
+                    <div>
+                        <h6 class="fw-bold mb-1">Health Quests</h6>
+                        <p class="text-muted mb-0 small">Build better physical habits</p>
+                    </div>
                 </div>
             </div>
             
-            <div class="col-md-4 text-center">
-                <div class="feature-card p-4 h-100">
-                    <div class="feature-icon mb-3">
-                        <i class="fas fa-brain fa-3x text-info"></i>
+            <div class="feature-card p-3">
+                <div class="d-flex align-items-center">
+                    <div class="feature-icon me-3">
+                        <i class="fas fa-brain fa-2x text-info"></i>
                     </div>
-                    <h5 class="fw-bold mb-3">Mindfulness Quests</h5>
-                    <p class="text-muted mb-0">Practice mindfulness, gratitude, and mental wellbeing exercises.</p>
+                    <div>
+                        <h6 class="fw-bold mb-1">Mindfulness Quests</h6>
+                        <p class="text-muted mb-0 small">Practice mental wellness</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -86,7 +98,7 @@
                 span.style.animationDelay = `${index * 0.05}s`;
                 // Preserve spaces
                 if (char === ' ') {
-                    span.style.width = '0.3em';
+                    span.style.width = '0.25em';
                 }
                 title.appendChild(span);
             });

@@ -19,9 +19,9 @@
     <div class="col-12">
         <div class="welcome-card p-4 mb-4">
             <h2 class="fw-bold mb-2" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                <i class="fas fa-spa"></i> Welcome back, {{ user.username }}!
+                Welcome back, {{ user.username }}!
             </h2>
-            <p class="mb-0">Complete your daily quests to build better habits.</p>
+            <p class="mb-0">Build better habits, one step at a time.</p>
         </div>
     </div>
 </div>
@@ -88,11 +88,6 @@
         <h3 class="fw-bold mb-0" style="margin-left: 16px;">
             <i class="fas fa-calendar-day"></i> Today's Quests
         </h3>
-        {% if completed_quest_ids|length == 0 %}
-        <a href="{{ url_for('reroll_quests') }}" class="btn btn-outline-primary btn-sm">
-            <i class="fas fa-sync-alt"></i> Reroll Quests
-        </a>
-        {% endif %}
     </div>
 </div>
 
