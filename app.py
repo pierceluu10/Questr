@@ -15,7 +15,6 @@ from models import db, User, Quest, UserQuest, Reflection, Achievement, UserAchi
 #Code for Gemini API:
 #First, we need to setup for Gemini API
 #MAKE SURE TO ADD THE USER DESCRIPTION PART
-User_description = "Hello, I am a first year Computer Engineering Student"
 GEMINI_API_KEY = "AIzaSyDVaYgw1kOSJ6p8AyTP6rRlH1jEfdkmdvM"
 
 import json
@@ -94,6 +93,13 @@ class ReflectionForm(FlaskForm):
 def get_daily_quests(user_id):
     """Get or generate today's quests for a user"""
     today = date.today()
+
+    user = User.query.get(user_id)
+    if not user:
+        return []
+
+    # Use the user's description, with a fallback if somehow empty
+    user_description = user.user_description if user.user_description else "A user seeking general personal growth."
     
     # Check if user already has quests for today
     existing_quests = Quest.query.filter(
