@@ -19,30 +19,32 @@ GEMINI_API_KEY = "AIzaSyDVaYgw1kOSJ6p8AyTP6rRlH1jEfdkmdvM"
 
 import json
 from google import genai
-from google.genai import types
 client = genai.Client(api_key=GEMINI_API_KEY)
 
-#Define Structure for ouput of prompt
-quest_schema=types.Schema(
-    type=types.Type.OBJECT,
-    properties={
-            "social_title":types.Schema(type=types.Type.STRING, description="Title of the social sidequest"),
-            "social_description":types.Schema(type=types.Type.STRING, description="Description of the social sidequest"),
-            "social_points":types.Schema(type=types.Type.INTEGER, description="Point value of the social sidequest"),
-            "health_title":types.Schema(type=types.Type.STRING, description="Title of the health sidequest"),
-            "health_description":types.Schema(type=types.Type.STRING, description="Description of the health sidequest"),
-            "health_points":types.Schema(type=types.Type.INTEGER, description="Point value of the health sidequest"),
-            "mindfulness_title":types.Schema(type=types.Type.STRING, description="Title of the mindfulness sidequest"),
-            "mindfulness_description":types.Schema(type=types.Type.STRING, description="Description of the mindfulness sidequest"),
-            "mindfulness_points":types.Schema(type=types.Type.INTEGER, description="Point value of the mindfulness sidequest"),
+#Define Structure for output of prompt - using string literals for type values
+quest_schema = {
+    "type": "object",
+    "properties": {
+        "social_title": {"type": "string", "description": "Title of the social sidequest"},
+        "social_description": {"type": "string", "description": "Description of the social sidequest"},
+        "social_points": {"type": "integer", "description": "Point value of the social sidequest"},
+        "health_title": {"type": "string", "description": "Title of the health sidequest"},
+        "health_description": {"type": "string", "description": "Description of the health sidequest"},
+        "health_points": {"type": "integer", "description": "Point value of the health sidequest"},
+        "mindfulness_title": {"type": "string", "description": "Title of the mindfulness sidequest"},
+        "mindfulness_description": {"type": "string", "description": "Description of the mindfulness sidequest"},
+        "mindfulness_points": {"type": "integer", "description": "Point value of the mindfulness sidequest"},
     },
-    required=[
+    "required": [
         "social_title", "social_description", "social_points",
         "health_title", "health_description", "health_points",
         "mindfulness_title", "mindfulness_description", "mindfulness_points"
     ]
-)
-prompt = f'"Using the description of the user: {User_description}, taking into account their interests and personal wellbeing needs, generate 3 side quests for the user throughout the day. There should be one sidequest for Social, one for Health, and one for Mindfulness. Each sidequest should have a title, a brief description, and a reward point value between 10 and 30 points. Make sure the sidequests are not corny or generic. Each quest should 80 characters or less. Make sure the points are appropriate for the difficulty and impact of the sidequest. Make sure the sidequests are diverse and engaging, that the person doing them has a guranteed chance of being able to complete them (i.e. do not assume they have a coding class, ask them to work on code in general)."'
+}
+# This function will be defined inside get_daily_quests to use the actual user's description
+def generate_quest_prompt(user_description):
+    """Generate a personalized prompt based on user's description"""
+    return f'Using the description of the user: "{user_description}", taking into account their interests and personal wellbeing needs, generate 3 quests for the user throughout the day. There should be one quest for Social, one for Health, and one for Mindfulness. Each quest should have a title, a brief description, and a reward point value between 10 and 30 points. Make sure the quests are not corny or generic. Each quest should be 80 characters or less. Make sure the points are appropriate for the difficulty and impact of the quest. Make sure the quests are diverse and engaging, that the person doing them has a guaranteed chance of being able to complete them (i.e. do not assume they have a coding class, ask them to work on code in general).'
 
 
 
@@ -114,15 +116,16 @@ def get_daily_quests(user_id):
     if existing_quests:
         return existing_quests
     
-    # Generate new quests for today
+    # Generate new quests for today using the user's personalized description
     today_quests = []
+    personalized_prompt = generate_quest_prompt(user_description)
     response = client.models.generate_content(
-        model="gemini-2.5-flash", 
-        contents=prompt,
-        config=types.GenerateContentConfig(
-            response_mime_type="application/json",
-            response_schema=quest_schema
-        )
+        model="gemini-2.0-flash-exp", 
+        contents=personalized_prompt,
+        config={
+            "response_mime_type": "application/json",
+            "response_schema": quest_schema
+        }
     )
     categories = ['Social', 'Health', 'Mindfulness']
     
@@ -255,16 +258,10 @@ def login():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    
     if current_user.is_authenticated:
         return redirect(url_for('dashboard'))
     
     form = RegisterForm()
-    if form.validate_on_submit():
-
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    # ... (existing form and validation code) ...
     if form.validate_on_submit():
         try:
             if User.query.filter_by(username=form.username.data).first():
