@@ -14,8 +14,7 @@ from models import db, User, Quest, UserQuest, Reflection, Achievement, UserAchi
 
 #Code for Gemini API:
 #First, we need to setup for Gemini API
-#MAKE SURE TO ADD THE USER DESCRIPTION PART
-GEMINI_API_KEY = "AIzaSyDVaYgw1kOSJ6p8AyTP6rRlH1jEfdkmdvM"
+GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', '')
 
 import json
 from google import genai
