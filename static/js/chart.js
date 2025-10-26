@@ -233,3 +233,43 @@ const observer = new IntersectionObserver((entries) => {
 document.querySelectorAll('.card, .quest-card, .stat-card').forEach(card => {
     observer.observe(card);
 });
+
+// === THEME SWITCHER ===
+document.addEventListener("DOMContentLoaded", () => {
+    // Create floating theme toggle button
+    const toggleBtn = document.createElement("button");
+    toggleBtn.className = "theme-toggle";
+    toggleBtn.innerHTML = "🌗";
+    document.body.appendChild(toggleBtn);
+
+    // Load previous theme or default to light
+    let theme = localStorage.getItem("theme") || "light";
+    applyTheme(theme);
+
+    // Button click cycle: light → dark → custom → light
+    toggleBtn.addEventListener("click", () => {
+        if (theme === "light") {
+            theme = "dark";
+        } else if (theme === "dark") {
+            theme = "custom";
+            // You can set your custom theme colors here 🌈
+            document.body.style.setProperty("--user-primary", "#ffcc5e");
+            document.body.style.setProperty("--user-secondary", "#f5d97d");
+            document.body.style.setProperty("--user-bg", "#ffb3c0");
+        } else {
+            theme = "light";
+        }
+        applyTheme(theme);
+        localStorage.setItem("theme", theme);
+    });
+
+    // Apply the theme to body
+    function applyTheme(mode) {
+        document.body.classList.remove("dark-theme", "custom-theme");
+        if (mode === "dark") {
+            document.body.classList.add("dark-theme");
+        } else if (mode === "custom") {
+            document.body.classList.add("custom-theme");
+        }
+    }
+});
