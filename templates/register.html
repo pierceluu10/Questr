@@ -52,20 +52,7 @@
                             </div>
                         {% endif %}
                     </div>
-
-
-                    <div class="mb-4">
-                        {{ form.description.label(class="form-label") }}
-                        {{ form.description(class="form-control", rows="3", placeholder="e.g., I'm a first-year Computer Engineering student who enjoys running and meditation.") }}
-                        {% if form.description.errors %}
-                            <div class="text-danger small">
-                                {% for error in form.description.errors %}
-                                    <div>{{ error }}</div>
-                                {% endfor %}
-                            </div>
-                        {% endif %}
-                    </div>
-                        
+                    
                     <div class="d-grid">
                         {{ form.submit(class="btn btn-primary btn-lg") }}
                     </div>
@@ -74,6 +61,10 @@
                
             </div>
         </div>
+    </div>
+</div>
+{% endblock %}
+
     </div>
 </div>
 {% endblock %}
