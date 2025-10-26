@@ -260,7 +260,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="{{ url_for('index') }}" style="font-size: 1.5rem; letter-spacing: 0.02em; margin-left: -12px;">
+            <a class="navbar-brand fw-bold" href="{{ url_for('index') }}" style="font-size: 1.5rem; letter-spacing: 0.02em; margin-left: -24px;">
                 Questr
             </a>
             
@@ -268,7 +268,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             
-            <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="collapse navbar-collapse" id="navbarNav" style="margin-left: -12px;">
                 <ul class="navbar-nav me-auto">
                     {% if current_user.is_authenticated %}
                         <!-- Icon Navigation with Tooltips -->
@@ -296,7 +296,7 @@
                             </a>
                         </li>
                     {% else %}
-                        <li class="nav-item">
+                        <li class="nav-item" style="margin-left: -8px;">
                             <a class="nav-link" href="{{ url_for('login') }}" style="font-weight: 500;">Login</a>
                         </li>
                         <li class="nav-item">
