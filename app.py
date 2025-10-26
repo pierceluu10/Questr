@@ -19,22 +19,22 @@ GEMINI_API_KEY = "AIzaSyDVaYgw1kOSJ6p8AyTP6rRlH1jEfdkmdvM"
 
 import json
 from google import genai
-from google.genai import types
+from google.genai import types as genai_types
 client = genai.Client(api_key=GEMINI_API_KEY)
 
 #Define Structure for ouput of prompt
-quest_schema=types.Schema(
-    type=types.Type.OBJECT,
+quest_schema=genai_types.Schema(
+    type=genai_types.Type.OBJECT,
     properties={
-            "social_title":types.Schema(type=types.Type.STRING, description="Title of the social sidequest"),
-            "social_description":types.Schema(type=types.Type.STRING, description="Description of the social sidequest"),
-            "social_points":types.Schema(type=types.Type.INTEGER, description="Point value of the social sidequest"),
-            "health_title":types.Schema(type=types.Type.STRING, description="Title of the health sidequest"),
-            "health_description":types.Schema(type=types.Type.STRING, description="Description of the health sidequest"),
-            "health_points":types.Schema(type=types.Type.INTEGER, description="Point value of the health sidequest"),
-            "mindfulness_title":types.Schema(type=types.Type.STRING, description="Title of the mindfulness sidequest"),
-            "mindfulness_description":types.Schema(type=types.Type.STRING, description="Description of the mindfulness sidequest"),
-            "mindfulness_points":types.Schema(type=types.Type.INTEGER, description="Point value of the mindfulness sidequest"),
+            "social_title":genai_types.Schema(type=genai_types.Type.STRING, description="Title of the social sidequest"),
+            "social_description":genai_types.Schema(type=genai_types.Type.STRING, description="Description of the social sidequest"),
+            "social_points":genai_types.Schema(type=genai_types.Type.INTEGER, description="Point value of the social sidequest"),
+            "health_title":genai_types.Schema(type=genai_types.Type.STRING, description="Title of the health sidequest"),
+            "health_description":genai_types.Schema(type=genai_types.Type.STRING, description="Description of the health sidequest"),
+            "health_points":genai_types.Schema(type=genai_types.Type.INTEGER, description="Point value of the health sidequest"),
+            "mindfulness_title":genai_types.Schema(type=genai_types.Type.STRING, description="Title of the mindfulness sidequest"),
+            "mindfulness_description":genai_types.Schema(type=genai_types.Type.STRING, description="Description of the mindfulness sidequest"),
+            "mindfulness_points":genai_types.Schema(type=genai_types.Type.INTEGER, description="Point value of the mindfulness sidequest"),
     },
     required=[
         "social_title", "social_description", "social_points",
@@ -123,7 +123,7 @@ def get_daily_quests(user_id):
     response = client.models.generate_content(
         model="gemini-2.0-flash-exp", 
         contents=personalized_prompt,
-        config=types.GenerateContentConfig(
+        config=genai_types.GenerateContentConfig(
             response_mime_type="application/json",
             response_schema=quest_schema
         )
