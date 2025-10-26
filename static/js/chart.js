@@ -255,6 +255,7 @@ document.addEventListener("DOMContentLoaded", () => {
             document.body.style.setProperty("--user-primary", "#ffcc5e");
             document.body.style.setProperty("--user-secondary", "#f5d97d");
             document.body.style.setProperty("--user-bg", "#fff7e6");
+            document.body.style.setProperty("#976da8", "#ffb3c0");
         } else {
             theme = "light";
         }
