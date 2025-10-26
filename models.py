@@ -11,6 +11,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(200), nullable=False)
     xp = db.Column(db.Integer, default=0)
+    user_description = db.Column(db.String(500), default='')
     streak = db.Column(db.Integer, default=0)
     join_date = db.Column(db.DateTime, default=datetime.utcnow)
     last_quest_date = db.Column(db.DateTime)
