@@ -510,9 +510,3 @@ body.custom-theme {
     background: var(--secondary-color);
 }
 
-/* invalid password/username:red text*/
-.alert-info {
-    color: red;
-}
-
-
