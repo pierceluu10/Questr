@@ -13,11 +13,11 @@
                 </svg>
             </div>
             
-            <h1 class="display-1 fw-bold mb-4 animate-title" style="font-size: clamp(3rem, 8vw, 4.5rem); letter-spacing: -0.02em; white-space: nowrap; text-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 4px 8px rgba(0, 0, 0, 0.4);">
+            <h1 class="display-1 fw-bold mb-3 animate-title" style="font-size: clamp(3rem, 8vw, 4.5rem); letter-spacing: -0.04em; white-space: nowrap; text-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 4px 8px rgba(0, 0, 0, 0.4);">
                 Welcome to Questr
             </h1>
-            <p class="lead mb-4" style="font-size: 1.2rem; max-width: 550px;">
-                Build better habits through daily quests. Track progress and improve your wellbeing.
+            <p class="lead mb-3" style="font-size: 1.2rem; max-width: 550px;">
+                Smart tasks, tailored to you.
             </p>
             
             {% if not current_user.is_authenticated %}
@@ -98,7 +98,7 @@
                 span.style.animationDelay = `${index * 0.05}s`;
                 // Preserve spaces
                 if (char === ' ') {
-                    span.style.width = '0.25em';
+                    span.style.width = '0.2em';
                 }
                 title.appendChild(span);
             });
