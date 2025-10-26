@@ -252,10 +252,12 @@ document.addEventListener("DOMContentLoaded", () => {
             theme = "dark";
         } else if (theme === "dark") {
             theme = "custom";
-            // You can set your custom theme colors here 🌈
+            applyTheme(theme); 
+            
+            // Custom colors 🌈
             document.body.style.setProperty("--user-primary", "#ffcc5e");
             document.body.style.setProperty("--user-secondary", "#f5d97d");
-            document.body.style.setProperty("--user-bg", "#ffb3c0");
+            document.body.style.setProperty("--user-bg", "#fff7e6");
         } else {
             theme = "light";
         }
@@ -263,7 +265,7 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.setItem("theme", theme);
     });
 
-    // Apply the theme to body
+    // Apply theme
     function applyTheme(mode) {
         document.body.classList.remove("dark-theme", "custom-theme");
         if (mode === "dark") {
