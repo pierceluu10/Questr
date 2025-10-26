@@ -474,3 +474,39 @@ footer {
 ::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(135deg, #f5d97d 0%, #ffcc5e 100%);
 }
+
+/* === THEME SWITCHING SUPPORT === */
+
+/* customize theme */
+body.custom-theme {
+    --primary-color: var(--user-primary, #b6cb9e);
+    --secondary-color: var(--user-secondary, #d1f0b1);
+    --success-color: var(--user-success, #6ede8a);
+    --warning-color: var(--user-warning, #f27059);
+    --info-color: var(--user-info, #8c8a93);
+    --light-bg: var(--user-bg, #c2dfe3);
+}
+
+/* theme switching button */
+.theme-toggle {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 1.3rem;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 9999;
+}
+
+.theme-toggle:hover {
+    transform: scale(1.1);
+    background: var(--secondary-color);
+}
+
