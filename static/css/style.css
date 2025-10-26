@@ -511,11 +511,8 @@ body.custom-theme {
 }
 
 /* invalid password/username:red text*/
-.alert-danger {
-    background-color: #ffdddd !important;
-    color: #c0392b !important;
-    border: 1px solid #e74c3c !important;
-    font-weight: 600;
-    text-align: center;
+.alert-info {
+    color: red;
 }
+
 
