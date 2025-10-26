@@ -233,6 +233,7 @@ const observer = new IntersectionObserver((entries) => {
 document.querySelectorAll('.card, .quest-card, .stat-card').forEach(card => {
     observer.observe(card);
 });
+
 // === THEME SWITCHER ===
 document.addEventListener("DOMContentLoaded", () => {
     // Create floating theme toggle button
@@ -254,8 +255,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // You can set your custom theme colors here 🌈
             document.body.style.setProperty("--user-primary", "#ffcc5e");
             document.body.style.setProperty("--user-secondary", "#f5d97d");
-            document.body.style.setProperty("--user-bg", "#fff7e6");
-            document.body.style.setProperty("#976da8", "#ffb3c0");
+            document.body.style.setProperty("--user-bg", "#ffb3c0");
         } else {
             theme = "light";
         }
