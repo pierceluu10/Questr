@@ -33,12 +33,12 @@ A full-stack web application that gives users positive daily tasks to improve me
 
 ### 🏆 Achievement System
 - Auto-awarded badges for milestones:
-  - 5-day streak → "Motivation Master" 🔥
-  - 10-day streak → "Streak Champion" ⚡
-  - 50 XP → "Level 2 Explorer" ⭐
-  - 100 XP → "Quest Veteran" 🏆
-  - 10 quests completed → "Quest Veteran" 🎯
-  - 25 quests completed → "Quest Master" 👑
+  - 5-day streak → "Motivation Master" 
+  - 10-day streak → "Streak Champion" 
+  - 50 XP → "Level 2 Explorer" 
+  - 100 XP → "Quest Veteran" 
+  - 10 quests completed → "Quest Veteran" 
+  - 25 quests completed → "Quest Master" 
 
 ## Tech Stack
 
