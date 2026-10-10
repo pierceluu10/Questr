@@ -23,7 +23,7 @@
         <a href="{{ url_for('login') }}">Log in</a>
         <a class="button small" href="{{ url_for('register') }}">Start your journey <span aria-hidden="true">↗</span></a>
       {% endif %}
-      <button class="theme-toggle" type="button" aria-label="Use dark appearance" aria-pressed="false" hidden>◐</button>
+      <button class="theme-toggle" type="button" aria-label="Use dark appearance" aria-pressed="false" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 4a8 8 0 0 1 0 16Z" fill="currentColor"/></svg></button>
     </nav>
   </header>
   {% with messages = get_flashed_messages() %}

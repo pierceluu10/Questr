@@ -1,9 +1,10 @@
 {% extends "base.html" %}
+{% from "icons.html" import category_icon %}
 {% block title %}Questr — A little adventure in your everyday{% endblock %}
 {% block content %}
 <section class="landing-hero" aria-labelledby="hero-title">
   <div class="hero-copy">
-    <span class="eyebrow"><span class="tiny-sun" aria-hidden="true">✳</span> A LITTLE ADVENTURE, EVERY DAY</span>
+
     <h1 id="hero-title">Small quests.<br>More <em>life.</em></h1>
     <p>Step outside your routine. Connect with someone, move a little, take a breath. Questr turns everyday wellbeing into small adventures made for you.</p>
     <a class="button" href="{{ url_for('dashboard') if current_user.is_authenticated else url_for('register') }}">{{ 'Open today’s quests' if current_user.is_authenticated else 'Find your first quest' }} <span aria-hidden="true">↗</span></a>
@@ -12,21 +13,21 @@
   <div class="journal-preview" aria-label="Illustrative daily quest journal">
     <div class="journal-cover"><span>THE EVERYDAY JOURNAL</span><svg class="botanical" viewBox="0 0 160 160" aria-hidden="true"><circle cx="80" cy="80" r="68"/><path d="M73 128c6-48 5-65 15-98M81 80c-24 1-39-17-39-34 24-1 39 14 39 34Zm2-16c24 0 40-17 40-34-24-1-39 13-40 34ZM77 105c-25 1-38-15-38-33 21-1 38 12 38 33Zm2-11c23 2 41-13 44-32-24-2-40 9-44 32Z"/></svg><span>GROW AT YOUR OWN PACE</span></div>
     <div class="journal-sheet">
-      <div class="sheet-heading"><div><span class="eyebrow">A DAY OF POSSIBILITIES</span><h2>Your next little adventure</h2></div><span class="example-label">Example day</span></div>
-      <div class="preview-quest"><span class="category-symbol social" aria-hidden="true">↗</span><div><span class="category-name social-text">SOCIAL</span><strong>Send a thoughtful check-in</strong><p>Make a little space for someone you miss.</p></div><span class="xp">+20 XP</span></div>
-      <div class="preview-quest"><span class="category-symbol health" aria-hidden="true">⌁</span><div><span class="category-name health-text">HEALTH</span><strong>Take the scenic route</strong><p>A short walk. A different perspective.</p></div><span class="xp">+15 XP</span></div>
-      <div class="preview-quest"><span class="category-symbol mindfulness" aria-hidden="true">✳</span><div><span class="category-name mindfulness-text">MINDFULNESS</span><strong>Pause for a quiet moment</strong><p>Put your phone down. Notice what’s around.</p></div><span class="xp">+10 XP</span></div>
+      <div class="sheet-heading"><div><h2>Your next little adventure</h2></div><span class="example-label">Example day</span></div>
+      <div class="preview-quest"><span class="category-symbol social" aria-hidden="true">{{ category_icon('Social') }}</span><div><span class="category-name social-text">SOCIAL</span><strong>Send a thoughtful check-in</strong><p>Make a little space for someone you miss.</p></div><span class="xp">+20 XP</span></div>
+      <div class="preview-quest"><span class="category-symbol health" aria-hidden="true">{{ category_icon('Health') }}</span><div><span class="category-name health-text">HEALTH</span><strong>Take the scenic route</strong><p>A short walk. A different perspective.</p></div><span class="xp">+15 XP</span></div>
+      <div class="preview-quest"><span class="category-symbol mindfulness" aria-hidden="true">{{ category_icon('Mindfulness') }}</span><div><span class="category-name mindfulness-text">MINDFULNESS</span><strong>Pause for a quiet moment</strong><p>Put your phone down. Notice what’s around.</p></div><span class="xp">+10 XP</span></div>
       <div class="sheet-footer"><span>Little things add up.</span><span aria-hidden="true">↗</span></div>
     </div>
   </div>
 </section>
 <section class="category-section" aria-labelledby="category-title">
-  <div class="section-heading"><span class="eyebrow">ROOM FOR WHAT MATTERS</span><h2 id="category-title">Three ways to make<br>a day your own.</h2><p>Daily quests shaped around your interests. No grand reinvention required.</p></div>
+  <div class="section-heading"><h2 id="category-title">Three ways to make<br>a day your own.</h2><p>Daily quests shaped around your interests. No grand reinvention required.</p></div>
   <div class="category-grid">
-    <article><span class="category-symbol social" aria-hidden="true">↗</span><h3>Make a connection.</h3><p>Small reasons to reach out, share a moment and feel a little closer to the people around you.</p><span class="category-name social-text">SOCIAL QUESTS</span></article>
-    <article><span class="category-symbol health" aria-hidden="true">⌁</span><h3>Move your own way.</h3><p>Doable steps toward physical wellbeing, with room for the way you actually live.</p><span class="category-name health-text">HEALTH QUESTS</span></article>
-    <article><span class="category-symbol mindfulness" aria-hidden="true">✳</span><h3>Come back to yourself.</h3><p>A pause, a breath, a little attention. Everyday moments that help you slow down.</p><span class="category-name mindfulness-text">MINDFULNESS QUESTS</span></article>
+    <article><span class="category-symbol social" aria-hidden="true">{{ category_icon('Social') }}</span><h3>Make a connection.</h3><p>Small reasons to reach out, share a moment and feel a little closer to the people around you.</p><span class="category-name social-text">SOCIAL QUESTS</span></article>
+    <article><span class="category-symbol health" aria-hidden="true">{{ category_icon('Health') }}</span><h3>Move your own way.</h3><p>Doable steps toward physical wellbeing, with room for the way you actually live.</p><span class="category-name health-text">HEALTH QUESTS</span></article>
+    <article><span class="category-symbol mindfulness" aria-hidden="true">{{ category_icon('Mindfulness') }}</span><h3>Come back to yourself.</h3><p>A pause, a breath, a little attention. Everyday moments that help you slow down.</p><span class="category-name mindfulness-text">MINDFULNESS QUESTS</span></article>
   </div>
 </section>
-<section class="journey-section"><span class="eyebrow">A PRACTICE, NOT A RACE</span><h2>Do a little.<br>Notice how you feel.<br><em>Keep growing.</em></h2><p>Complete quests, collect XP and unlock achievements. Write a reflection to remember what the small things felt like. Your journal keeps the story.</p><a class="button" href="{{ url_for('profile') if current_user.is_authenticated else url_for('register') }}">{{ 'Visit your journal' if current_user.is_authenticated else 'Make room for a little adventure' }} <span aria-hidden="true">↗</span></a></section>
+<section class="journey-section"><h2>Do a little.<br>Notice how you feel.<br><em>Keep growing.</em></h2><p>Complete quests, collect XP and unlock achievements. Write a reflection to remember what the small things felt like. Your journal keeps the story.</p><a class="button" href="{{ url_for('profile') if current_user.is_authenticated else url_for('register') }}">{{ 'Visit your journal' if current_user.is_authenticated else 'Make room for a little adventure' }} <span aria-hidden="true">↗</span></a></section>
 {% endblock %}

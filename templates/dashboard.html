@@ -1,13 +1,14 @@
 {% extends "base.html" %}
+{% from "icons.html" import category_icon %}
 {% block title %}Today — Questr{% endblock %}
 {% block content %}
-<header class="page-heading"><div><span class="eyebrow">YOUR EVERYDAY ADVENTURE</span><h1>Hello, {{ user.username }}.</h1><p>A little connection. A little movement. A moment for yourself.</p></div><span class="heading-note">Your next step<br>doesn’t have to be a big one.</span></header>
+<header class="page-heading"><div><h1>Hello, {{ user.username }}.</h1><p>A little connection. A little movement. A moment for yourself.</p></div><span class="heading-note">Your next step<br>doesn’t have to be a big one.</span></header>
 <div class="app-layout">
   <section class="task-section" aria-labelledby="quests-title">
     <div class="task-heading"><h2 id="quests-title">Today’s quests</h2><span>{{ completed_quest_ids|length }} of {{ quests|length }} completed</span></div>
     {% for quest in quests %}
     <article class="quest-row {{ 'completed' if quest.id in completed_quest_ids else '' }}">
-      <span class="category-symbol {{ quest.category|lower }}" aria-hidden="true">{{ '↗' if quest.category == 'Social' else '⌁' if quest.category == 'Health' else '✳' }}</span>
+      <span class="category-symbol {{ quest.category|lower }}" aria-hidden="true">{{ category_icon(quest.category) }}</span>
       <div><span class="category-name {{ quest.category|lower }}-text">{{ quest.category|upper }}</span><h3>{{ quest.title }}</h3>{% if quest.description %}<p>{{ quest.description }}</p>{% endif %}
         <div class="quest-actions">{% if quest.id in completed_quest_ids %}<span class="completed-label">✓ Completed</span><a class="text-link" href="{{ url_for('reflection', quest_id=quest.id) }}">Write a reflection ↗</a>{% else %}<a class="button small" href="{{ url_for('complete_quest', quest_id=quest.id) }}">Mark complete <span aria-hidden="true">✓</span></a>{% endif %}</div>
       </div><span class="xp">+{{ quest.reward_points }} XP</span>

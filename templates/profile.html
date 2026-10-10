@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}My journal — Questr{% endblock %}
 {% block content %}
-<header class="page-heading"><div><span class="eyebrow">YOUR STORY, ONE DAY AT A TIME</span><h1>{{ user.username }}’s journal.</h1><p>Small steps. A little perspective. A record of how far you’ve come.</p></div><span class="heading-note">Here since<br>{{ user.join_date.strftime('%B %Y') }}</span></header>
+<header class="page-heading"><div><h1>{{ user.username }}’s journal.</h1><p>Small steps. A little perspective. A record of how far you’ve come.</p></div><span class="heading-note">Here since<br>{{ user.join_date.strftime('%B %Y') }}</span></header>
 <div class="journal-layout"><div class="journal-main">
   <div class="chart-grid">
     <section class="chart-card" aria-labelledby="mood-title"><h2 id="mood-title">A reflection of your days</h2><p>Sentiment from your journal entries. A guide, not a clinical measure.</p><div class="chart-container"><canvas id="moodChart" role="img" aria-label="Sentiment of journal entries over time" hidden></canvas><p id="mood-status" class="chart-status" role="status">Loading your reflections…</p></div><p id="mood-summary" class="chart-summary"></p></section>
