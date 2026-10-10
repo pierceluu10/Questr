@@ -1,277 +1,128 @@
-// Questr Chart Utilities
+const SENTIMENT_MINIMUM = -1;
+const SENTIMENT_MAXIMUM = 1;
+const SENTIMENT_THRESHOLD = 0.1;
+const CATEGORY_LABELS = ['Social', 'Health', 'Mindfulness'];
+const charts = [];
+const controller = new AbortController();
+class MoodResponseError extends Error {}
 
-// Initialize all charts when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    initializeCharts();
-});
-
-function initializeCharts() {
-    // Initialize mood chart if element exists
-    const moodChartElement = document.getElementById('moodChart');
-    if (moodChartElement) {
-        initializeMoodChart();
-    }
-    
-    // Initialize category chart if element exists
-    const categoryChartElement = document.getElementById('categoryChart');
-    if (categoryChartElement) {
-        initializeCategoryChart();
-    }
+function palette() {
+  const style = getComputedStyle(document.documentElement);
+  return Object.fromEntries(['ink', 'body', 'line', 'green', 'green-soft', 'clay', 'honey'].map(
+    name => [name, style.getPropertyValue(`--${name}`).trim()],
+  ));
 }
-
-function initializeMoodChart() {
-    fetch('/api/mood-data')
-        .then(response => response.json())
-        .then(data => {
-            const ctx = document.getElementById('moodChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: data.dates,
-                    datasets: [{
-                        label: 'Mood Score',
-                        data: data.scores,
-                        borderColor: 'rgb(102, 126, 234)',
-                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
-                        borderWidth: 3,
-                        fill: true,
-                        tension: 0.4,
-                        pointBackgroundColor: 'rgb(102, 126, 234)',
-                        pointBorderColor: '#fff',
-                        pointBorderWidth: 2,
-                        pointRadius: 6,
-                        pointHoverRadius: 8
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                            titleColor: '#fff',
-                            bodyColor: '#fff',
-                            borderColor: 'rgb(102, 126, 234)',
-                            borderWidth: 1,
-                            cornerRadius: 8
-                        }
-                    },
-                    scales: {
-                        x: {
-                            grid: {
-                                color: 'rgba(0, 0, 0, 0.1)'
-                            },
-                            ticks: {
-                                color: '#666'
-                            }
-                        },
-                        y: {
-                            beginAtZero: true,
-                            min: -1,
-                            max: 1,
-                            grid: {
-                                color: 'rgba(0, 0, 0, 0.1)'
-                            },
-                            ticks: {
-                                color: '#666',
-                                callback: function(value) {
-                                    if (value > 0.1) return 'Positive';
-                                    if (value < -0.1) return 'Negative';
-                                    return 'Neutral';
-                                }
-                            }
-                        }
-                    },
-                    interaction: {
-                        intersect: false,
-                        mode: 'index'
-                    }
-                }
-            });
-        })
-        .catch(error => {
-            console.error('Error loading mood data:', error);
-            // Show placeholder message with more padding
-            const chartContainer = document.querySelector('#moodChart').parentElement;
-            chartContainer.innerHTML = '<div class="text-center text-muted" style="padding: 80px 20px;"><i class="fas fa-chart-line fa-3x mb-3 d-block"></i><p class="mb-0">No mood data available yet</p></div>';
-        });
+function sentimentLabel(score) {
+  if (score > SENTIMENT_THRESHOLD) return 'Positive';
+  if (score < -SENTIMENT_THRESHOLD) return 'Negative';
+  return 'Neutral';
 }
-
-function initializeCategoryChart() {
-    // This will be populated with actual data from the template
-    const ctx = document.getElementById('categoryChart').getContext('2d');
-    
-    // Get data from the template (this is a simplified version)
-    const socialCount = parseInt(document.querySelector('[data-social-count]')?.dataset.socialCount || '0');
-    const healthCount = parseInt(document.querySelector('[data-health-count]')?.dataset.healthCount || '0');
-    const mindfulnessCount = parseInt(document.querySelector('[data-mindfulness-count]')?.dataset.mindfulnessCount || '0');
-    
-    // Check if there's any data
-    const totalCount = socialCount + healthCount + mindfulnessCount;
-    if (totalCount === 0) {
-        const chartContainer = document.querySelector('#categoryChart').parentElement;
-        chartContainer.innerHTML = '<div class="text-center text-muted" style="padding: 80px 20px;"><i class="fas fa-chart-pie fa-3x mb-3 d-block"></i><p class="mb-0">Complete a quest first</p></div>';
-        return;
+function chartOptions(colors) {
+  return {
+    responsive: true,
+    maintainAspectRatio: false,
+    animation: !matchMedia('(prefers-reduced-motion: reduce)').matches,
+    color: colors.body,
+    plugins: { legend: { display: false } },
+  };
+}
+function showStatus(canvas, status, text) {
+  canvas.hidden = true;
+  status.hidden = false;
+  status.textContent = text;
+}
+function showCanvas(canvas, status) {
+  status.hidden = true;
+  canvas.hidden = false;
+}
+function initializeCategories() {
+  const canvas = document.getElementById('categoryChart');
+  const status = document.getElementById('category-status');
+  const counts = [canvas.dataset.socialCount, canvas.dataset.healthCount, canvas.dataset.mindfulnessCount].map(Number);
+  if (!counts.some(count => count > 0)) {
+    showStatus(canvas, status, 'Complete a quest to start your history.');
+    return;
+  }
+  const colors = palette();
+  showCanvas(canvas, status);
+  charts.push(new Chart(canvas, {
+    type: 'doughnut',
+    data: {
+      labels: CATEGORY_LABELS,
+      datasets: [{ data: counts, backgroundColor: [colors.clay, colors.green, colors.honey], borderWidth: 0 }],
+    },
+    options: { ...chartOptions(colors), cutout: '76%' },
+  }));
+}
+async function initializeMood() {
+  const canvas = document.getElementById('moodChart');
+  const status = document.getElementById('mood-status');
+  try {
+    const response = await fetch('/api/mood-data', { signal: controller.signal });
+    if (!response.ok) throw new MoodResponseError(`Mood endpoint returned ${response.status}`);
+    const data = await response.json();
+    if (!Array.isArray(data.dates) || !Array.isArray(data.scores) || data.dates.length !== data.scores.length || !data.scores.every(Number.isFinite)) {
+      throw new MoodResponseError('Mood endpoint returned invalid chart data');
     }
-    
-    new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: ['Social', 'Health', 'Mindfulness'],
-            datasets: [{
-                data: [socialCount, healthCount, mindfulnessCount],
-                backgroundColor: [
-                    'rgba(54, 162, 235, 0.8)',
-                    'rgba(75, 192, 192, 0.8)',
-                    'rgba(153, 102, 255, 0.8)'
-                ],
-                borderColor: [
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)'
-                ],
-                borderWidth: 2,
-                hoverOffset: 10
-            }]
+    if (data.dates.length === 0) {
+      showStatus(canvas, status, 'Your first reflection will start this story.');
+      return;
+    }
+    const colors = palette();
+    showCanvas(canvas, status);
+    const latestScore = data.scores.at(-1);
+    document.getElementById('mood-summary').textContent = `${data.dates.length} reflection${data.dates.length === 1 ? '' : 's'} · Latest entry: ${sentimentLabel(latestScore).toLowerCase()} sentiment`;
+    charts.push(new Chart(canvas, {
+      type: 'line',
+      data: {
+        labels: data.dates,
+        datasets: [{ label: 'Journal sentiment', data: data.scores, borderColor: colors.green, backgroundColor: colors['green-soft'], borderWidth: 2, pointRadius: 3, fill: true, tension: 0.25 }],
+      },
+      options: {
+        ...chartOptions(colors),
+        interaction: { intersect: false, mode: 'index' },
+        scales: {
+          x: { grid: { display: false }, ticks: { color: colors.body, maxTicksLimit: 4, maxRotation: 0 } },
+          y: { min: SENTIMENT_MINIMUM, max: SENTIMENT_MAXIMUM, ticks: { color: colors.body, maxTicksLimit: 3, callback: sentimentLabel }, grid: { color: colors.line } },
         },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'bottom',
-                    labels: {
-                        padding: 20,
-                        usePointStyle: true,
-                        font: {
-                            size: 12,
-                            weight: '500'
-                        }
-                    }
-                },
-                tooltip: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                    titleColor: '#fff',
-                    bodyColor: '#fff',
-                    borderColor: 'rgba(255, 255, 255, 0.2)',
-                    borderWidth: 1,
-                    cornerRadius: 8,
-                    callbacks: {
-                        label: function(context) {
-                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                            const percentage = total > 0 ? Math.round((context.parsed / total) * 100) : 0;
-                            return `${context.label}: ${context.parsed} quests (${percentage}%)`;
-                        }
-                    }
-                }
-            },
-            cutout: '60%'
-        }
-    });
+      },
+    }));
+  } catch (error) {
+    if (error.name === 'AbortError') return;
+    if (!(error instanceof MoodResponseError || error instanceof TypeError || error instanceof SyntaxError)) throw error;
+    showStatus(canvas, status, 'Your reflections couldn’t load. Refresh to try again.');
+    console.error('Journal chart request failed:', error);
+  }
 }
-
-// Utility function to refresh charts
-function refreshCharts() {
-    // Destroy existing charts
-    Chart.helpers.each(Chart.instances, function(instance) {
-        instance.destroy();
-    });
-    
-    // Reinitialize charts
-    initializeCharts();
-}
-
-// Add smooth scrolling for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
-    });
-});
-
-// Add loading states to buttons
-document.querySelectorAll('.btn').forEach(button => {
-    button.addEventListener('click', function() {
-        if (this.type === 'submit' || this.href) {
-            this.classList.add('loading');
-            const originalText = this.innerHTML;
-            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
-            
-            // Reset after 3 seconds (in case of errors)
-            setTimeout(() => {
-                this.classList.remove('loading');
-                this.innerHTML = originalText;
-            }, 3000);
-        }
-    });
-});
-
-// Add fade-in animation to cards
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('fade-in-up');
-        }
-    });
-}, observerOptions);
-
-// Observe all cards
-document.querySelectorAll('.card, .quest-card, .stat-card').forEach(card => {
-    observer.observe(card);
-});
-
-// === THEME SWITCHER ===
-document.addEventListener("DOMContentLoaded", () => {
-    // Create floating theme toggle button
-    const toggleBtn = document.createElement("button");
-    toggleBtn.className = "theme-toggle";
-    toggleBtn.innerHTML = "🌗";
-    document.body.appendChild(toggleBtn);
-
-    // Load previous theme or default to light
-    let theme = localStorage.getItem("theme") || "light";
-    applyTheme(theme);
-
-    // Button click cycle: light → dark → custom → light
-    toggleBtn.addEventListener("click", () => {
-        if (theme === "light") {
-            theme = "dark";
-        } else if (theme === "dark") {
-            theme = "custom";
-            applyTheme(theme); 
-            
-            // Custom colors 🌈
-            document.body.style.setProperty("--user-primary", "#ffcc5e");
-            document.body.style.setProperty("--user-secondary", "#f5d97d");
-            document.body.style.setProperty("--user-bg", "#fff7e6");
-        } else {
-            theme = "light";
-        }
-        applyTheme(theme);
-        localStorage.setItem("theme", theme);
-    });
-
-    // Apply theme
-    function applyTheme(mode) {
-        document.body.classList.remove("dark-theme", "custom-theme");
-        if (mode === "dark") {
-            document.body.classList.add("dark-theme");
-        } else if (mode === "custom") {
-            document.body.classList.add("custom-theme");
-        }
+function updateChartAppearance() {
+  const colors = palette();
+  for (const chart of charts) {
+    chart.options.color = colors.body;
+    const dataset = chart.data.datasets[0];
+    if (chart.config.type === 'line') {
+      dataset.borderColor = colors.green;
+      dataset.backgroundColor = colors['green-soft'];
+      chart.options.scales.x.ticks.color = colors.body;
+      chart.options.scales.y.ticks.color = colors.body;
+      chart.options.scales.y.grid.color = colors.line;
+    } else {
+      dataset.backgroundColor = [colors.clay, colors.green, colors.honey];
     }
-});
+    chart.update('none');
+  }
+}
+if (document.getElementById('moodChart')) {
+  if (typeof Chart === 'undefined') {
+    showStatus(document.getElementById('moodChart'), document.getElementById('mood-status'), 'Chart display is unavailable. Your entries are listed below.');
+    showStatus(document.getElementById('categoryChart'), document.getElementById('category-status'), 'Chart display is unavailable. Your category totals are listed below.');
+  } else {
+    initializeCategories();
+    initializeMood();
+    document.addEventListener('appearancechange', updateChartAppearance);
+    window.addEventListener('pagehide', () => {
+      controller.abort();
+      document.removeEventListener('appearancechange', updateChartAppearance);
+      for (const chart of charts) chart.destroy();
+    }, { once: true });
+  }
+}
