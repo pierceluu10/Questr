@@ -1,0 +1,9 @@
+<aside class="progress-rail" aria-label="Your progress">
+  <span class="eyebrow">GROW AT YOUR OWN PACE</span>
+  <h2>Every little<br>step counts.</h2>
+  <div class="level-number">{{ user.get_level() }}</div><span class="eyebrow">YOUR CURRENT LEVEL</span>
+  <div class="progress-label"><span>{{ user.get_xp_progress_percentage() }} / 100 XP</span><span>Level {{ user.get_level() + 1 }}</span></div>
+  <div class="progress" role="progressbar" aria-label="Progress to next level" aria-valuenow="{{ user.get_xp_progress_percentage() }}" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width:{{ user.get_xp_progress_percentage() }}%"></div></div>
+  <dl class="stats-list"><div><dt>Total XP</dt><dd>{{ user.xp }}</dd></div><div><dt>Day streak</dt><dd>{{ user.streak }}</dd></div><div><dt>Quests completed</dt><dd>{{ user.completed_quests|length }}</dd></div></dl>
+  <p class="rail-note">A fresh start is still a start. Take your next quest at your own pace.</p>
+</aside>
