@@ -1,0 +1,9 @@
+{% macro field(input, autocomplete='', hint='', rows=none) %}
+<div class="field">
+  {{ input.label }}
+  {% if rows %}{{ input(class='form-control', rows=rows, aria_invalid='true' if input.errors else 'false', aria_describedby=input.id ~ '-errors' if input.errors else input.id ~ '-hint' if hint else none) }}
+  {% else %}{{ input(class='form-control', autocomplete=autocomplete, aria_invalid='true' if input.errors else 'false', aria_describedby=input.id ~ '-errors' if input.errors else input.id ~ '-hint' if hint else none) }}{% endif %}
+  {% if input.errors %}<ul class="field-errors" id="{{ input.id }}-errors">{% for error in input.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+  {% if hint %}<p class="field-hint" id="{{ input.id }}-hint">{{ hint }}</p>{% endif %}
+</div>
+{% endmacro %}
