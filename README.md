@@ -2,6 +2,28 @@
 
 A full-stack web application that gives users positive daily tasks to improve mental, physical, and social wellbeing.
 
+## Screenshots
+
+The app screens use a local demo account with sample quests and reflections.
+
+### Landing page
+
+An introduction to small daily quests for health, connection and mindfulness.
+
+<img width="1200" alt="Questr field journal landing page introducing daily quests" src="docs/screenshots/landing.jpg" />
+
+### Today’s quests
+
+Daily quest cards with completion, XP and streak information.
+
+<img width="1200" alt="Questr daily dashboard showing quest cards, XP and streak information" src="docs/screenshots/today.jpg" />
+
+### Personal journal
+
+Reflection trends, quest categories, level progress and recent entries.
+
+<img width="1200" alt="Questr personal journal showing reflection trends, progress and journal entries" src="docs/screenshots/journal.jpg" />
+
 ## Features
 
 ### 🏠 Dashboard
