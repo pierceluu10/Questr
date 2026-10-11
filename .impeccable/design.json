@@ -1,0 +1,594 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-11T02:25:06.476680Z",
+  "title": "Design System: Questr",
+  "extensions": {
+    "colorMeta": {
+      "paper": {
+        "role": "neutral",
+        "displayName": "Cream paper",
+        "tonalRamp": [
+          "oklch(15.0% 0.0108 95.2)",
+          "oklch(26.4% 0.0108 95.2)",
+          "oklch(37.9% 0.0108 95.2)",
+          "oklch(49.3% 0.0108 95.2)",
+          "oklch(60.7% 0.0108 95.2)",
+          "oklch(72.1% 0.0108 95.2)",
+          "oklch(83.6% 0.0108 95.2)",
+          "oklch(95.0% 0.0108 95.2)"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Open sheet",
+        "tonalRamp": [
+          "oklch(15.0% 0.0080 98.9)",
+          "oklch(26.4% 0.0080 98.9)",
+          "oklch(37.9% 0.0080 98.9)",
+          "oklch(49.3% 0.0080 98.9)",
+          "oklch(60.7% 0.0080 98.9)",
+          "oklch(72.1% 0.0080 98.9)",
+          "oklch(83.6% 0.0080 98.9)",
+          "oklch(95.0% 0.0080 98.9)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Forest ink",
+        "tonalRamp": [
+          "oklch(15.0% 0.0396 164.3)",
+          "oklch(26.4% 0.0396 164.3)",
+          "oklch(37.9% 0.0396 164.3)",
+          "oklch(49.3% 0.0396 164.3)",
+          "oklch(60.7% 0.0396 164.3)",
+          "oklch(72.1% 0.0396 164.3)",
+          "oklch(83.6% 0.0396 164.3)",
+          "oklch(95.0% 0.0396 164.3)"
+        ]
+      },
+      "body": {
+        "role": "neutral",
+        "displayName": "Soft graphite",
+        "tonalRamp": [
+          "oklch(15.0% 0.0171 142.2)",
+          "oklch(26.4% 0.0171 142.2)",
+          "oklch(37.9% 0.0171 142.2)",
+          "oklch(49.3% 0.0171 142.2)",
+          "oklch(60.7% 0.0171 142.2)",
+          "oklch(72.1% 0.0171 142.2)",
+          "oklch(83.6% 0.0171 142.2)",
+          "oklch(95.0% 0.0171 142.2)"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Pencil rule",
+        "tonalRamp": [
+          "oklch(15.0% 0.0180 120.7)",
+          "oklch(26.4% 0.0180 120.7)",
+          "oklch(37.9% 0.0180 120.7)",
+          "oklch(49.3% 0.0180 120.7)",
+          "oklch(60.7% 0.0180 120.7)",
+          "oklch(72.1% 0.0180 120.7)",
+          "oklch(83.6% 0.0180 120.7)",
+          "oklch(95.0% 0.0180 120.7)"
+        ]
+      },
+      "green": {
+        "role": "primary",
+        "displayName": "Forest",
+        "tonalRamp": [
+          "oklch(15.0% 0.0554 162.7)",
+          "oklch(26.4% 0.0554 162.7)",
+          "oklch(37.9% 0.0554 162.7)",
+          "oklch(49.3% 0.0554 162.7)",
+          "oklch(60.7% 0.0554 162.7)",
+          "oklch(72.1% 0.0554 162.7)",
+          "oklch(83.6% 0.0554 162.7)",
+          "oklch(95.0% 0.0554 162.7)"
+        ]
+      },
+      "green-soft": {
+        "role": "primary",
+        "displayName": "Leaf wash",
+        "tonalRamp": [
+          "oklch(15.0% 0.0189 130.2)",
+          "oklch(26.4% 0.0189 130.2)",
+          "oklch(37.9% 0.0189 130.2)",
+          "oklch(49.3% 0.0189 130.2)",
+          "oklch(60.7% 0.0189 130.2)",
+          "oklch(72.1% 0.0189 130.2)",
+          "oklch(83.6% 0.0189 130.2)",
+          "oklch(95.0% 0.0189 130.2)"
+        ]
+      },
+      "clay": {
+        "role": "secondary",
+        "displayName": "Clay",
+        "tonalRamp": [
+          "oklch(15.0% 0.0898 38.4)",
+          "oklch(26.4% 0.0898 38.4)",
+          "oklch(37.9% 0.0898 38.4)",
+          "oklch(49.3% 0.0898 38.4)",
+          "oklch(60.7% 0.0898 38.4)",
+          "oklch(72.1% 0.0898 38.4)",
+          "oklch(83.6% 0.0898 38.4)",
+          "oklch(95.0% 0.0898 38.4)"
+        ]
+      },
+      "clay-soft": {
+        "role": "secondary",
+        "displayName": "Clay wash",
+        "tonalRamp": [
+          "oklch(15.0% 0.0221 54.3)",
+          "oklch(26.4% 0.0221 54.3)",
+          "oklch(37.9% 0.0221 54.3)",
+          "oklch(49.3% 0.0221 54.3)",
+          "oklch(60.7% 0.0221 54.3)",
+          "oklch(72.1% 0.0221 54.3)",
+          "oklch(83.6% 0.0221 54.3)",
+          "oklch(95.0% 0.0221 54.3)"
+        ]
+      },
+      "honey": {
+        "role": "secondary",
+        "displayName": "Honey",
+        "tonalRamp": [
+          "oklch(15.0% 0.0894 78.3)",
+          "oklch(26.4% 0.0894 78.3)",
+          "oklch(37.9% 0.0894 78.3)",
+          "oklch(49.3% 0.0894 78.3)",
+          "oklch(60.7% 0.0894 78.3)",
+          "oklch(72.1% 0.0894 78.3)",
+          "oklch(83.6% 0.0894 78.3)",
+          "oklch(95.0% 0.0894 78.3)"
+        ]
+      },
+      "honey-soft": {
+        "role": "secondary",
+        "displayName": "Honey wash",
+        "tonalRamp": [
+          "oklch(15.0% 0.0353 92.8)",
+          "oklch(26.4% 0.0353 92.8)",
+          "oklch(37.9% 0.0353 92.8)",
+          "oklch(49.3% 0.0353 92.8)",
+          "oklch(60.7% 0.0353 92.8)",
+          "oklch(72.1% 0.0353 92.8)",
+          "oklch(83.6% 0.0353 92.8)",
+          "oklch(95.0% 0.0353 92.8)"
+        ]
+      },
+      "dark-paper": {
+        "role": "neutral",
+        "displayName": "Dark appearance: Cream paper",
+        "tonalRamp": [
+          "oklch(15.0% 0.0235 162.4)",
+          "oklch(26.4% 0.0235 162.4)",
+          "oklch(37.9% 0.0235 162.4)",
+          "oklch(49.3% 0.0235 162.4)",
+          "oklch(60.7% 0.0235 162.4)",
+          "oklch(72.1% 0.0235 162.4)",
+          "oklch(83.6% 0.0235 162.4)",
+          "oklch(95.0% 0.0235 162.4)"
+        ]
+      },
+      "dark-surface": {
+        "role": "neutral",
+        "displayName": "Dark appearance: Open sheet",
+        "tonalRamp": [
+          "oklch(15.0% 0.0269 159.5)",
+          "oklch(26.4% 0.0269 159.5)",
+          "oklch(37.9% 0.0269 159.5)",
+          "oklch(49.3% 0.0269 159.5)",
+          "oklch(60.7% 0.0269 159.5)",
+          "oklch(72.1% 0.0269 159.5)",
+          "oklch(83.6% 0.0269 159.5)",
+          "oklch(95.0% 0.0269 159.5)"
+        ]
+      },
+      "dark-ink": {
+        "role": "neutral",
+        "displayName": "Dark appearance: Forest ink",
+        "tonalRamp": [
+          "oklch(15.0% 0.0200 100.6)",
+          "oklch(26.4% 0.0200 100.6)",
+          "oklch(37.9% 0.0200 100.6)",
+          "oklch(49.3% 0.0200 100.6)",
+          "oklch(60.7% 0.0200 100.6)",
+          "oklch(72.1% 0.0200 100.6)",
+          "oklch(83.6% 0.0200 100.6)",
+          "oklch(95.0% 0.0200 100.6)"
+        ]
+      },
+      "dark-body": {
+        "role": "neutral",
+        "displayName": "Dark appearance: Soft graphite",
+        "tonalRamp": [
+          "oklch(15.0% 0.0223 143.2)",
+          "oklch(26.4% 0.0223 143.2)",
+          "oklch(37.9% 0.0223 143.2)",
+          "oklch(49.3% 0.0223 143.2)",
+          "oklch(60.7% 0.0223 143.2)",
+          "oklch(72.1% 0.0223 143.2)",
+          "oklch(83.6% 0.0223 143.2)",
+          "oklch(95.0% 0.0223 143.2)"
+        ]
+      },
+      "dark-line": {
+        "role": "neutral",
+        "displayName": "Dark appearance: Pencil rule",
+        "tonalRamp": [
+          "oklch(15.0% 0.0274 151.0)",
+          "oklch(26.4% 0.0274 151.0)",
+          "oklch(37.9% 0.0274 151.0)",
+          "oklch(49.3% 0.0274 151.0)",
+          "oklch(60.7% 0.0274 151.0)",
+          "oklch(72.1% 0.0274 151.0)",
+          "oklch(83.6% 0.0274 151.0)",
+          "oklch(95.0% 0.0274 151.0)"
+        ]
+      },
+      "dark-green": {
+        "role": "primary",
+        "displayName": "Dark appearance: Forest",
+        "tonalRamp": [
+          "oklch(15.0% 0.0630 132.8)",
+          "oklch(26.4% 0.0630 132.8)",
+          "oklch(37.9% 0.0630 132.8)",
+          "oklch(49.3% 0.0630 132.8)",
+          "oklch(60.7% 0.0630 132.8)",
+          "oklch(72.1% 0.0630 132.8)",
+          "oklch(83.6% 0.0630 132.8)",
+          "oklch(95.0% 0.0630 132.8)"
+        ]
+      },
+      "dark-green-soft": {
+        "role": "primary",
+        "displayName": "Dark appearance: Leaf wash",
+        "tonalRamp": [
+          "oklch(15.0% 0.0465 145.7)",
+          "oklch(26.4% 0.0465 145.7)",
+          "oklch(37.9% 0.0465 145.7)",
+          "oklch(49.3% 0.0465 145.7)",
+          "oklch(60.7% 0.0465 145.7)",
+          "oklch(72.1% 0.0465 145.7)",
+          "oklch(83.6% 0.0465 145.7)",
+          "oklch(95.0% 0.0465 145.7)"
+        ]
+      },
+      "dark-clay": {
+        "role": "secondary",
+        "displayName": "Dark appearance: Clay",
+        "tonalRamp": [
+          "oklch(15.0% 0.0780 42.8)",
+          "oklch(26.4% 0.0780 42.8)",
+          "oklch(37.9% 0.0780 42.8)",
+          "oklch(49.3% 0.0780 42.8)",
+          "oklch(60.7% 0.0780 42.8)",
+          "oklch(72.1% 0.0780 42.8)",
+          "oklch(83.6% 0.0780 42.8)",
+          "oklch(95.0% 0.0780 42.8)"
+        ]
+      },
+      "dark-clay-soft": {
+        "role": "secondary",
+        "displayName": "Dark appearance: Clay wash",
+        "tonalRamp": [
+          "oklch(15.0% 0.0358 45.5)",
+          "oklch(26.4% 0.0358 45.5)",
+          "oklch(37.9% 0.0358 45.5)",
+          "oklch(49.3% 0.0358 45.5)",
+          "oklch(60.7% 0.0358 45.5)",
+          "oklch(72.1% 0.0358 45.5)",
+          "oklch(83.6% 0.0358 45.5)",
+          "oklch(95.0% 0.0358 45.5)"
+        ]
+      },
+      "dark-honey": {
+        "role": "secondary",
+        "displayName": "Dark appearance: Honey",
+        "tonalRamp": [
+          "oklch(15.0% 0.0944 87.9)",
+          "oklch(26.4% 0.0944 87.9)",
+          "oklch(37.9% 0.0944 87.9)",
+          "oklch(49.3% 0.0944 87.9)",
+          "oklch(60.7% 0.0944 87.9)",
+          "oklch(72.1% 0.0944 87.9)",
+          "oklch(83.6% 0.0944 87.9)",
+          "oklch(95.0% 0.0944 87.9)"
+        ]
+      },
+      "dark-honey-soft": {
+        "role": "secondary",
+        "displayName": "Dark appearance: Honey wash",
+        "tonalRamp": [
+          "oklch(15.0% 0.0340 86.5)",
+          "oklch(26.4% 0.0340 86.5)",
+          "oklch(37.9% 0.0340 86.5)",
+          "oklch(49.3% 0.0340 86.5)",
+          "oklch(60.7% 0.0340 86.5)",
+          "oklch(72.1% 0.0340 86.5)",
+          "oklch(83.6% 0.0340 86.5)",
+          "oklch(95.0% 0.0340 86.5)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Landing invitation",
+        "purpose": "The landing headline; Georgia, regular weight."
+      },
+      "headline": {
+        "displayName": "App headline",
+        "purpose": "Today and My journal page headings."
+      },
+      "title": {
+        "displayName": "Quest title",
+        "purpose": "Serif quest names; mobile size is 24px."
+      },
+      "operational-title": {
+        "displayName": "Operational heading",
+        "purpose": "Sans-serif task and journal section headings."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "The base readable system-sans text."
+      },
+      "journal-entry": {
+        "displayName": "Journal entry",
+        "purpose": "Saved personal reflections."
+      },
+      "label": {
+        "displayName": "Field label",
+        "purpose": "Labels above inputs and textareas."
+      },
+      "button": {
+        "displayName": "Action",
+        "purpose": "Primary, compact and secondary button text."
+      }
+    },
+    "shadows": [
+      {
+        "name": "journal-sheet",
+        "value": "0 16px 44px #233e320d",
+        "purpose": "Only the illustrative landing journal sheet; CSS source is --shadow."
+      },
+      {
+        "name": "dark-journal-sheet",
+        "value": "none",
+        "purpose": "The dark-appearance override of --shadow."
+      }
+    ],
+    "motion": [
+      {
+        "name": "button-opacity",
+        "value": "opacity 150ms ease",
+        "purpose": "Primary, small and secondary button hover response; ease is the CSS default."
+      },
+      {
+        "name": "button-press",
+        "value": "translateY(1px)",
+        "purpose": "Immediate active-state movement; no transform transition is defined."
+      },
+      {
+        "name": "document-scroll",
+        "value": "smooth",
+        "purpose": "Document scrolling; reduced motion changes it to auto."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "transition: none !important",
+        "purpose": "Applied to all elements and pseudo-elements when reduced motion is requested; charts also disable animation."
+      },
+      {
+        "name": "chart-appearance-update",
+        "value": "chart.update('none')",
+        "purpose": "Palette updates apply without animating."
+      }
+    ],
+    "focus": [
+      {
+        "name": "keyboard-focus",
+        "value": "outline: 3px solid var(--green); outline-offset: 4px",
+        "purpose": "Shared visible focus for links, buttons, inputs and textareas."
+      },
+      {
+        "name": "skip-link",
+        "value": "top: -80px; top: 12px on :focus",
+        "purpose": "Reveals the first keyboard navigation link above the header."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "compact-desktop",
+        "value": "1100px"
+      },
+      {
+        "name": "mobile",
+        "value": "760px"
+      },
+      {
+        "name": "narrow-mobile",
+        "value": "400px"
+      }
+    ],
+    "layout": [
+      {
+        "name": "page-width",
+        "value": "1360px",
+        "purpose": "Shared header, main and footer maximum width."
+      },
+      {
+        "name": "app-columns",
+        "value": "minmax(0, 1fr) 280px",
+        "purpose": "Flexible task or journal column with a progress rail; 240px rail at 1100px; one column at 760px."
+      },
+      {
+        "name": "chart-columns",
+        "value": "minmax(0, 1.2fr) minmax(0, 1fr)",
+        "purpose": "Journal chart grid; becomes one column at 1100px."
+      },
+      {
+        "name": "chart-height",
+        "value": "220px",
+        "purpose": "Fixed plot/status area; supporting copy sits outside it."
+      }
+    ],
+    "tonalRampPurpose": "Synthesized OKLCH exploration strips, dark to light at fixed hue and chroma. They are panel metadata, not additional shipped palette tokens.",
+    "sourceFiles": [
+      "static/css/style.css",
+      "static/js/theme.js",
+      "static/js/chart.js",
+      "templates/base.html",
+      "templates/forms.html",
+      "templates/icons.html",
+      "templates/index.html",
+      "templates/dashboard.html",
+      "templates/progress.html",
+      "templates/profile.html",
+      "templates/login.html",
+      "templates/register.html",
+      "templates/reflection.html"
+    ],
+    "reviewEvidence": [
+      ".impeccable/review/desktop.jpg",
+      ".impeccable/review/today-mobile.jpg",
+      ".impeccable/review/journal-desktop.jpg",
+      ".impeccable/review/journal-dark.jpg",
+      ".impeccable/review/journal-mobile.jpg",
+      ".impeccable/review/register-mobile.jpg"
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary button",
+      "kind": "button",
+      "description": "The standard forest action used for signup and form submission.",
+      "html": "<button class=\"ds-primary-button\" type=\"button\">Start my journey</button>",
+      "css": ".ds-primary-button{display:inline-flex;align-items:center;justify-content:center;gap:28px;padding:15px 24px;border:1px solid var(--green, #244c3a);border-radius:7px;background:var(--green, #244c3a);color:var(--paper, #f7f5ed);font-family:var(--sans, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif);font-size:13px;font-weight:600;line-height:1.4;text-decoration:none;cursor:pointer;transition:opacity 150ms;}.ds-primary-button:hover{opacity:.86;}.ds-primary-button:active{transform:translateY(1px);}.ds-primary-button:focus-visible{outline:3px solid var(--green, #244c3a);outline-offset:4px;}@media(prefers-reduced-motion:reduce){.ds-primary-button{transition:none;}}",
+      "refersTo": "button-primary"
+    },
+    {
+      "name": "Small button",
+      "kind": "button",
+      "description": "The compact action used in quest rows and the desktop header.",
+      "html": "<button class=\"ds-small-button\" type=\"button\">Mark complete</button>",
+      "css": ".ds-small-button{display:inline-flex;align-items:center;justify-content:center;gap:18px;padding:11px 16px;border:1px solid var(--green, #244c3a);border-radius:7px;background:var(--green, #244c3a);color:var(--paper, #f7f5ed);font-family:var(--sans, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif);font-size:13px;font-weight:600;line-height:1.4;text-decoration:none;cursor:pointer;transition:opacity 150ms;}.ds-small-button:hover{opacity:.86;}.ds-small-button:active{transform:translateY(1px);}.ds-small-button:focus-visible{outline:3px solid var(--green, #244c3a);outline-offset:4px;}@media(prefers-reduced-motion:reduce){.ds-small-button{transition:none;}}",
+      "refersTo": "button-small"
+    },
+    {
+      "name": "Secondary button",
+      "kind": "button",
+      "description": "An outlined alternative, used to skip a reflection.",
+      "html": "<a class=\"ds-secondary-button\" href=\"/dashboard\">Skip for now</a>",
+      "css": ".ds-secondary-button{display:inline-flex;align-items:center;justify-content:center;gap:28px;padding:15px 24px;border:1px solid var(--green, #244c3a);border-radius:7px;background:transparent;color:var(--green, #244c3a);font-family:var(--sans, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif);font-size:13px;font-weight:600;line-height:1.4;text-decoration:none;cursor:pointer;transition:opacity 150ms;}.ds-secondary-button:hover{opacity:.86;}.ds-secondary-button:active{transform:translateY(1px);}.ds-secondary-button:focus-visible{outline:3px solid var(--green, #244c3a);outline-offset:4px;}@media(prefers-reduced-motion:reduce){.ds-secondary-button{transition:none;}}",
+      "refersTo": "button-secondary"
+    },
+    {
+      "name": "Text link",
+      "kind": "button",
+      "description": "A forest underlined next step for journal and form context.",
+      "html": "<a class=\"ds-text-link\" href=\"/register\">Start your journey</a>",
+      "css": ".ds-text-link{font-family:var(--sans, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif);font-size:13px;line-height:1.65;color:var(--green, #244c3a);text-decoration:underline;text-underline-offset:4px;}.ds-text-link:focus-visible{outline:3px solid var(--green, #244c3a);outline-offset:4px;}"
+    },
+    {
+      "name": "Field with validation",
+      "kind": "input",
+      "description": "The shared field appearance with a label, specific error and hint; the application retains its Flask macro and CSRF form.",
+      "html": "<div class=\"ds-field\"><label for=\"ds-username\">Username</label><input id=\"ds-username\" class=\"ds-form-control\" autocomplete=\"username\" value=\"ab\" aria-invalid=\"true\" aria-describedby=\"ds-username-errors\"><ul id=\"ds-username-errors\" class=\"ds-field-errors\"><li>Field must be between 4 and 20 characters long.</li></ul><p class=\"ds-field-hint\">Choose a username with 4–20 characters.</p></div>",
+      "css": ".ds-field{font-family:var(--sans, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif);font-size:15px;line-height:1.65;color:var(--ink, #233e32);}.ds-field{margin-bottom:22px;}.ds-field label{display:block;margin-bottom:8px;font-size:12px;font-weight:600;}.ds-form-control{width:100%;border:1px solid var(--line, #d9ddd0);border-radius:6px;background:var(--paper, #f7f5ed);color:var(--ink, #233e32);padding:12px;font-family:var(--sans, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif);font-size:14px;line-height:1.65;}.ds-form-control[aria-invalid=\"true\"]{border-color:var(--clay, #935440);}.ds-field-errors{margin:8px 0 0;padding:0;list-style:none;color:var(--clay, #935440);font-size:12px;}.ds-field-hint{color:var(--body, #60685f);font-size:11px;margin:10px 0 0;}.ds-form-control:focus-visible{outline:3px solid var(--green, #244c3a);outline-offset:4px;}",
+      "refersTo": "field"
+    },
+    {
+      "name": "App navigation",
+      "kind": "nav",
+      "description": "The leaf wordmark and authenticated links; Log out remains visible on mobile. The appearance icon is shown as its implemented control shape.",
+      "html": "<header class=\"ds-site-header\"><a class=\"ds-wordmark\" href=\"/\" aria-label=\"Questr home\"><svg aria-hidden=\"true\" viewBox=\"0 0 32 32\"><path d=\"M8 24C5 9 16 4 26 6c1 13-5 20-15 17M8 27 22 11\"/></svg>questr<span class=\"ds-wordmark-dot\">.</span></a><nav class=\"ds-nav\" aria-label=\"Main navigation\"><a href=\"/dashboard\" aria-current=\"page\">Today</a><a href=\"/profile\">My journal</a><a class=\"ds-quiet-link\" href=\"/logout\">Log out</a><button class=\"ds-theme-toggle\" type=\"button\" aria-label=\"Use dark appearance\" aria-pressed=\"false\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"8\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\"/><path d=\"M12 4a8 8 0 0 1 0 16Z\" fill=\"currentColor\"/></svg></button></nav></header>",
+      "css": ".ds-site-header{font-family:var(--sans, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif);font-size:15px;line-height:1.65;color:var(--ink, #233e32);}.ds-site-header{display:flex;align-items:center;justify-content:space-between;gap:24px;max-width:1360px;margin:auto;padding:28px 48px;}.ds-nav{display:flex;align-items:center;gap:30px;font-size:13px;font-weight:550;}.ds-nav a,.ds-wordmark{text-decoration:none;color:inherit;}.ds-nav a[aria-current=\"page\"]{color:var(--green, #244c3a);text-decoration:underline;text-underline-offset:8px;}.ds-nav a:hover{text-decoration:underline;text-underline-offset:5px;}.ds-nav .ds-quiet-link{color:var(--body, #60685f);}.ds-wordmark{display:inline-flex;align-items:center;gap:9px;font-size:29px;font-weight:700;letter-spacing:-.04em;line-height:1;}.ds-wordmark svg{display:block;width:28px;height:28px;fill:none;stroke:var(--green, #244c3a);stroke-width:2;}.ds-wordmark-dot{color:var(--clay, #935440);margin-left:-9px;}.ds-theme-toggle{display:grid;place-items:center;width:36px;height:36px;border:1px solid var(--line, #d9ddd0);border-radius:50%;background:transparent;color:var(--ink, #233e32);cursor:pointer;}.ds-theme-toggle svg{display:block;width:22px;height:22px;}.ds-nav a:focus-visible{outline:3px solid var(--green, #244c3a);outline-offset:4px;}.ds-wordmark:focus-visible{outline:3px solid var(--green, #244c3a);outline-offset:4px;}.ds-theme-toggle:focus-visible{outline:3px solid var(--green, #244c3a);outline-offset:4px;}@media(max-width:760px){.ds-site-header{padding:24px;}.ds-nav{gap:18px;font-size:12px;}.ds-wordmark{font-size:25px;}.ds-theme-toggle{width:30px;height:30px;}.ds-nav .ds-quiet-link{font-size:11px;}}@media(max-width:400px){.ds-site-header{gap:16px;}.ds-nav{flex-wrap:wrap;justify-content:flex-end;gap:8px 12px;}.ds-wordmark svg{width:23px;}}"
+    },
+    {
+      "name": "Category markers",
+      "kind": "custom",
+      "description": "The three actual category SVGs and labels, with their consistent color roles.",
+      "html": "<div class=\"ds-category-list\"><div class=\"ds-category-item\"><span class=\"ds-category-symbol ds-category-social\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M6 18 18 6M6 6h12v12\"/></svg></span><span class=\"ds-category-label ds-category-text-social\">SOCIAL</span></div><div class=\"ds-category-item\"><span class=\"ds-category-symbol ds-category-health\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3 14h5l3-7 3 10 3-7h4\"/></svg></span><span class=\"ds-category-label ds-category-text-health\">HEALTH</span></div><div class=\"ds-category-item\"><span class=\"ds-category-symbol ds-category-mindfulness\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M12 2v3m0 14v3M2 12h3m14 0h3M5 5l2 2m10 10 2 2M5 19l2-2M17 7l2-2\"/></svg></span><span class=\"ds-category-label ds-category-text-mindfulness\">MINDFULNESS</span></div></div>",
+      "css": ".ds-category-list{font-family:var(--sans, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif);font-size:15px;line-height:1.65;color:var(--ink, #233e32);}.ds-category-list{display:flex;flex-wrap:wrap;gap:24px;}.ds-category-item{display:flex;align-items:center;gap:14px;}.ds-category-label{font-size:9px;letter-spacing:.09em;font-weight:650;}.ds-category-symbol{display:grid;place-items:center;width:42px;height:42px;flex:0 0 auto;border-radius:50%;}.ds-category-symbol svg{display:block;width:22px;height:22px;}.ds-category-social{background:var(--clay-soft, #f3e3d9);color:var(--clay, #935440);}.ds-category-health{background:var(--green-soft, #e3eadd);color:var(--green, #244c3a);}.ds-category-mindfulness{background:var(--honey-soft, #f3ebd1);color:var(--honey, #866326);}.ds-category-text-social{color:var(--clay, #935440);}.ds-category-text-health{color:var(--green, #244c3a);}.ds-category-text-mindfulness{color:var(--honey, #866326);}",
+      "refersTo": "category-social"
+    },
+    {
+      "name": "Quest row",
+      "kind": "custom",
+      "description": "A ruled task entry with category, serif title, description, action and XP. Sample text is illustrative.",
+      "html": "<article class=\"ds-quest-row\"><span class=\"ds-quest-symbol ds-quest-health\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3 14h5l3-7 3 10 3-7h4\"/></svg></span><div><span class=\"ds-quest-category\">HEALTH</span><h3>Take the scenic route</h3><p>Spend fifteen minutes outside. Choose a street you do not usually take.</p><div class=\"ds-quest-actions\"><button class=\"ds-quest-button\" type=\"button\">Mark complete</button></div></div><span class=\"ds-quest-xp\">+15 XP</span></article>",
+      "css": ".ds-quest-row{font-family:var(--sans, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif);font-size:15px;line-height:1.65;color:var(--ink, #233e32);}.ds-quest-row{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:20px;padding:28px 0;border-top:1px solid var(--line, #d9ddd0);align-items:start;}.ds-quest-category{font-size:9px;letter-spacing:.09em;font-weight:650;color:var(--green, #244c3a);}.ds-quest-row h3{font-family:var(--display, Georgia, \"Times New Roman\", serif);font-weight:400;font-size:27px;line-height:1.3;margin:8px 0 12px;letter-spacing:-.025em;}.ds-quest-row p{margin:0;font-size:13px;line-height:1.8;color:var(--body, #60685f);max-width:55ch;}.ds-quest-actions{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:14px;margin-top:20px;}.ds-quest-xp{font-size:11px;font-weight:600;color:var(--honey, #866326);white-space:nowrap;}.ds-quest-symbol{display:grid;place-items:center;width:42px;height:42px;flex:0 0 auto;border-radius:50%;}.ds-quest-symbol svg{display:block;width:22px;height:22px;}.ds-quest-social{background:var(--clay-soft, #f3e3d9);color:var(--clay, #935440);}.ds-quest-health{background:var(--green-soft, #e3eadd);color:var(--green, #244c3a);}.ds-quest-mindfulness{background:var(--honey-soft, #f3ebd1);color:var(--honey, #866326);}.ds-quest-button{display:inline-flex;align-items:center;justify-content:center;gap:18px;padding:11px 16px;border:1px solid var(--green, #244c3a);border-radius:7px;background:var(--green, #244c3a);color:var(--paper, #f7f5ed);font-family:var(--sans, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif);font-size:13px;font-weight:600;line-height:1.4;text-decoration:none;cursor:pointer;transition:opacity 150ms;}.ds-quest-button:hover{opacity:.86;}.ds-quest-button:active{transform:translateY(1px);}.ds-quest-button:focus-visible{outline:3px solid var(--green, #244c3a);outline-offset:4px;}@media(prefers-reduced-motion:reduce){.ds-quest-button{transition:none;}}@media(max-width:760px){.ds-quest-row{gap:14px;grid-template-columns:36px minmax(0,1fr) auto;}.ds-quest-symbol{width:34px;height:34px;}.ds-quest-row h3{font-size:24px;}.ds-quest-actions{justify-content:flex-start;}}"
+    },
+    {
+      "name": "Progress rail",
+      "kind": "card",
+      "description": "The actual progress panel pattern; the numbers here are an example, not generated account state.",
+      "html": "<aside class=\"ds-progress-rail\" aria-label=\"Example progress\"><h2>Every little<br>step counts.</h2><div class=\"ds-level-number\">2</div><span class=\"ds-progress-data-label\">YOUR CURRENT LEVEL</span><div class=\"ds-progress-label\"><span>65 / 100 XP</span><span>Level 3</span></div><div class=\"ds-progress\" role=\"progressbar\" aria-label=\"Example progress to next level\" aria-valuenow=\"65\" aria-valuemin=\"0\" aria-valuemax=\"100\"><div class=\"ds-progress-bar\" style=\"width:65%\"></div></div><dl class=\"ds-stats-list\"><div><dt>Total XP</dt><dd>165</dd></div><div><dt>Day streak</dt><dd>1</dd></div><div><dt>Quests completed</dt><dd>1</dd></div></dl><p class=\"ds-rail-note\">A fresh start is still a start. Take your next quest at your own pace.</p></aside>",
+      "css": ".ds-progress-rail{font-family:var(--sans, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif);font-size:15px;line-height:1.65;color:var(--ink, #233e32);}.ds-progress-rail{align-self:start;background:var(--green-soft, #e3eadd);border-radius:12px;padding:28px;}.ds-progress-rail h2{font-family:var(--display, Georgia, \"Times New Roman\", serif);font-weight:400;letter-spacing:-.04em;line-height:1.08;font-size:29px;margin:18px 0;}.ds-level-number{font-family:var(--display, Georgia, \"Times New Roman\", serif);font-size:60px;line-height:1.1;margin:20px 0 5px;}.ds-progress-data-label{display:block;color:var(--body, #60685f);font-size:10px;font-weight:650;letter-spacing:.1em;}.ds-progress-label{display:flex;justify-content:space-between;gap:16px;font-size:11px;margin:18px 0 9px;}.ds-progress{height:6px;background:var(--line, #d9ddd0);border-radius:6px;overflow:hidden;}.ds-progress-bar{background:var(--green, #244c3a);height:100%;}.ds-stats-list{margin:24px 0 0;}.ds-stats-list div{display:flex;align-items:baseline;justify-content:space-between;padding:14px 0;border-top:1px solid var(--line, #d9ddd0);}.ds-stats-list dt{color:var(--body, #60685f);font-size:12px;}.ds-stats-list dd{margin:0;font-size:21px;font-family:var(--display, Georgia, \"Times New Roman\", serif);}.ds-rail-note{border-top:1px solid var(--line, #d9ddd0);padding-top:22px;margin:16px 0 0;color:var(--body, #60685f);font-size:12px;}@media(max-width:760px){.ds-progress-rail{padding:24px;}.ds-progress-rail h2{font-size:26px;}.ds-level-number{font-size:42px;}.ds-stats-list{display:flex;gap:24px;margin-top:16px;}.ds-stats-list div{flex:1;flex-direction:column-reverse;padding-bottom:0;}.ds-stats-list dt{font-size:10px;}.ds-rail-note{display:none;}}",
+      "refersTo": "progress-rail"
+    },
+    {
+      "name": "Chart card with empty state",
+      "kind": "card",
+      "description": "A journal chart container with its actual empty reflection message; live canvases use the same plot area and readable summary pattern.",
+      "html": "<section class=\"ds-chart-card\" aria-labelledby=\"ds-mood-title\"><h2 id=\"ds-mood-title\">A reflection of your days</h2><p>Sentiment from your journal entries. A guide, not a clinical measure.</p><div class=\"ds-chart-container\"><p class=\"ds-chart-status\" role=\"status\">Your first reflection will start this story.</p></div></section>",
+      "css": ".ds-chart-card{font-family:var(--sans, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif);font-size:15px;line-height:1.65;color:var(--ink, #233e32);}.ds-chart-card{min-width:0;border:1px solid var(--line, #d9ddd0);border-radius:10px;padding:24px;background:var(--surface, #fffef8);}.ds-chart-card h2{font-family:var(--sans, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif);font-size:16px;line-height:1.08;font-weight:600;letter-spacing:-.02em;margin:0;}.ds-chart-card>p{color:var(--body, #60685f);font-size:11px;margin:6px 0 16px;}.ds-chart-container{position:relative;height:220px;}.ds-chart-status{display:flex;height:100%;align-items:center;justify-content:center;color:var(--body, #60685f);font-size:12px;text-align:center;margin:0;}",
+      "refersTo": "chart-card"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Daily Field Journal",
+    "overview": "Questr feels like a warm, well-kept journal for small everyday adventures. Cream paper, forest ink, ruled entries and a botanical seal make its world tangible. Georgia carries the invitation and personal writing; a clean system sans keeps tasks, forms and progress easy to scan.\n\nThe interface is generous without making action feel distant. Category color gives each quest a recognizable place, while the app presents actual quests, reflections and earned progress plainly. The landing journal is explicitly marked as an example day; the operational screens use persisted user data.",
+    "keyCharacteristics": [
+      "Warm paper and forest tones with clay and honey category accents.",
+      "Editorial Georgia headings paired with practical sans-serif controls.",
+      "Flat ruled entries, softly bounded forms and charts, and one illustrated journal surface.",
+      "Visible navigation, direct actions and a quiet record of progress."
+    ],
+    "rules": [
+      {
+        "name": "The Category Continuity Rule",
+        "body": "Social stays clay, Health stays green and Mindfulness stays honey across symbols, labels and charts; always pair color with text.",
+        "section": "colors"
+      },
+      {
+        "name": "The Same Roles Rule",
+        "body": "Dark appearance remaps the existing roles through `:root[data-theme=\"dark\"]`; preserve the hierarchy rather than adding a separate visual language.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two Voices Rule",
+        "body": "Use Georgia for invitation, quest titles and personal writing; use the system sans for controls, descriptions and operational headings.",
+        "section": "typography"
+      },
+      {
+        "name": "The Reading Order Rule",
+        "body": "Keep task and journal content first in document order, with progress afterward; preserve that order when columns collapse.",
+        "section": "layout"
+      },
+      {
+        "name": "The Journal Exception Rule",
+        "body": "Reserve ambient shadow and stacked rotation for the illustrated journal; app records, forms and charts remain grounded.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do reuse the paper, ink, line and category custom properties in both appearances.",
+      "Do keep Georgia for invitations, quest titles and reflection text, and the system sans for controls and task detail.",
+      "Do preserve the category SVGs alongside readable category labels.",
+      "Do keep tasks and journal content before progress when the layout stacks.",
+      "Do retain visible Log out navigation, keyboard focus, field errors, CSRF forms and chart status text.",
+      "Do identify the landing journal as an example and derive app progress from persisted data."
+    ],
+    "donts": [
+      "Don't extend the journal illustration's shadow or rotation to ordinary app containers.",
+      "Don't replace ruled quest and reflection entries with a grid of decorative cards.",
+      "Don't communicate category, completion, validation or chart meaning through color alone.",
+      "Don't turn small data labels into invented promotional kickers above headings.",
+      "Don't add a new icon family, hide operational navigation on mobile, or remove reduced-motion behavior.",
+      "Don't present sentiment as a clinical measure or invent testimonials, pricing or measured outcomes."
+    ]
+  }
+}
