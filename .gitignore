@@ -106,7 +106,5 @@ celerybeat.pid
 .dmypy.json
 dmypy.json
 
-# Local design verification
-.impeccable/review/
-.impeccable/mocks/
-.impeccable/build/
+# Local design-tool artifacts
+.impeccable/
